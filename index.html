@@ -162,7 +162,79 @@
     footer{text-align:center;padding:14px;color:#8892a4;font-size:.74rem;border-top:1px solid rgba(255,255,255,.05);}
     .spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.1);border-top-color:#e94560;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
     @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
     .state-msg{grid-column:1/-1;text-align:center;padding:44px 18px;color:#8892a4;}
+
+    /* ===== زر الدعم العائم ===== */
+    .support-fab{position:fixed;bottom:22px;left:16px;z-index:500;background:linear-gradient(135deg,#25d366,#128c7e);border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 18px rgba(37,211,102,.5);transition:transform .2s;}
+    .support-fab:hover{transform:scale(1.1);}
+    .support-fab-tooltip{position:fixed;bottom:82px;left:10px;background:#1e2a45;border:1px solid rgba(37,211,102,.3);border-radius:10px;padding:7px 12px;font-size:.76rem;font-weight:700;color:#25d366;white-space:nowrap;z-index:499;opacity:0;pointer-events:none;transition:opacity .2s;}
+    .support-fab:hover + .support-fab-tooltip,.support-fab-tooltip.show{opacity:1;}
+
+    /* ===== قائمة طلباتي ===== */
+    .orders-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:600;align-items:flex-end;justify-content:center;backdrop-filter:blur(5px);}
+    .orders-ov.open{display:flex;}
+    .orders-sheet{background:#16213e;border-radius:22px 22px 0 0;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;border-top:2px solid rgba(233,69,96,.4);}
+    .orders-sheet-hdr{padding:18px 18px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;background:#16213e;z-index:2;}
+    .orders-sheet-title{font-size:1rem;font-weight:900;display:flex;align-items:center;gap:8px;}
+    .orders-close{background:rgba(255,255,255,.07);border:none;color:#eaeaea;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .order-card{background:#1e2a45;border-radius:14px;margin:10px 14px;padding:14px 15px;border:1px solid rgba(255,255,255,.06);position:relative;}
+    .order-status{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:700;position:absolute;top:14px;left:14px;}
+    .order-status.pending{background:rgba(245,166,35,.15);color:#f5a623;border:1px solid rgba(245,166,35,.3);}
+    .order-status.accepted{background:rgba(37,211,102,.12);color:#25d366;border:1px solid rgba(37,211,102,.3);}
+    .order-status.rejected{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3);}
+    .order-name{font-size:.88rem;font-weight:700;margin-bottom:4px;padding-left:80px;}
+    .order-price{font-size:.8rem;color:#f5a623;font-weight:700;}
+    .order-date{font-size:.68rem;color:#8892a4;margin-top:4px;}
+    .order-note{font-size:.72rem;color:#ef4444;margin-top:5px;background:rgba(239,68,68,.07);border-radius:7px;padding:5px 8px;}
+    .orders-empty{text-align:center;padding:50px 20px;color:#8892a4;font-size:.88rem;}
+
+    /* ===== شارة سعر بطاقة الشحن ===== */
+    .ri-price-badge{display:inline-block;background:linear-gradient(135deg,rgba(233,69,96,.2),rgba(245,166,35,.15));border:1px solid rgba(233,69,96,.35);color:#f5a623;font-size:.65rem;font-weight:700;border-radius:8px;padding:2px 7px;margin-top:3px;}
+    .ri-sub{font-size:.65rem;color:#8892a4;}
+
+    /* ===== لماذا تختارنا ===== */
+    .why-label-wrap{text-align:center;margin-bottom:7px;}
+    .why-label{background:rgba(233,69,96,.12);border:1px solid rgba(233,69,96,.3);color:#e94560;border-radius:20px;padding:3px 12px;font-size:.7rem;font-weight:700;}
+    .why-title{text-align:center;font-size:1rem;font-weight:900;margin-bottom:10px;background:linear-gradient(90deg,#fff,#f5a623);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+    .why-card{background:linear-gradient(135deg,#1e2a45,#1a2240);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:9px 9px;transition:transform .2s,border-color .2s;}
+    .why-card:hover{transform:translateY(-2px);border-color:rgba(233,69,96,.3);}
+    .why-card-content{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+    .why-card-text{flex:1;}
+    .why-card-title{font-size:.74rem;font-weight:800;margin-bottom:2px;}
+    .why-card-desc{font-size:.62rem;color:#8892a4;line-height:1.4;}
+    .why-icon-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;}
+    .why-icon-label{font-size:.55rem;font-weight:700;text-align:center;}
+    .about-card{background:linear-gradient(135deg,rgba(245,166,35,.06),rgba(233,69,96,.04));border:1px solid rgba(245,166,35,.2);border-radius:14px;padding:14px 14px;text-align:center;}
+    .about-i-wrap{width:34px;height:34px;background:linear-gradient(135deg,#f5a623,#e94560);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;margin:0 auto 7px;box-shadow:0 4px 12px rgba(245,166,35,.3);}
+    .about-i{font-style:normal;}
+    .about-title{font-size:.88rem;font-weight:900;margin-bottom:5px;}
+    .about-desc{font-size:.74rem;color:#8892a4;line-height:1.6;max-width:420px;margin:0 auto;}
+
+    /* ===== لماذا تختارنا - ثابت في الأسفل ===== */
+    #why-us-fixed{position:fixed;bottom:62px;left:0;right:0;z-index:350;background:rgba(15,20,40,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(233,69,96,.25);padding:10px 12px 8px;transform:translateY(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);}
+    #why-us-fixed.visible{transform:translateY(0);}
+    .why-toggle-btn{position:fixed;bottom:70px;right:12px;z-index:351;background:linear-gradient(135deg,#e94560,#c73652);border:none;border-radius:20px;color:#fff;font-size:.7rem;font-weight:700;padding:5px 11px;cursor:pointer;font-family:'Cairo',sans-serif;box-shadow:0 3px 12px rgba(233,69,96,.4);transition:all .2s;}
+    #why-us-fixed .why-grid{grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:7px;}
+    #why-us-fixed .why-card{padding:7px 6px;border-radius:10px;}
+    #why-us-fixed .why-card-content{flex-direction:column;align-items:center;text-align:center;gap:4px;}
+    #why-us-fixed .why-icon-wrap{order:-1;}
+    #why-us-fixed .why-card-title{font-size:.65rem;}
+    #why-us-fixed .why-card-desc{display:none;}
+    #why-us-fixed .why-icon-label{display:none;}
+    #why-us-fixed .why-label-wrap{display:none;}
+    #why-us-fixed .why-title{font-size:.8rem;margin-bottom:7px;text-align:center;}
+    #why-us-fixed .about-card{padding:9px 12px;border-radius:11px;display:flex;align-items:center;gap:10px;text-align:right;}
+    #why-us-fixed .about-i-wrap{width:28px;height:28px;font-size:.85rem;margin:0;flex-shrink:0;}
+    #why-us-fixed .about-title{font-size:.75rem;margin-bottom:2px;}
+    #why-us-fixed .about-desc{font-size:.65rem;line-height:1.4;}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,20,40,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-around;align-items:center;height:62px;z-index:400;padding-bottom:env(safe-area-inset-bottom,0);}
+    .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:#8892a4;cursor:pointer;padding:6px 10px;border-radius:12px;transition:all .2s;flex:1;}
+    .bn-item.active{color:#e94560;}
+    .bn-item.active .bn-icon{transform:scale(1.15);}
+    .bn-icon{font-size:1.35rem;display:block;transition:transform .2s;}
+    .bn-label{font-size:.6rem;font-weight:700;font-family:'Cairo',sans-serif;}
   </style>
 </head>
 <body>
@@ -173,9 +245,7 @@
       <button class="hbtn" onclick="openDrawer()">☰</button>
       <div class="app-logo" onclick="goHome()"><div class="icon" id="app-icon">📱</div><div class="name" id="app-name">مركز ابل ستور</div></div>
     </div>
-    <div class="h-right">
-      <button class="hbtn" onclick="openSearch()">🔍</button>
-    </div>
+    <div class="h-right"></div>
   </div>
 </header>
 
@@ -199,6 +269,7 @@
 <div class="drawer" id="drawer">
   <div class="drw-hdr"><h3>🗂️ الأقسام</h3><button class="drw-close" onclick="closeDrawer()">×</button></div>
   <button class="drw-home" onclick="goHome();closeDrawer()">🏠 الرئيسية</button>
+  <button class="drw-home" style="background:rgba(233,69,96,.08);border-top:1px solid rgba(255,255,255,.04)" onclick="openOrders();closeDrawer()">📋 طلباتي</button>
   <div id="drw-cats"></div>
 </div>
 
@@ -219,7 +290,7 @@
   <div class="pay-modal">
     <div class="pay-head"><div class="pay-head-icon">💳</div><div><div class="pay-head-title">إتمام الدفع</div><div class="pay-head-sub">أتبع الخطوات أدناه</div></div></div>
     <div class="pay-body">
-      <div class="pay-step"><span class="pay-step-lbl">1️⃣ قم بالدفع عبر</span><div class="pay-info-box"><div class="pay-method-name" id="pay-method-name">شام كاش</div><div class="pay-code-row"><div class="pay-code-val" id="pay-code-val">—</div><button class="pay-copy-btn" id="pay-copy-btn" onclick="copyPayCode()">نسخ</button></div></div></div>
+      <div class="pay-step"><span class="pay-step-lbl">1️⃣ قم بالدفع عبر</span><div class="pay-info-box"><div class="pay-method-name" id="pay-method-name">شام كاش</div><div class="pay-code-row"><div class="pay-code-val" id="pay-code-val">—</div></div></div></div>
       <div class="pay-step"><span class="pay-step-lbl">2️⃣ أرفق إثبات الدفع</span><div class="pay-upload-area" id="pay-upload-area"><span class="pay-upload-icon">📎</span><div class="pay-upload-text">اضغط لاختيار صورة</div><input class="pay-file-input" id="pay-file-input" type="file" accept="image/*,.pdf" onchange="handlePayFile(this)"/></div><div class="pay-preview" id="pay-preview"><button class="pay-remove-btn" onclick="removePayFile()">✕</button><div id="pay-preview-content"></div></div></div>
     </div>
     <div class="pay-actions"><button class="pay-submit-btn" onclick="submitPayment()">✅ إرسال الطلب</button><button class="pay-cancel-btn" onclick="closePayModal()">إلغاء</button></div>
@@ -228,11 +299,92 @@
 
 <div class="wa-ov" id="wa-ov"><div class="wa-modal"><h3>📲 اختر رقم واتساب</h3><div id="wa-nums" class="wa-nums"></div><button class="wa-cancel" onclick="closeWa()">إلغاء</button></div></div>
 
-<footer>جميع الحقوق محفوظة &copy; <span id="footer-nm">مركز ابل ستور</span></footer>
+<!-- زر الدعم العائم -->
+<button class="support-fab" id="support-fab-btn" onclick="openSupport()" title="الدعم">💬</button>
+<div class="support-fab-tooltip" id="support-tooltip">تواصل مع الدعم</div>
+
+<!-- نافذة طلباتي -->
+<div class="orders-ov" id="orders-ov" onclick="if(event.target===this)closeOrders()">
+  <div class="orders-sheet">
+    <div class="orders-sheet-hdr">
+      <div class="orders-sheet-title">📋 طلباتي</div>
+      <button class="orders-close" onclick="closeOrders()">×</button>
+    </div>
+    <div id="orders-list"></div>
+  </div>
+</div>
+
+<!-- ===== قسم لماذا تختارنا ===== -->
+<!-- ===== لماذا تختارنا - ثابت في الأسفل ===== -->
+<button class="why-toggle-btn" id="why-toggle" onclick="toggleWhyUs()">✨ خدماتنا</button>
+<div id="why-us-fixed">
+  <div class="why-title">لماذا تختارنا؟</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-card-content">
+        <div class="why-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(233,69,96,0.08)"/><path d="M18 32l10-16 4 8 4-5 6 13" stroke="#e94560" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="why-card-text"><div class="why-card-title">سرعة وموثوقية</div></div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-card-content">
+        <div class="why-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(37,211,102,0.08)"/><circle cx="28" cy="28" r="14" stroke="#25d366" stroke-width="2"/><path d="M22 28l4 4 8-8" stroke="#25d366" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="why-card-text"><div class="why-card-title">الضمان</div></div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-card-content">
+        <div class="why-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(99,102,241,0.08)"/><rect x="16" y="20" width="24" height="18" rx="5" stroke="#6366f1" stroke-width="2"/><path d="M22 29h12M22 33h8" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="why-card-text"><div class="why-card-title">دعم متواصل</div></div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-card-content">
+        <div class="why-icon-wrap">
+          <svg width="32" height="32" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(245,166,35,0.08)"/><rect x="15" y="21" width="26" height="16" rx="4" stroke="#f5a623" stroke-width="2"/><path d="M15 27h26" stroke="#f5a623" stroke-width="2"/></svg>
+        </div>
+        <div class="why-card-text"><div class="why-card-title">سهولة الدفع</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="about-card">
+    <div class="about-i-wrap"><span class="about-i">ℹ️</span></div>
+    <div><div class="about-title">من نحن</div><div class="about-desc" id="about-desc">متجر متخصص في بيع البطاقات الرقمية وشحن الألعاب والتطبيقات. نسعى دائماً لتقديم أفضل خدمة بأسرع وقت وأمان تام.</div></div>
+  </div>
+</div>
+
+<!-- ===== شريط التنقل السفلي ===== -->
+<div class="bottom-nav">
+  <button class="bn-item active" id="bn-home" onclick="goHome();setActiveNav('bn-home')">
+    <span class="bn-icon">🏠</span>
+    <span class="bn-label">الرئيسية</span>
+  </button>
+  <button class="bn-item" id="bn-orders" onclick="openOrders();setActiveNav('bn-orders')">
+    <span class="bn-icon">📋</span>
+    <span class="bn-label">طلباتي</span>
+  </button>
+  <button class="bn-item" id="bn-search" onclick="openSearch()">
+    <span class="bn-icon">🔍</span>
+    <span class="bn-label">بحث</span>
+  </button>
+  <button class="bn-item" id="bn-support" onclick="openSupport()">
+    <span class="bn-icon">💬</span>
+    <span class="bn-label">الدعم</span>
+  </button>
+</div>
+
+<div style="height:72px"></div><!-- spacer for bottom nav -->
+<footer style="text-align:center;padding:10px;color:#8892a4;font-size:.72rem;border-top:1px solid rgba(255,255,255,.05);">جميع الحقوق محفوظة &copy; <span id="footer-nm">مركز ابل ستور</span></footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+import { getDatabase, ref, onValue, push, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey:"AIzaSyAaQfFtL7sknDFx7a7u0-2Lo0iW2c5SG68",authDomain:"ahmad-el-c557c.firebaseapp.com",
@@ -280,7 +432,24 @@ function showRechargeItems(type){
   grid.style.display='grid';
   productsGrid.style.display='none';
   if(!list.length){grid.innerHTML='<div class="state-msg">😕 لا توجد عناصر</div>';return;}
-  grid.innerHTML=list.map(item=>`<div class="recharge-item" onclick="openRch('${item.id}','${type}')"><div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''">`:(type==='app'?'📲':'🎮')}</div><div class="ri-name">${item.name}</div><div class="ri-sub">${type==='app'?'تطبيق':'لعبة'}</div></div>`).join('');
+  grid.innerHTML=list.map(item=>{
+    // بناء شارة السعر
+    let priceBadge='';
+    try{
+      const mode=item.priceMode||'auto';
+      if(mode==='fixed'&&item.packages){
+        const pkgs=JSON.parse(item.packages);
+        if(pkgs.length){
+          const first=pkgs[0];
+          const last=pkgs[pkgs.length-1];
+          if(first.price)priceBadge=`<div class="ri-price-badge">من $${first.price}${pkgs.length>1&&last.price?' — $'+last.price:''}</div>`;
+        }
+      } else if(mode==='auto'&&item.minPrice){
+        priceBadge=`<div class="ri-price-badge">من $${item.minPrice}</div>`;
+      }
+    }catch(e){}
+    return `<div class="recharge-item" onclick="openRch('${item.id}','${type}')"><div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''">`:(type==='app'?'📲':'🎮')}</div><div class="ri-name">${item.name}</div><div class="ri-sub">${type==='app'?'تطبيق':'لعبة'}</div>${priceBadge}</div>`;
+  }).join('');
 }
 
 // ========== التنقل ==========
@@ -339,7 +508,7 @@ window.buyProduct=function(pid){
   const fields=customFields.filter(f=>f.applyTo==='all'||f.applyTo==='products');
 
   if(!specs.length&&!fields.length){
-    const msg=[`🛍️ *طلب شراء جديد*`,`━━━━━━━━━━━━━━━━`,`📦 المنتج: ${p.name}`,`💰 السعر: ${p.originalPrice?`$${p.price} (كان $${p.originalPrice})`:`$${p.price||'—'}`}`,`━━━━━━━━━━━━━━━━`,`📅 التاريخ: ${new Date().toLocaleString('ar-SA')}`,`🙏 يرجى تأكيد الطلب`].join('\n');
+    const msg=[`🛍️ *طلب شراء جديد*`,`━━━━━━━━━━━━━━━━`,`📦 المنتج: ${p.name}`,`💰 السعر: ${p.originalPrice?`$${p.price} (كان $${p.originalPrice})`:`$${p.price||'—'}`}`,`━━━━━━━━━━━━━━━━`,`📅 التاريخ: ${new Date().toLocaleString('en-US')}`,`🙏 يرجى تأكيد الطلب`].join('\n');
     processOrder({productName:p.name,price:p.price?`$${p.price}`:'',type:'product',details:''},msg);return;
   }
 
@@ -404,7 +573,7 @@ window.submitBuyFields=function(pid){
   const details=[...specsWaLines.map(l=>`📋 ${l}`),...extraLines].join('\n');
   const specsSection=specsWaLines.length?[`📋 *المواصفات:*`,...specsWaLines]:[];
   const fieldsSection=extraLines.length?[`📝 *البيانات المُدخلة:*`,...extraLines]:[];
-  const msg=[`🛍️ *طلب شراء جديد*`,`━━━━━━━━━━━━━━━━`,`📦 المنتج: ${p.name}`,`💰 السعر: ${p.originalPrice?`$${p.price} (كان $${p.originalPrice})`:`$${p.price||'—'}`}`,...specsSection,...fieldsSection,`━━━━━━━━━━━━━━━━`,`📅 التاريخ: ${new Date().toLocaleString('ar-SA')}`,`🙏 يرجى تأكيد الطلب`].join('\n');
+  const msg=[`🛍️ *طلب شراء جديد*`,`━━━━━━━━━━━━━━━━`,`📦 المنتج: ${p.name}`,`💰 السعر: ${p.originalPrice?`$${p.price} (كان $${p.originalPrice})`:`$${p.price||'—'}`}`,...specsSection,...fieldsSection,`━━━━━━━━━━━━━━━━`,`📅 التاريخ: ${new Date().toLocaleString('en-US')}`,`🙏 يرجى تأكيد الطلب`].join('\n');
   processOrder({productName:p.name,price:p.price?`$${p.price}`:'',type:'product',details},msg);
 };
 
@@ -518,7 +687,7 @@ function processOrder(orderData, waMsg){
         status: 'pending'
       };
       push(ref(db, 'orders'), finalOrder)
-        .then(()=>console.log('✅ تم حفظ الطلب مع المرفق'))
+        .then((r)=>{console.log('✅ تم حفظ الطلب مع المرفق');addMyOrderId(r.key);})
         .catch(err=>{
           console.error('خطأ Firebase:',err);
           // إذا فشل بسبب الحجم، احفظ بدون الصورة
@@ -536,6 +705,70 @@ function processOrder(orderData, waMsg){
     alert('✅ تم إرسال طلبك بنجاح! سيتم التواصل معك قريباً');
   }
 }
+
+// ========== طلباتي ==========
+// نحفظ IDs الطلبات في localStorage
+function getMyOrderIds(){try{return JSON.parse(localStorage.getItem('myOrderIds')||'[]');}catch(e){return[];}}
+function addMyOrderId(id){const ids=getMyOrderIds();if(!ids.includes(id)){ids.push(id);localStorage.setItem('myOrderIds',JSON.stringify(ids));}}
+
+window.openOrders=function(){
+  document.getElementById('orders-ov').classList.add('open');
+  renderMyOrders();
+};
+window.closeOrders=function(){document.getElementById('orders-ov').classList.remove('open');};
+
+window.setActiveNav=function(id){document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active');};
+
+// also set home active when goHome called
+const _origGoHome=window.goHome;
+window.goHome=function(){if(_origGoHome)_origGoHome();setActiveNav('bn-home');};
+
+function renderMyOrders(){
+  const list=document.getElementById('orders-list');
+  const ids=getMyOrderIds();
+  if(!ids.length){list.innerHTML='<div class="orders-empty">📭 لا توجد طلبات بعد<br><span style="font-size:.78rem;color:#6b6b8a;margin-top:6px;display:block">طلباتك ستظهر هنا بعد الشراء</span></div>';return;}
+  list.innerHTML='<div style="padding:10px 14px 4px;font-size:.72rem;color:#8892a4">جاري تحميل طلباتك...</div>';
+  onValue(ref(db,'orders'),snap=>{
+    const all=snap.val()||{};
+    const mine=ids.map(id=>all[id]?{id,...all[id]}:null).filter(Boolean).reverse();
+    if(!mine.length){list.innerHTML='<div class="orders-empty">📭 لا توجد طلبات مسجلة</div>';return;}
+    const statusMap={pending:{label:'⏳ قيد المراجعة',cls:'pending'},accepted:{label:'✅ مقبول',cls:'accepted'},rejected:{label:'❌ مرفوض',cls:'rejected'}};
+    list.innerHTML=mine.map((o,idx)=>{
+      const st=statusMap[o.status||'pending']||statusMap.pending;
+      const date=o.timestamp?new Date(o.timestamp).toLocaleString('ar-SA',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+      const noteColor=o.status==='accepted'?'rgba(37,211,102,.12)':'rgba(239,68,68,.07)';
+      const noteBorder=o.status==='accepted'?'rgba(37,211,102,.3)':'rgba(239,68,68,.2)';
+      const noteTextColor=o.status==='accepted'?'#25d366':'#ef4444';
+      const note=o.adminNote?`<div style="font-size:.72rem;margin-top:8px;background:${noteColor};border:1px solid ${noteBorder};border-radius:8px;padding:7px 10px;color:${noteTextColor};">💬 ${o.adminNote}</div>`:'';
+      const isPending=!o.status||o.status==='pending';
+      const pulseAnim=isPending?'animation:pulse 2s infinite;':'';
+      const bodyId=`ord-body-${idx}`;
+      const detailsHtml=`<div id="${bodyId}" style="${isPending?'':'display:none'}">
+        <div class="order-name">${o.productName||'منتج'}</div>
+        ${o.price?`<div class="order-price">💰 ${o.price}</div>`:''}
+        ${date?`<div class="order-date">📅 ${date}</div>`:''}
+        ${note}
+      </div>`;
+      return `<div class="order-card" style="cursor:pointer;${o.status==='accepted'?'border-color:rgba(37,211,102,.25);':''}${o.status==='rejected'?'border-color:rgba(239,68,68,.25);':''}" onclick="(function(el){var b=el.querySelector('[data-body]');if(b)b.style.display=b.style.display==='none'?'block':'none';})(this)">
+        <span class="order-status ${st.cls}" style="${pulseAnim}">${st.label}</span>
+        ${!isPending?`<span style="font-size:.62rem;color:#8892a4;margin-right:6px">اضغط للعرض</span>`:''}
+        <div data-body style="${isPending?'':'display:none'}">
+          <div class="order-name">${o.productName||'منتج'}</div>
+          ${o.price?`<div class="order-price">💰 ${o.price}</div>`:''}
+          ${date?`<div class="order-date">📅 ${date}</div>`:''}
+          ${note}
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+// ========== الدعم ==========
+window.openSupport=function(){
+  if(!waNumbers.length){alert('لا يوجد رقم دعم متاح حالياً');return;}
+  const msg='مرحباً، أحتاج إلى مساعدة 👋';
+  sendWaMsg(msg);
+};
 
 // ========== واتساب ==========
 function sendWaMsg(msg){
@@ -648,6 +881,14 @@ window.doSearch=function(){
 };
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();closeDrawer();closeRch();closePayModal();}});
+
+// ===== لماذا تختارنا =====
+let whyUsOpen=false;
+window.toggleWhyUs=function(){
+  whyUsOpen=!whyUsOpen;
+  document.getElementById('why-us-fixed').classList.toggle('visible',whyUsOpen);
+  document.getElementById('why-toggle').textContent=whyUsOpen?'✕ إغلاق':'✨ خدماتنا';
+};
 </script>
 </body>
 </html>
