@@ -170,7 +170,7 @@
     
     .support-fab{position:fixed;bottom:22px;left:16px;z-index:500;background:linear-gradient(135deg,#25d366,#128c7e);border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 18px rgba(37,211,102,.5);}
     
-    /* نافذة الشحن */
+    /* نافذة الشحن الجديدة */
     .shipping-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
     .shipping-overlay.open{display:flex;}
     .shipping-modal{background:#1e2a45;border-radius:24px;width:90%;max-width:420px;border:1px solid #e94560;overflow:hidden;}
@@ -186,7 +186,7 @@
 <body>
 <header id="app-header"><div class="header-inner"><div class="h-left"><button class="hbtn" onclick="openDrawer()">☰</button><div class="app-logo" onclick="goHome()"><div class="icon" id="app-icon">📱</div><div class="name" id="app-name">مركز ابل ستور</div></div></div><div class="h-right"></div></div></header>
 <div class="ban-sec"><div id="slider-container"></div></div>
-<div id="home-view"><div class="sec-title">🗂️ الأقسام</div><div class="cats-grid" id="cats-grid"><div class="state-msg"><div class="spinner"></div>من فضلك انتظر لحظة…</div></div></div>
+<div id="home-view"><div class="sec-title">🗂️ الأقسام</div><div class="cats-grid" id="cats-grid"><div class="state-msg"><div class="spinner"></div>جاري التحميل...</div></div></div>
 <div id="products-view"><div class="prod-topbar"><button class="back-btn" onclick="goHome()">← رجوع</button><div class="cat-tb"><span class="ct-ico" id="cv-ico"></span><span class="ct-nm" id="cv-nm"></span></div></div><div id="recharge-grid" class="recharge-grid" style="display:none;"></div><div class="products-grid" id="products-grid"></div></div>
 <div class="drw-overlay" id="drw-overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer"><div class="drw-hdr"><h3>🗂️ الأقسام</h3><button class="drw-close" onclick="closeDrawer()">×</button></div><button class="drw-home" onclick="goHome();closeDrawer()">🏠 الرئيسية</button><div id="drw-cats"></div></div>
@@ -195,8 +195,8 @@
 <div class="pay-overlay" id="pay-overlay"><div class="pay-modal"><div class="pay-head"><div class="pay-head-icon">💳</div><div><div class="pay-head-title">إتمام الدفع</div><div class="pay-head-sub">أرفق إيصال الدفع لإكمال طلبك</div></div></div><div class="pay-body"><div class="pay-step"><span class="pay-step-lbl">1️⃣ قم بالدفع عبر</span><div class="pay-info-box"><div class="pay-method-name" id="pay-method-name">شام كاش</div><div class="pay-code-row"><div class="pay-code-val" id="pay-code-val">—</div><button class="pay-copy-btn" id="pay-copy-btn" onclick="copyPayCode()">نسخ</button></div></div></div><div class="pay-step"><span class="pay-step-lbl">2️⃣ أرفق إثبات الدفع</span><div class="pay-upload-area" id="pay-upload-area"><span class="pay-upload-icon">📎</span><div class="pay-upload-text">اضغط لاختيار صورة أو ملف</div><input class="pay-file-input" id="pay-file-input" type="file" accept="image/*,.pdf" onchange="handlePayFile(this)"/></div><div class="pay-preview" id="pay-preview"><button class="pay-remove-btn" onclick="removePayFile()">✕</button><div id="pay-preview-content"></div></div></div><div class="pay-actions"><button class="pay-submit-btn" onclick="submitPayment()">✅ إرسال الطلب</button><button class="pay-cancel-btn" onclick="closePayModal(true)">إلغاء</button></div></div></div></div>
 <div class="wa-ov" id="wa-ov"><div class="wa-modal"><h3>📲 اختر رقم واتساب</h3><div id="wa-nums" class="wa-nums"></div><button class="wa-cancel" onclick="closeWa()">إلغاء</button></div></div>
 
-<!-- نافذة الشحن -->
-<div class="shipping-overlay" id="shipping-modal"><div class="shipping-modal"><div class="shipping-head"><h3>📋 معلومات الطلب</h3><p style="font-size:.75rem;">أدخل بياناتك لإتمام الشراء</p></div><div class="shipping-body"><div class="shipping-field"><label>👤 الاسم الكامل</label><input type="text" id="shipping-name" class="shipping-input" placeholder="أدخل اسمك" /></div><div class="shipping-field"><label>📞 رقم الواتساب</label><input type="tel" id="shipping-phone" class="shipping-input" placeholder="09xxxxxxxx" /></div><div class="shipping-field"><label>📍 عنوان إضافي</label><input type="text" id="shipping-address" class="shipping-input" placeholder="اختياري" /></div></div><div class="shipping-actions"><button class="rch-btn-ok" id="shipping-submit-btn" style="flex:1;">✅ متابعة للدفع</button><button class="rch-btn-cancel" onclick="closeShippingModal()">إلغاء</button></div></div></div>
+<!-- نافذة الشحن المطلوبة -->
+<div class="shipping-overlay" id="shipping-modal"><div class="shipping-modal"><div class="shipping-head"><h3>📋 معلومات الطلب</h3><p style="font-size:.75rem;">أدخل بياناتك لإتمام الشراء</p></div><div class="shipping-body"><div class="shipping-field"><label>👤 الاسم الكامل</label><input type="text" id="shipping-name" class="shipping-input" placeholder="أدخل اسمك" /></div><div class="shipping-field"><label>📞 رقم الواتساب</label><input type="tel" id="shipping-phone" class="shipping-input" placeholder="09xxxxxxxx" /></div><div class="shipping-field"><label>📍 عنوان إضافي</label><input type="text" id="shipping-address" class="shipping-input" placeholder="اختياري" /></div></div><div class="shipping-actions"><button class="rch-btn-ok" id="shipping-submit-btn" style="flex:1;">✅ تأكيد الطلب</button><button class="rch-btn-cancel" onclick="closeShippingModal()">إلغاء</button></div></div></div>
 
 <button class="support-fab" id="support-fab-btn" onclick="openSupport()">💬</button>
 <div class="bottom-nav"><button class="bn-item active" id="bn-home" onclick="goHome();setActiveNav('bn-home')"><span class="bn-icon">🏠</span><span class="bn-label">الرئيسية</span></button><button class="bn-item" id="bn-search" onclick="openSearch();setActiveNav('bn-search')"><span class="bn-icon">🔍</span><span class="bn-label">بحث</span></button><button class="bn-item" id="bn-support" onclick="openSupport()"><span class="bn-icon">💬</span><span class="bn-label">الدعم</span></button></div>
@@ -217,9 +217,10 @@
   async function dbSet(key, value) { try { const db = await _openDB(); if(!db) return; return new Promise(res => { const tx = db.transaction('cache', 'readwrite'); tx.objectStore('cache').put(value, key); tx.oncomplete = () => res(true); }); } catch(e) {} }
 
   let allProducts = [], allCategories = [], waNumbers = [], rechargeGames = [], rechargeApps = [], rechargeSaldo = [], customFields = [];
-  let paymentSettings = { enabled: true, name: 'شام كاش', code: '0998765432' };
+  let paymentSettings = { enabled: false, name: '', code: '' };
   let currentCatId = null, selectedRchItem = null, selectedRchType = null, selectedQtyIdx = -1;
-  let currentProductForShipping = null, currentShippingData = null;
+  let pendingOrderData = null, pendingWaMsg = null;
+  let currentProductForShipping = null;
 
   function renderHomeCats() { const g = document.getElementById('cats-grid'); if(!allCategories.length){ g.innerHTML='<div class="state-msg">لا توجد أقسام</div>'; return; } g.innerHTML = allCategories.map(c => `<div class="cat-card" onclick="window.openCat('${c.id}')"><img class="cc-img" src="${c.imageUrl||'https://picsum.photos/200/100'}" onerror="this.src='https://picsum.photos/200/100'"><div class="cc-body"><span class="cc-nm">${c.name}</span></div></div>`).join(''); }
   function renderDrawer() { document.getElementById('drw-cats').innerHTML = allCategories.map(c => `<div class="drw-item${currentCatId===c.id?' active-cat':''}" onclick="window.openCat('${c.id}');closeDrawer()"><span class="di">${c.icon||'📁'}</span><span class="dn">${c.name}</span></div>`).join(''); }
@@ -228,17 +229,18 @@
   window.csl=d=>{window._sc=((window._sc||0)+d+(window._st||1))%(window._st||1);usl();}; window.gsl=i=>{window._sc=i;usl();}; function usl(){const t=document.getElementById('slt');if(t)t.style.transform=`translateX(${window._sc*100}%)`;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===window._sc));}
   function applyIcon(d){const el=document.getElementById('app-icon');if(!el)return;if(d.type==='url'&&d.value){el.innerHTML=`<img src="${d.value}" style="width:100%;height:100%;object-fit:contain;border-radius:8px"/>`;el.style.fontSize='0';}else if(d.value){el.textContent=d.value;el.style.fontSize='17px';}}
   function applyName(n){document.getElementById('app-name').textContent=n;document.getElementById('footer-nm').textContent=n;document.title=n;}
-  function applyPayment(p){if(p){paymentSettings=p;}document.getElementById('pay-method-name').textContent=paymentSettings.name||'شام كاش';document.getElementById('pay-code-val').textContent=paymentSettings.code||'0998765432';}
+  function applyPayment(p){paymentSettings=p;document.getElementById('pay-method-name').textContent=p.name||'الدفع الإلكتروني';document.getElementById('pay-code-val').textContent=p.code||'—';}
   function setActiveNav(id){ document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active')); const el=document.getElementById(id); if(el) el.classList.add('active'); }
   window.setActiveNav = setActiveNav;
 
-  function productCard(p) { const hasOff = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price||0); let prHtml; if(hasOff){const d=Math.round((1-parseFloat(p.price)/parseFloat(p.originalPrice))*100);prHtml=`<div class="price-row"><span class="prod-price sale">$${p.price}</span><span class="orig-price">$${p.originalPrice}</span><span class="disc-badge">-${d}%</span></div>`;} else {prHtml=`<div class="price-row"><span class="prod-price">${p.price?'$'+p.price:''}</span></div>`;} let specsHtml=''; try{const specs=JSON.parse(p.specs||'[]');if(specs.length){const first=specs.slice(0,2);specsHtml=`<div style="margin-top:5px;padding:5px 0;border-top:1px solid rgba(255,255,255,.06)">${first.map(s=>`<div style="display:flex;justify-content:space-between;font-size:.67rem;padding:1px 0"><span style="color:#8892a4">${s.key}</span><span style="font-weight:700;color:#eaeaea">${s.val}</span></div>`).join('')}${specs.length>2?`<div style="font-size:.63rem;color:#e94560;margin-top:2px">+ ${specs.length-2} مواصفات أخرى</div>`:''}</div>`;}}catch(e){} return `<div class="product-card"><div class="prod-img-wrap">${p.imageUrl?`<img src="${p.imageUrl}" onerror="this.outerHTML='<div class=\\'no-img-ph\\'>📦</div>'">`:'<div class="no-img-ph">📦</div>'}</div><div class="prod-info"><div class="prod-name">${p.name}</div>${prHtml}${specsHtml}</div><button class="btn-buy" onclick="window.openProductSpecs('${p.id}')">🛒 شراء</button></div>`; }
+  function productCard(p) { const hasOff = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price||0); let prHtml; if(hasOff){const d=Math.round((1-parseFloat(p.price)/parseFloat(p.originalPrice))*100);prHtml=`<div class="price-row"><span class="prod-price sale">$${p.price}</span><span class="orig-price">$${p.originalPrice}</span><span class="disc-badge">-${d}%</span></div>`;} else {prHtml=`<div class="price-row"><span class="prod-price">${p.price?'$'+p.price:''}</span></div>`;} let specsHtml=''; try{const specs=JSON.parse(p.specs||'[]');if(specs.length){const first=specs.slice(0,2);specsHtml=`<div style="margin-top:5px;padding:5px 0;border-top:1px solid rgba(255,255,255,.06)">${first.map(s=>`<div style="display:flex;justify-content:space-between;font-size:.67rem;padding:1px 0"><span style="color:#8892a4">${s.key}</span><span style="font-weight:700;color:#eaeaea">${s.val}</span></div>`).join('')}${specs.length>2?`<div style="font-size:.63rem;color:#e94560;margin-top:2px">+ ${specs.length-2} مواصفات أخرى</div>`:''}</div>`;}}catch(e){} const hasReq=customFields.some(f=>(f.applyTo==='all'||f.applyTo==='products')&&f.required); const reqBadge=hasReq?`<div style="font-size:.62rem;color:#ef4444;margin-top:3px">🔴 يتطلب بيانات إضافية</div>`:''; return `<div class="product-card"><div class="prod-img-wrap">${p.imageUrl?`<img src="${p.imageUrl}" onerror="this.outerHTML='<div class=\\'no-img-ph\\'>📦</div>'">`:'<div class="no-img-ph">📦</div>'}</div><div class="prod-info"><div class="prod-name">${p.name}</div>${prHtml}${specsHtml}${reqBadge}</div><button class="btn-buy" onclick="window.openProductSpecs('${p.id}')">🛒 شراء</button></div>`; }
   
-  // فتح نافذة المواصفات
+  // ============= فتح نافذة المواصفات =============
   window.openProductSpecs = (pid) => {
     const product = allProducts.find(p=>p.id===pid);
     if(!product) return;
     currentProductForShipping = product;
+    // بناء نافذة المواصفات
     let specsList = [];
     try{ specsList = JSON.parse(product.specs||'[]'); }catch(e){}
     const modalDiv = document.createElement('div');
@@ -271,7 +273,7 @@
     document.getElementById('cancelSpecBtn').onclick = () => modalDiv.remove();
   };
   
-  // نافذة الشحن
+  // ============= نافذة الشحن =============
   function openShippingModal() {
     document.getElementById('shipping-name').value = '';
     document.getElementById('shipping-phone').value = '';
@@ -280,51 +282,14 @@
   }
   window.closeShippingModal = () => document.getElementById('shipping-modal').classList.remove('open');
   
-  // بعد تعبئة بيانات الشحن نفتح نافذة الدفع
+  // ============= إرسال الطلب مع المواصفات =============
   document.getElementById('shipping-submit-btn').onclick = () => {
     const name = document.getElementById('shipping-name').value.trim();
     const phone = document.getElementById('shipping-phone').value.trim();
     const address = document.getElementById('shipping-address').value.trim();
     if(!name || !phone){ alert('يرجى إدخال الاسم ورقم الهاتف'); return; }
     if(!currentProductForShipping) return;
-    currentShippingData = { name, phone, address };
-    closeShippingModal();
-    openPaymentModalForProduct();
-  };
-  
-  // نافذة الدفع (مفعلة للجميع)
-  function openPaymentModalForProduct() {
-    document.getElementById('pay-preview').classList.remove('show');
-    document.getElementById('pay-preview-content').innerHTML = '';
-    document.getElementById('pay-file-input').value = '';
-    document.getElementById('pay-overlay').classList.add('open');
-    window.payCallback = null;
-    window.payFileData = null;
-  }
-  
-  window.handlePayFile = (input) => { const f=input.files[0]; if(!f)return; const reader=new FileReader(); reader.onload=e=>{ window.payFileData=e.target.result; const pv=document.getElementById('pay-preview'); const pc=document.getElementById('pay-preview-content'); pc.innerHTML=`<img src="${window.payFileData}" style="width:100%;border-radius:10px">`; pv.classList.add('show'); }; reader.readAsDataURL(f); };
-  window.removePayFile = () => { window.payFileData=null; document.getElementById('pay-preview').classList.remove('show'); document.getElementById('pay-preview-content').innerHTML=''; document.getElementById('pay-file-input').value=''; };
-  window.copyPayCode = () => { navigator.clipboard.writeText(paymentSettings.code||'').then(()=>{ const btn=document.getElementById('pay-copy-btn'); if(btn){btn.textContent='✓ تم';setTimeout(()=>btn.textContent='نسخ',2000);} }); };
-  
-  window.submitPayment = () => {
-    if(!window.payFileData){ alert('يرجى إرفاق إثبات الدفع'); return; }
-    document.getElementById('pay-overlay').classList.remove('open');
-    if(currentProductForShipping && currentShippingData){
-      finalizeOrderWithPayment(window.payFileData);
-    }
-  };
-  window.closePayModal = (cancel) => { 
-    document.getElementById('pay-overlay').classList.remove('open'); 
-    window.payFileData=null;
-    if(cancel && currentProductForShipping){
-      currentProductForShipping = null;
-      currentShippingData = null;
-    }
-  };
-  
-  function finalizeOrderWithPayment(paymentFile){
     const product = currentProductForShipping;
-    const { name, phone, address } = currentShippingData;
     
     let specsText = '';
     try {
@@ -345,7 +310,7 @@
 ⚙️ *المواصفات:*
 ${specsText}
 ━━━━━━━━━━━━━━━━━━━
-💳 *تم الدفع وتحويل الإيصال*
+🙏 يرجى تجهيز الطلب والتواصل مع العميل.`;
     
     const orderData = {
       productName: product.name,
@@ -354,41 +319,44 @@ ${specsText}
       customerPhone: phone,
       customerAddress: address,
       specifications: specsText,
-      paymentFile: paymentFile,
       timestamp: Date.now(),
       status: 'pending'
     };
     push(ref(db,'orders'), orderData).catch(console.error);
     
     sendWaMsgSilent(waMsg);
+    closeShippingModal();
     showSuccessModal(product.name, product.price);
     currentProductForShipping = null;
-    currentShippingData = null;
-  }
+  };
   
-  function showRechargeItems(type){ const list=type==='app'?rechargeApps:type==='saldo'?rechargeSaldo:rechargeGames; const grid=document.getElementById('recharge-grid'); const productsGrid=document.getElementById('products-grid'); grid.style.display='grid'; productsGrid.style.display='none'; if(!list.length){grid.innerHTML='<div class="state-msg">من فضلك انتظر لحظة💚</div>';return;} grid.innerHTML=list.map(item=>{ let priceBadge=''; try{ const mode=item.priceMode||'auto'; if(mode==='fixed'&&item.packages){ const pkgs=JSON.parse(item.packages); if(pkgs.length){ const first=pkgs[0]; const last=pkgs[pkgs.length-1]; if(first.price)priceBadge=`<div class="ri-price-badge">من $${first.price}${pkgs.length>1&&last.price?' — $'+last.price:''}</div>`;} } else if(mode==='auto'&&item.minPrice){ priceBadge=`<div class="ri-price-badge">من $${item.minPrice}</div>`; } }catch(e){} const typeIcon=type==='app'?'📲':type==='saldo'?'💰':'🎮'; const typeLabel=type==='app'?'تطبيق':type==='saldo'?'شحن رصيد':'لعبة'; return `<div class="recharge-item" onclick="window.openRch('${item.id}','${type}')"><div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''">`:`${typeIcon}`}</div><div class="ri-name">${item.name}</div><div class="ri-sub">${typeLabel}</div>${priceBadge}</div>`; }).join(''); }
+  function showRechargeItems(type){ const list=type==='app'?rechargeApps:type==='saldo'?rechargeSaldo:rechargeGames; const grid=document.getElementById('recharge-grid'); const productsGrid=document.getElementById('products-grid'); grid.style.display='grid'; productsGrid.style.display='none'; if(!list.length){grid.innerHTML='<div class="state-msg">لا توجد عناصر</div>';return;} grid.innerHTML=list.map(item=>{ let priceBadge=''; try{ const mode=item.priceMode||'auto'; if(mode==='fixed'&&item.packages){ const pkgs=JSON.parse(item.packages); if(pkgs.length){ const first=pkgs[0]; const last=pkgs[pkgs.length-1]; if(first.price)priceBadge=`<div class="ri-price-badge">من $${first.price}${pkgs.length>1&&last.price?' — $'+last.price:''}</div>`;} } else if(mode==='auto'&&item.minPrice){ priceBadge=`<div class="ri-price-badge">من $${item.minPrice}</div>`; } }catch(e){} const typeIcon=type==='app'?'📲':type==='saldo'?'💰':'🎮'; const typeLabel=type==='app'?'تطبيق':type==='saldo'?'شحن رصيد':'لعبة'; return `<div class="recharge-item" onclick="window.openRch('${item.id}','${type}')"><div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''">`:`${typeIcon}`}</div><div class="ri-name">${item.name}</div><div class="ri-sub">${typeLabel}</div>${priceBadge}</div>`; }).join(''); }
   
   function showCat(cat){ currentCatId=cat.id; const isAppsCat=(cat.name==='شحن التطبيقات'||cat.name.includes('شحن التطبيقات')); const isGamesCat=(cat.name==='شحن الألعاب'||cat.name.includes('شحن الألعاب')); const isSaldoCat=(cat.name==='شحن الأرصدة'||cat.name.includes('شحن الأرصدة')); document.getElementById('home-view').style.display='none'; document.getElementById('products-view').style.display='block'; document.getElementById('cv-ico').textContent=cat.icon||'📁'; document.getElementById('cv-nm').textContent=cat.name; if(isAppsCat){showRechargeItems('app');} else if(isGamesCat){showRechargeItems('game');} else if(isSaldoCat){showRechargeItems('saldo');} else{ document.getElementById('recharge-grid').style.display='none'; document.getElementById('products-grid').style.display='grid'; const prods=allProducts.filter(p=>p.categoryId===cat.id); if(prods.length){document.getElementById('products-grid').innerHTML=prods.map(p=>productCard(p)).join('');} else{document.getElementById('products-grid').innerHTML='<div class="state-msg">😕 لا توجد منتجات</div>';} } window.scrollTo({top:0});renderDrawer(); }
   window.openCat = (id) => { const c=allCategories.find(x=>x.id===id); if(c) showCat(c); };
   window.goHome = () => { currentCatId=null; document.getElementById('products-view').style.display='none'; document.getElementById('home-view').style.display='block'; window.scrollTo({top:0}); renderDrawer(); setActiveNav('bn-home'); };
   window.openDrawer = () => { document.getElementById('drawer').classList.add('open'); document.getElementById('drw-overlay').classList.add('open'); };
   window.closeDrawer = () => { document.getElementById('drawer').classList.remove('open'); document.getElementById('drw-overlay').classList.remove('open'); };
-  
   function showSuccessModal(productName, price){ const wrap=document.createElement('div'); wrap.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)'; wrap.innerHTML=`<div style="background:linear-gradient(145deg,#1a2744,#1e2a45);border-radius:24px;width:100%;max-width:360px;padding:32px 24px;text-align:center;border:1px solid rgba(37,211,102,.2);animation:successPop .45s"><div style="width:72px;height:72px;background:linear-gradient(135deg,#25d366,#128c7e);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:2rem">✅</div><div style="font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:8px">تم إرسال طلبك بنجاح!</div>${productName?`<div style="font-size:.82rem;color:#a0aec0;margin-bottom:6px">📦 ${productName}${price?' — '+price:''}</div>`:''}<div style="background:rgba(37,211,102,.08);border-radius:12px;padding:12px 14px;margin:14px 0;font-size:.8rem;color:#86efac">سيتم التواصل معك مباشرةً لتنفيذ طلبك</div><button onclick="this.closest('div').parentElement.remove()" style="background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:12px;padding:12px 28px;font-size:.9rem;font-weight:700;cursor:pointer">حسناً 👍</button></div>`; document.body.appendChild(wrap); setTimeout(()=>wrap.remove(),5000); }
+  
+  function sendOrderToFirebase(orderData){ const ts=Date.now(); const localData={timestamp:ts,productName:orderData.productName,price:orderData.price,details:orderData.details||'',status:'pending',paymentFile:orderData.paymentFile||null}; push(ref(db,'orders'),localData).catch(()=>{}); }
   
   function sendWaMsgSilent(msg){ if(!waNumbers.length) return; const waMsg=encodeURIComponent(msg); if(waNumbers.length===1){ window.open(`https://wa.me/${waNumbers[0].number.replace(/\D/g,'')}?text=${waMsg}`,'_blank'); return; } document.getElementById('wa-nums').innerHTML=waNumbers.map(n=>`<button class="wa-num-btn" onclick="window.open('https://wa.me/${n.number.replace(/\D/g,'')}?text=${waMsg}','_blank');closeWa()">📞 ${n.label||n.number}</button>`).join(''); document.getElementById('wa-ov').classList.add('open'); }
   
+  function openPaymentModal(callback){ window.payCallback=callback; window.payFileData=null; document.getElementById('pay-preview').classList.remove('show'); document.getElementById('pay-preview-content').innerHTML=''; document.getElementById('pay-file-input').value=''; document.getElementById('pay-overlay').classList.add('open'); }
+  window.handlePayFile = (input) => { const f=input.files[0]; if(!f)return; const reader=new FileReader(); reader.onload=e=>{ window.payFileData=e.target.result; const pv=document.getElementById('pay-preview'); const pc=document.getElementById('pay-preview-content'); pc.innerHTML=`<img src="${window.payFileData}" style="width:100%;border-radius:10px">`; pv.classList.add('show'); }; reader.readAsDataURL(f); };
+  window.removePayFile = () => { window.payFileData=null; document.getElementById('pay-preview').classList.remove('show'); document.getElementById('pay-preview-content').innerHTML=''; document.getElementById('pay-file-input').value=''; };
+  window.copyPayCode = () => { navigator.clipboard.writeText(paymentSettings.code||'').then(()=>{ const btn=document.getElementById('pay-copy-btn'); if(btn){btn.textContent='✓ تم';setTimeout(()=>btn.textContent='نسخ',2000);} }); };
+  window.submitPayment = () => { if(!window.payFileData){ alert('يرجى إرفاق إثبات الدفع'); return; } document.getElementById('pay-overlay').classList.remove('open'); if(window.payCallback) window.payCallback(window.payFileData); window.payCallback=null; };
+  window.closePayModal = (cancel) => { document.getElementById('pay-overlay').classList.remove('open'); window.payFileData=null; if(cancel && window.payCallback){ window.payCallback(null); window.payCallback=null; } };
+  function finalizeOrder(orderData, waMsg, paymentFile){ if(paymentFile) orderData.paymentFile=paymentFile; sendOrderToFirebase(orderData); sendWaMsgSilent(waMsg); showSuccessModal(orderData.productName, orderData.price); }
+  function processOrderWithPayment(orderData, waMsg){ if(paymentSettings.enabled){ pendingOrderData=orderData; pendingWaMsg=waMsg; openPaymentModal((paymentFile)=>{ if(paymentFile){ finalizeOrder(orderData, waMsg, paymentFile); } else { alert('تم إلغاء الطلب'); } }); } else { finalizeOrder(orderData, waMsg, null); } }
+  window.buyProduct = (pid) => { const p=allProducts.find(x=>x.id===pid); if(!p) return; const msg=`🛍️ *طلب شراء جديد*%0A━━━━━━━━━━━━━━━━%0A📦 المنتج: ${p.name}%0A💰 السعر: ${p.price?'$'+p.price:'—'}%0A━━━━━━━━━━━━━━━━%0A🙏 يرجى تأكيد الطلب`; processOrderWithPayment({productName:p.name, price:p.price?`$${p.price}`:'', type:'product'}, msg); };
   window.openRch = (pid,type) => { const list=type==='app'?rechargeApps:type==='saldo'?rechargeSaldo:rechargeGames; const item=list.find(x=>x.id===pid); if(!item)return; selectedRchItem=item; selectedRchType=type; selectedQtyIdx=-1; const icon=document.getElementById('rch-head-icon'); if(item.imageUrl)icon.innerHTML=`<img src="${item.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px">`; else icon.textContent=type==='app'?'📲':type==='saldo'?'💰':'🎮'; document.getElementById('rch-head-title').textContent=item.name; document.getElementById('rch-head-sub').textContent=type==='app'?'شحن تطبيق':type==='saldo'?'شحن رصيد':'شحن لعبة'; buildRchBody(item,type); document.getElementById('rch-overlay').classList.add('open'); };
   function buildRchBody(item,type){ const body=document.getElementById('rch-body'); const mode=item.priceMode||'auto'; const curr=item.currency||''; const currBadge=curr?`<span class="rch-currency-badge">${curr}</span>`:''; const isSaldo=type==='saldo'; const idLabel=isSaldo?'رقم هاتفك':'أدخل ID الخاص بك'; const idPlaceholder=isSaldo?'09XXXXXXXX':'أدخل ID'; let qtyHtml=''; if(mode==='fixed'){ const pkgs=item.packages?JSON.parse(item.packages):[]; qtyHtml=pkgs.length?`<div class="qty-grid">${pkgs.map((pk,i)=>`<div class="qty-btn" onclick="window.selectPackage(${i})" id="pkg-${i}"><div>${pk.label}</div><div>${pk.price?'$'+pk.price:''}</div></div>`).join('')}</div><div class="qty-custom"><input class="rch-input" id="custom-qty" type="text" placeholder="أو اكتب الكمية" oninput="window.calculatePrice()"/></div><div class="rch-price-display" id="price-display"><div id="price-value"></div></div>`:`<div><input class="rch-input" id="custom-qty" type="text" placeholder="أدخل الكمية" oninput="window.calculatePrice()"/><div class="rch-price-display" id="price-display"><div id="price-value"></div></div></div>`; } else { const minQ=item.minQty||1,minP=item.minPrice||1; qtyHtml=`<div style="font-size:.76rem;color:#8892a4;margin-bottom:8px;">💡 الحد الأدنى: ${minQ} ${curr||'وحدة'} = <strong style="color:#f5a623">$${minP}</strong></div><div class="rch-qty-row"><input class="rch-input" id="custom-qty" type="number" min="${minQ}" step="${minQ}" placeholder="${minQ}" oninput="window.calculatePrice()" dir="ltr"/>${currBadge}</div><div class="rch-price-display" id="price-display"><div id="price-value"></div></div>`; } body.innerHTML=`<div class="rch-step"><label>${idLabel}</label><input class="rch-input" id="user-id" type="${isSaldo?'tel':'text'}" placeholder="${idPlaceholder}" dir="ltr"/></div><div class="rch-step"><label>الكمية والسعر ${currBadge}</label>${qtyHtml}</div><div class="rch-warning">⚠️ ${isSaldo?'تأكد من صحة رقم الهاتف':'تأكد من صحة ID'}</div>`; document.getElementById('rch-confirm-btn').onclick=sendRechargeOrder; }
   window.selectPackage = (i) => { selectedQtyIdx=i; try{ const pkgs=JSON.parse(selectedRchItem.packages||'[]'); if(pkgs[i]){ const qtyInput=document.getElementById('custom-qty'); if(qtyInput)qtyInput.value=pkgs[i].label; calculatePrice(); document.querySelectorAll('.qty-btn').forEach((btn,idx)=>btn.classList.toggle('sel',idx===i)); } }catch(e){} };
   window.calculatePrice = () => { const mode=selectedRchItem?.priceMode||'auto'; const qtyInput=document.getElementById('custom-qty'); const qty=parseFloat(qtyInput?.value)||0; const disp=document.getElementById('price-display'); const val=document.getElementById('price-value'); if(!disp||!val)return; if(mode==='auto'){ const minQ=selectedRchItem?.minQty||1,minP=selectedRchItem?.minPrice||1; if(qty>=minQ&&minQ>0){const price=((qty/minQ)*minP).toFixed(2);val.textContent=price+' $';disp.classList.add('show');} else{disp.classList.remove('show');} } else if(mode==='fixed'&&selectedQtyIdx>=0){ try{ const pkgs=JSON.parse(selectedRchItem.packages||'[]'); if(pkgs[selectedQtyIdx]&&pkgs[selectedQtyIdx].price){val.textContent=pkgs[selectedQtyIdx].price+' $';disp.classList.add('show');} }catch(e){} } };
-  function sendRechargeOrder(){ if(!selectedRchItem){alert('حدث خطأ');return;} const uid=document.getElementById('user-id')?.value.trim(); if(!uid){alert('أدخل ID الحساب');return;} const mode=selectedRchItem.priceMode||'auto'; const curr=selectedRchItem.currency||''; let qtyText='',priceText=''; const rawQty=document.getElementById('custom-qty')?.value||''; if(mode==='auto'){ const minQ=selectedRchItem.minQty||1,minP=selectedRchItem.minPrice||1; const qty=parseFloat(rawQty); if(!rawQty||qty<minQ){alert('أدخل كمية لا تقل عن '+minQ);return;} const price=((qty/minQ)*minP).toFixed(2); qtyText=rawQty+(curr?' '+curr:''); priceText=price+' $'; } else { if(selectedQtyIdx>=0){ try{ const pkgs=JSON.parse(selectedRchItem.packages||'[]'); if(pkgs[selectedQtyIdx]){qtyText=pkgs[selectedQtyIdx].label+(curr?' '+curr:'');priceText=pkgs[selectedQtyIdx].price?pkgs[selectedQtyIdx].price+' $':'';} }catch(e){} } if(!qtyText&&rawQty)qtyText=rawQty+(curr?' '+curr:''); if(!qtyText){alert('اختر الكمية');return;} } const details=`المنتج: ${selectedRchItem.name}\nID: ${uid}\nالكمية: ${qtyText}\nالسعر: ${priceText}`; const msg=[`⚡ *طلب شحن جديد*`,`━━━━━━━━━━━━━━━━`,`📦 المنتج: ${selectedRchItem.name}`,`🆔 ID: ${uid}`,`📦 الكمية: ${qtyText}`,`💰 السعر: ${priceText||'سيتم الاتفاق عليه'}`,`━━━━━━━━━━━━━━━━`,`🙏 يرجى تأكيد الطلب`].join('\n'); document.getElementById('rch-overlay').classList.remove('open'); 
-    // لطلبات الشحن نفتح نافذة الدفع أيضاً
-    currentProductForShipping = selectedRchItem;
-    currentShippingData = { name: uid, phone: uid, address: '' };
-    openPaymentModalForProduct();
-    selectedRchItem=null;selectedQtyIdx=-1;
-  }
+  function sendRechargeOrder(){ if(!selectedRchItem){alert('حدث خطأ');return;} const uid=document.getElementById('user-id')?.value.trim(); if(!uid){alert('أدخل ID الحساب');return;} const mode=selectedRchItem.priceMode||'auto'; const curr=selectedRchItem.currency||''; let qtyText='',priceText=''; const rawQty=document.getElementById('custom-qty')?.value||''; if(mode==='auto'){ const minQ=selectedRchItem.minQty||1,minP=selectedRchItem.minPrice||1; const qty=parseFloat(rawQty); if(!rawQty||qty<minQ){alert('أدخل كمية لا تقل عن '+minQ);return;} const price=((qty/minQ)*minP).toFixed(2); qtyText=rawQty+(curr?' '+curr:''); priceText=price+' $'; } else { if(selectedQtyIdx>=0){ try{ const pkgs=JSON.parse(selectedRchItem.packages||'[]'); if(pkgs[selectedQtyIdx]){qtyText=pkgs[selectedQtyIdx].label+(curr?' '+curr:'');priceText=pkgs[selectedQtyIdx].price?pkgs[selectedQtyIdx].price+' $':'';} }catch(e){} } if(!qtyText&&rawQty)qtyText=rawQty+(curr?' '+curr:''); if(!qtyText){alert('اختر الكمية');return;} } const details=`المنتج: ${selectedRchItem.name}\nID: ${uid}\nالكمية: ${qtyText}\nالسعر: ${priceText}`; const msg=[`⚡ *طلب شحن جديد*`,`━━━━━━━━━━━━━━━━`,`📦 المنتج: ${selectedRchItem.name}`,`🆔 ID: ${uid}`,`📦 الكمية: ${qtyText}`,`💰 السعر: ${priceText||'سيتم الاتفاق عليه'}`,`━━━━━━━━━━━━━━━━`,`🙏 يرجى تأكيد الطلب`].join('\n'); document.getElementById('rch-overlay').classList.remove('open'); processOrderWithPayment({productName:selectedRchItem.name,price:priceText,type:'recharge',details:details}, msg); selectedRchItem=null;selectedQtyIdx=-1; }
   window.closeRch = () => { document.getElementById('rch-overlay').classList.remove('open'); selectedRchItem=null; };
   window.openSupport = () => { const msg='مرحباً، أحتاج إلى مساعدة 👋\nأتواصل معكم من خلال المتجر'; sendWaMsgSilent(msg); };
   window.closeWa = () => document.getElementById('wa-ov').classList.remove('open');
@@ -417,7 +385,7 @@ ${specsText}
     onValue(ref(db,'banners'), (s) => { const data = s.val()||{}; dbSet('banners',data); applyBanners(data); });
     onValue(ref(db,'whatsapp'), (s) => { const list = s.val() ? Object.entries(s.val()).map(([id,v])=>({id,...v})) : []; waNumbers=list; dbSet('whatsapp',list); });
     onValue(ref(db,'customFields'), (s) => { const list = s.val() ? Object.entries(s.val()).map(([id,v])=>({id,...v})) : []; customFields=list; dbSet('customFields',list); });
-    onValue(ref(db,'settings/payment'), (s) => { const p = s.val()||{enabled:true,name:'شام كاش',code:'0998765432'}; dbSet('payment',p); applyPayment(p); });
+    onValue(ref(db,'settings/payment'), (s) => { const p = s.val()||{enabled:false,name:'',code:''}; dbSet('payment',p); applyPayment(p); });
     onValue(ref(db,'settings/appIcon'), (s) => { const d = s.val(); if(d) { dbSet('appIcon',d); applyIcon(d); } });
     onValue(ref(db,'settings/appName'), (s) => { const n = s.val(); if(n) { dbSet('appName',n); applyName(n); } });
   }
