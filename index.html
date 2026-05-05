@@ -1612,6 +1612,7 @@
                             <button class="pay-copy-btn" id="pay-copy-btn" onclick="copyPayCode()">📋 نسخ</button></div>
                         <div id="pay-barcode-wrap" style="display:none;margin-top:10px;text-align:center;">
                             <img id="pay-barcode-img" src="" alt="باركود الدفع" style="max-width:100%;max-height:160px;border-radius:10px;object-fit:contain;background:#fff;padding:6px;"/>
+                            <button onclick="downloadBarcode()" style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;border-radius:9px;padding:7px 16px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.22)'" onmouseout="this.style.background='rgba(139,92,246,0.12)'">⬇️ تحميل صورة الباركود</button>
                         </div>
                     </div>
                 </div>
@@ -1958,6 +1959,30 @@
             document.getElementById('pay-preview-content').innerHTML = '';
             document.getElementById('pay-file-input').value = '';
         };
+        window.downloadBarcode = () => {
+            const img = document.getElementById('pay-barcode-img');
+            if (!img || !img.src) return;
+            const src = img.src;
+            const a = document.createElement('a');
+            if (src.startsWith('data:')) {
+                a.href = src;
+                a.download = 'barcode-payment.png';
+                a.click();
+            } else {
+                fetch(src)
+                    .then(r => r.blob())
+                    .then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        a.href = url;
+                        a.download = 'barcode-payment.png';
+                        a.click();
+                        setTimeout(() => URL.revokeObjectURL(url), 2000);
+                    })
+                    .catch(() => { window.open(src, '_blank'); });
+            }
+            showToast('📥 جاري تحميل الباركود...');
+        };
+
         window.copyPayCode = () => {
             navigator.clipboard.writeText(paymentSettings.code || '').then(() => {
                 const btn = document.getElementById('pay-copy-btn');
