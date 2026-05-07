@@ -146,108 +146,9 @@
             gap: 8px;
         }
 
-        /* ========== HERO SECTION (بدل البنر) ========== */
-        .hero-section {
-            max-width: 1200px;
-            margin: 14px auto 6px;
-            padding: 0 14px;
-        }
-        .hero-card {
-            background: linear-gradient(145deg, #1a1a3e 0%, #0f172a 100%);
-            border-radius: 22px;
-            padding: 22px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            position: relative;
-            overflow: hidden;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            box-shadow: var(--shadow-md);
-            cursor: default;
-        }
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -40px;
-            left: -40px;
-            width: 140px;
-            height: 140px;
-            background: radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .hero-card::after {
-            content: '';
-            position: absolute;
-            bottom: -30px;
-            right: -30px;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .hero-icon {
-            width: 60px;
-            height: 60px;
-            min-width: 60px;
-            background: linear-gradient(135deg, #f43f5e, #8b5cf6);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            z-index: 1;
-            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.3);
-            /* animation: floatHero 3s ease-in-out infinite; */
-        }
-        @keyframes floatHero {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-        .hero-text {
-            z-index: 1;
-            flex: 1;
-        }
-        .hero-text h2 {
-            font-size: 1.15rem;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 4px;
-            line-height: 1.3;
-        }
-        .hero-text p {
-            font-size: 0.78rem;
-            color: #94a3b8;
-            line-height: 1.5;
-        }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            color: #f59e0b;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-top: 6px;
-            /* animation: pulseBadge 2s ease-in-out infinite; */
-        }
-        @keyframes pulseBadge {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
-            }
-        }
+        /* ========== HERO SECTION (hidden - replaced by search) ========== */
+        .hero-section { display: none; }
+        .hero-card, .hero-icon, .hero-text, .hero-badge { display: none; }
 
         /* ========== HOME VIEW ========== */
         #home-view {
@@ -255,128 +156,171 @@
             margin: 0 auto 40px;
             padding: 0 14px;
         }
-        .sec-title {
-            font-size: 1rem;
-            font-weight: 800;
-            margin-bottom: 14px;
+        .sec-title { display: none; }
+        .home-search-bar { margin-bottom: 16px; }
+
+        /* ========== SEARCH BAR HOME ========== */
+        .home-search-bar {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 0 14px;
+        }
+        .home-search-input-wrap {
+            background: #1a1f2e;
+            border-radius: 50px;
+            padding: 9px 16px;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #fff;
+            border: 1px solid rgba(255,255,255,0.06);
         }
-        .sec-title .st-icon {
-            font-size: 1.3rem;
-        }
-        .sec-title::after {
-            content: '';
+        .home-search-input-wrap input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #64748b;
+            font-family: inherit;
+            font-size: 0.82rem;
             flex: 1;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(244, 63, 94, 0.3), transparent);
-            border-radius: 4px;
+            text-align: right;
+            direction: rtl;
         }
+        .home-search-input-wrap input::placeholder { color: #64748b; }
 
-        /* شبكة الأقسام - 2 عمود كبير */
+        /* شبكة الأقسام - 3 أعمدة مثل الصورة */
         .cats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
         @media(min-width:600px) {
-            .cats-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px;
-            }
+            .cats-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
         }
         @media(min-width:900px) {
-            .cats-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 16px;
-            }
+            .cats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
         }
+
+        /* OX.PROMAX Style Category Card */
         .cat-card {
-            background: var(--surface);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.22s cubic-bezier(0.4,0,0.2,1), box-shadow 0.22s;
             overflow: hidden;
             position: relative;
-            aspect-ratio: 1/1;
             display: flex;
             flex-direction: column;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.45);
             text-decoration: none;
             will-change: transform;
-            contain: layout style;
         }
         .cat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(244, 63, 94, 0.4);
-            box-shadow: 0 15px 40px -8px rgba(244, 63, 94, 0.2);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 14px 36px rgba(0,0,80,0.5);
         }
-        .cat-card:active {
-            transform: scale(0.96);
-            transition: transform 0.15s;
-        }
+        .cat-card:active { transform: scale(0.95); transition: transform 0.12s; }
+
+        /* Blue gradient image area */
         .cat-card .cc-img-wrap {
-            flex: 1;
             position: relative;
+            width: 100%;
+            padding-top: 78%;
+            background: linear-gradient(155deg, #0d1b6e 0%, #0a2a8c 35%, #0d1560 70%, #090d30 100%);
             overflow: hidden;
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
+        }
+        /* Diagonal lines texture */
+        .cat-card .cc-img-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                135deg,
+                rgba(255,255,255,0.025) 0px,
+                rgba(255,255,255,0.025) 1px,
+                transparent 1px,
+                transparent 18px
+            );
+            z-index: 1;
+            pointer-events: none;
         }
         .cat-card .cc-img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center bottom;
             transition: transform 0.5s;
-        }
-        .cat-card:hover .cc-img {
-            transform: scale(1.08);
-        }
-        .cat-card .cc-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
-            pointer-events: none;
-        }
-        .cat-card .cc-body {
-            padding: 14px 12px;
-            text-align: center;
-            background: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(8px);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
             z-index: 2;
         }
-        .cat-card .cc-nm {
-            font-size: 0.88rem;
+        .cat-card:hover .cc-img { transform: scale(1.07); }
+
+        /* APPLE STOR badge top-left */
+        .cat-card .cc-store-badge {
+            position: absolute;
+            top: 7px;
+            left: 7px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1;
+        }
+        .cat-card .cc-store-badge .csb-icon {
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+        .cat-card .cc-store-badge .csb-text {
+            font-size: 0.38rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        /* Arabic category label - right side vertical */
+        .cat-card .cc-ar-tag {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .cat-card .cc-ar-tag span {
+            font-size: 0.5rem;
             font-weight: 800;
+            color: rgba(255,255,255,0.75);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        /* Bottom red name bar */
+        .cat-card .cc-body {
+            background: #7f1d1d;
+            padding: 10px 12px;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .cat-card .cc-nm {
+            font-size: 0.6rem;
+            font-weight: 900;
             display: block;
             color: #fff;
             letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .cat-card .cc-count {
-            font-size: 0.65rem;
-            color: #94a3b8;
-            margin-top: 2px;
-            display: block;
-        }
-        .cat-card .cc-icon-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 36px;
-            height: 36px;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(6px);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            z-index: 3;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
+        .cat-card .cc-count { display: none; }
+        .cat-card .cc-icon-badge { display: none; }
+        .cat-card .cc-overlay { display: none; }
 
         /* ========== PRODUCTS VIEW ========== */
         #products-view {
@@ -554,63 +498,175 @@
         /* recharge grid */
         .recharge-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
         @media(min-width:600px) {
             .recharge-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 14px;
             }
         }
         @media(min-width:900px) {
             .recharge-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 16px;
             }
         }
+
+        /* OX.PROMAX Style Card */
         .recharge-item {
-            background: var(--surface);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
+            background: transparent;
+            border-radius: 14px;
             cursor: pointer;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.22s cubic-bezier(0.4,0,0.2,1), box-shadow 0.22s;
             text-align: center;
-            padding: 18px 12px;
-            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
         }
         .recharge-item:hover {
-            transform: translateY(-5px);
-            border-color: rgba(244, 63, 94, 0.4);
-            box-shadow: 0 15px 35px -8px rgba(244, 63, 94, 0.2);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 14px 36px rgba(244, 63, 94, 0.3);
         }
-        .recharge-item .ri-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 12px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+        .recharge-item:active {
+            transform: scale(0.95);
+        }
+        /* Card image area - like a gift card */
+        .recharge-item .ri-card-frame {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* square */
+            background: linear-gradient(155deg, #1c2a4a 0%, #0f172a 60%, #1a0a1e 100%);
+            border-radius: 14px 14px 0 0;
+            overflow: hidden;
+        }
+        .recharge-item .ri-card-frame-inner {
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+        }
+        /* Side label like OX.PROMAX */
+        .recharge-item .ri-side-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 22px;
+            background: linear-gradient(180deg, #7c3aed 0%, #4c1d95 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            z-index: 3;
+        }
+        .recharge-item .ri-side-label span {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.48rem;
+            font-weight: 800;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            letter-spacing: 1px;
+            transform: rotate(180deg);
+        }
+        .recharge-item .ri-side-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+        }
+        /* App icon inside card */
+        .recharge-item .ri-icon {
+            width: 58%;
+            height: 58%;
+            border-radius: 18%;
+            background: linear-gradient(135deg, rgba(244,63,94,0.3), rgba(139,92,246,0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 2;
         }
         .recharge-item .ri-icon img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 18%;
         }
-        .recharge-item .ri-name {
+        /* Store badge top-left */
+        .recharge-item .ri-store-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            padding: 2px 5px;
+            font-size: 0.45rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.8);
+            z-index: 4;
+            letter-spacing: 0.5px;
+        }
+        /* Arabic name top-right, vertical */
+        .recharge-item .ri-ar-label {
+            position: absolute;
+            top: 6px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            z-index: 4;
+        }
+        .recharge-item .ri-ar-label span {
+            font-size: 0.42rem;
+            color: rgba(255,255,255,0.7);
+            writing-mode: vertical-rl;
+            font-weight: 700;
+        }
+        /* Hanger hole at top */
+        .recharge-item .ri-hanger {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%) translateX(-11px);
+            width: 14px;
+            height: 14px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.25);
+            z-index: 5;
+        }
+        /* Blue platform base */
+        .recharge-item .ri-platform {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 22px;
+            height: 28%;
+            background: linear-gradient(180deg, rgba(59,130,246,0.2) 0%, rgba(30,64,175,0.4) 100%);
+        }
+        /* Bottom name bar */
+        .recharge-item .ri-bottom {
+            background: #7f1d1d;
+            padding: 7px 10px;
+            border-radius: 0 0 14px 14px;
+            font-size: 0.75rem;
             font-weight: 800;
-            font-size: 0.88rem;
-            margin-bottom: 4px;
             color: #fff;
-        }
-        .recharge-item .ri-sub {
-            font-size: 0.68rem;
-            color: #94a3b8;
+            text-align: center;
+            letter-spacing: 0.3px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .ri-price-badge {
             display: inline-block;
@@ -869,13 +925,13 @@
         .pay-modal,
         .wa-modal,
         .shipping-modal {
-            background: var(--surface2);
+            background: #0e1117;
             border-radius: 22px;
             width: 100%;
             max-width: 440px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(244,63,94,0.1);
             animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         @keyframes slideUp {
@@ -889,17 +945,27 @@
             }
         }
         .rch-head {
-            background: linear-gradient(135deg, #f43f5e, #9f1239);
-            padding: 18px 20px;
+            background: #111827;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             gap: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .rch-head::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(244,63,94,0.08), transparent);
+            pointer-events: none;
         }
         .rch-head-icon {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             border-radius: 14px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.12);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -914,13 +980,24 @@
             border-radius: 12px;
         }
         .rch-head-title {
-            font-size: 1rem;
-            font-weight: 800;
+            font-size: 1.05rem;
+            font-weight: 900;
             color: #fff;
         }
         .rch-head-sub {
             font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.45);
+        }
+        /* Price pill like OX style */
+        .rch-head-price {
+            margin-right: auto;
+            background: #1e3a8a;
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
         }
         .rch-body {
             padding: 18px 20px;
@@ -989,6 +1066,30 @@
             display: block;
             animation: fadeIn 0.3s;
         }
+        /* OX.PROMAX style info grid - العدد/الاجمالي */
+        .rch-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .rch-info-box {
+            background: #1a2030;
+            border-radius: 14px;
+            padding: 12px 14px;
+            text-align: center;
+        }
+        .rch-info-box .rib-label {
+            font-size: 0.68rem;
+            color: #64748b;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .rch-info-box .rib-value {
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: #e2e8f0;
+        }
         #price-value {
             font-size: 1.2rem;
             font-weight: 900;
@@ -1021,35 +1122,38 @@
             padding: 0 20px 18px;
         }
         .rch-btn-ok {
-            flex: 1;
-            background: linear-gradient(135deg, #10b981, #059669);
+            flex: 1.5;
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
             color: #fff;
             border: none;
-            border-radius: 12px;
-            padding: 13px;
+            border-radius: 50px;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+            letter-spacing: 0.5px;
+        }
+        .rch-btn-ok:hover {
+            box-shadow: 0 6px 25px rgba(29,78,216,0.5);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        }
+        .rch-btn-cancel {
+            flex: 1;
+            background: transparent;
+            border: 1.5px solid #ef4444;
+            color: #ef4444;
+            border-radius: 50px;
+            padding: 14px 16px;
             font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
             transition: var(--transition);
         }
-        .rch-btn-ok:hover {
-            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.3);
-        }
-        .rch-btn-cancel {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            border-radius: 12px;
-            padding: 13px 16px;
-            font-size: 0.86rem;
-            cursor: pointer;
-            font-family: inherit;
-            transition: var(--transition);
-        }
         .rch-btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #fff;
+            background: rgba(239,68,68,0.08);
         }
 
         /* Payment modal */
@@ -1537,20 +1641,14 @@
         </div>
     </header>
 
-    <!-- Hero Section بدل البنر -->
-    <div class="hero-section">
-        <div class="hero-card" id="hero-card">
-            <div class="hero-icon" id="hero-icon-el">⚡</div>
-            <div class="hero-text">
-                <h2 id="hero-title">أهلاً بك في متجرنا</h2>
-                <p id="hero-sub">اكتشف أحدث المنتجات وأفضل العروض</p>
-                <span class="hero-badge" id="hero-badge">🔥 توصيل سريع</span>
-            </div>
+    <!-- Search Bar like screenshot -->
+    <div class="home-search-bar" id="home-search-bar">
+        <div class="home-search-input-wrap" onclick="openSearch()">
+            <input type="text" placeholder="بحث" readonly/>
         </div>
     </div>
 
     <div id="home-view">
-        <div class="sec-title"><span class="st-icon">🗂️</span> الأقسام</div>
         <div class="cats-grid" id="cats-grid">
             <div class="state-msg"><div class="spinner"></div>جارٍ التحميل...</div>
         </div>
@@ -1587,12 +1685,18 @@
         <div class="rch-modal">
             <div class="rch-head">
                 <div class="rch-head-icon" id="rch-head-icon">⚡</div>
-                <div><div class="rch-head-title" id="rch-head-title">شحن</div><div class="rch-head-sub" id="rch-head-sub">أدخل بياناتك</div></div>
+                <div style="flex:1;">
+                    <div class="rch-head-title" id="rch-head-title">شحن</div>
+                    <div class="rch-head-sub" id="rch-head-sub">أدخل بياناتك</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:1.3rem;color:#64748b;">🤍</span>
+                </div>
             </div>
             <div class="rch-body" id="rch-body"></div>
             <div class="rch-actions">
-                <button class="rch-btn-ok" id="rch-confirm-btn">✅ تأكيد وإرسال</button>
-                <button class="rch-btn-cancel" onclick="closeRch()">إلغاء</button>
+                <button class="rch-btn-cancel" onclick="closeRch()">الغاء</button>
+<button class="rch-btn-ok" id="rch-confirm-btn">شراء</button>
             </div>
         </div>
     </div>
@@ -1608,8 +1712,11 @@
                 <div class="pay-step"><span class="pay-step-lbl">1️⃣ قم بالدفع عبر</span>
                     <div class="pay-info-box">
                         <div class="pay-method-name" id="pay-method-name">شام كاش</div>
-                        <div class="pay-code-row" id="pay-code-row"><div class="pay-code-val" id="pay-code-val" style="font-size:0.7rem;letter-spacing:0.5px;word-break:break-all;">—</div>
-                            <button class="pay-copy-btn" id="pay-copy-btn" onclick="copyPayCode()">📋 نسخ</button></div>
+                        <div class="pay-code-row" id="pay-code-row">
+                            <div class="pay-code-val" id="pay-code-val" onclick="copyPayCode()" style="font-size:0.7rem;letter-spacing:0.5px;word-break:break-all;cursor:pointer;flex:1;" title="اضغط لنسخ الرقم">—</div>
+                            <!-- تم إضافة زر النسخ هنا -->
+                            <button class="pay-copy-btn" onclick="copyPayCode()">📋 نسخ</button>
+                        </div>
                         <div id="pay-barcode-wrap" style="display:none;margin-top:10px;text-align:center;">
                             <img id="pay-barcode-img" src="" alt="باركود الدفع" style="max-width:100%;max-height:160px;border-radius:10px;object-fit:contain;background:#fff;padding:6px;"/>
                             <button onclick="downloadBarcode()" style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;border-radius:9px;padding:7px 16px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(139,92,246,0.22)'" onmouseout="this.style.background='rgba(139,92,246,0.12)'">⬇️ تحميل صورة الباركود</button>
@@ -1647,7 +1754,7 @@
             </div>
             <div class="shipping-actions">
                 <button class="rch-btn-ok" id="shipping-submit-btn" style="flex:1;">✅ متابعة للدفع</button>
-                <button class="rch-btn-cancel" onclick="closeShippingModal()">إلغاء</button>
+<button class="rch-btn-cancel" onclick="closeShippingModal()">إلغاء</button>
             </div>
         </div>
     </div>
@@ -1664,20 +1771,21 @@
     <footer>جميع الحقوق محفوظة © <span id="footer-nm">مركز ابل ستور</span></footer>
 
     <script type="importmap">
-        {"imports":{"firebase/app":"https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js","firebase/database":"https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js"}}
+        {"imports":{"firebase/app":"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js","firebase/database":"https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js"}}
     </script>
     <script type="module">
         import { initializeApp } from "firebase/app";
         import { getDatabase, ref, onValue, push } from "firebase/database";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAaQfFtL7sknDFx7a7u0-2Lo0iW2c5SG68",
-            authDomain: "ahmad-el-c557c.firebaseapp.com",
-            databaseURL: "https://ahmad-el-c557c-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "ahmad-el-c557c",
-            storageBucket: "ahmad-el-c557c.firebasestorage.app",
-            messagingSenderId: "556317925376",
-            appId: "1:556317925376:web:ac906952a56f43f255f8e5"
+            apiKey: "AIzaSyAxMB-81yhQ05Ct5j_rhpkZF0yMWqLJwbI",
+            authDomain: "ahmad3cely.firebaseapp.com",
+            databaseURL: "https://ahmad3cely-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ahmad3cely",
+            storageBucket: "ahmad3cely.firebasestorage.app",
+            messagingSenderId: "890297800790",
+            appId: "1:890297800790:web:1c32ce5e589dea9b8ac3f7",
+            measurementId: "G-FKB4YP1YCP"
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
@@ -1748,19 +1856,18 @@
                 return;
             }
             g.innerHTML = allCategories.map(c => {
-                const count = allProducts.filter(p => p.categoryId === c.id).length;
+                // Extract short Arabic label from name (first 4 chars)
+                const shortAr = c.name.replace('قسم ','').replace('عالم ','').replace('شحن ','').substring(0,6);
                 return `
                 <div class="cat-card" onclick="window.openCat('${c.id}')">
                     <div class="cc-img-wrap">
                         <img class="cc-img" src="${c.imageUrl||'https://picsum.photos/300/300'}" 
                              onerror="this.src='https://picsum.photos/300/300'" 
                              loading="lazy" alt="${c.name}"/>
-                        <div class="cc-overlay"></div>
-                        <div class="cc-icon-badge">${c.icon||'📁'}</div>
+
                     </div>
                     <div class="cc-body">
                         <span class="cc-nm">${c.name}</span>
-
                     </div>
                 </div>`;
             }).join('');
@@ -1791,8 +1898,6 @@
             document.getElementById('app-name').textContent = n;
             document.getElementById('footer-nm').textContent = n;
             document.title = n;
-            // تحديث hero
-            document.getElementById('hero-title').textContent = 'أهلاً بك في ' + n;
         }
 
         function applyPayment(p) {
@@ -1814,13 +1919,7 @@
         }
 
         function updateHero() {
-            const totalProducts = allProducts.length;
-            const totalCats = allCategories.length;
-            document.getElementById('hero-sub').textContent =
-                `لدينا ${totalCats} أقسام و ${totalProducts} منتج بانتظارك`;
-            if (totalProducts > 20) {
-                document.getElementById('hero-badge').textContent = '🔥 أكثر من ' + totalProducts + ' منتج';
-            }
+            // hero section removed, nothing to update
         }
 
         function setActiveNav(id) {
@@ -1865,7 +1964,19 @@
             if (!product) return;
             currentProductForShipping = product;
             let specsList = [];
-            try { specsList = JSON.parse(product.specs || '[]'); } catch (e) {}
+            try {
+                const raw = product.specs;
+                if (!raw) {
+                    specsList = [];
+                } else if (Array.isArray(raw)) {
+                    specsList = raw.filter(s => s && s.key);
+                } else if (typeof raw === 'object') {
+                    specsList = Object.values(raw).filter(v => v && typeof v === 'object' && v.key);
+                } else if (typeof raw === 'string') {
+                    const parsed = JSON.parse(raw);
+                    specsList = Array.isArray(parsed) ? parsed.filter(s => s && s.key) : [];
+                }
+            } catch (e) { specsList = []; }
             const modalDiv = document.createElement('div');
             modalDiv.id = 'tempSpecModal';
             modalDiv.style.cssText =
@@ -1893,8 +2004,9 @@
                     `<div style="background:rgba(15,23,42,.6);border-radius:16px;padding:14px;text-align:center;color:#64748b;">لا توجد مواصفات إضافية</div>`;
             }
             specsHtml += `
-                <div style="display:flex;gap:12px;margin-top:20px;">
-                    <button id="confirmSpecBtn" style="flex:1;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:14px;padding:13px;color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:.88rem;transition:all .3s;">✅ تأكيد الشراء</button>
+                <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+                    <button id="confirmSpecBtn" style="flex:1;min-width:120px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:14px;padding:13px;color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:.88rem;transition:all .3s;">✅ تأكيد الشراء</button>
+                    <button id="waSpecBtn" style="flex:1;min-width:120px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;border-radius:14px;padding:13px;color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:.88rem;transition:all .3s;">📲 واتساب</button>
                     <button id="cancelSpecBtn" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px 18px;cursor:pointer;color:#94a3b8;font-family:inherit;font-size:.85rem;transition:all .3s;">إلغاء</button>
                 </div>
                 </div>
@@ -1904,6 +2016,20 @@
             document.getElementById('confirmSpecBtn').onclick = () => {
                 modalDiv.remove();
                 openShippingModal();
+            };
+            document.getElementById('waSpecBtn').onclick = () => {
+                let specsText2 = '';
+                try {
+                    const raw2 = product.specs;
+                    let specsArr2 = [];
+                    if (Array.isArray(raw2)) specsArr2 = raw2.filter(s=>s&&s.key);
+                    else if (typeof raw2==='object'&&raw2) specsArr2 = Object.values(raw2).filter(v=>v&&v.key);
+                    else if (typeof raw2==='string') { const p2=JSON.parse(raw2); specsArr2=Array.isArray(p2)?p2.filter(s=>s&&s.key):[]; }
+                    specsText2 = specsArr2.length ? specsArr2.map(s=>`▫️ ${s.key}: ${s.val}`).join('\n') : 'لا توجد مواصفات';
+                } catch(e) { specsText2 = 'لا توجد مواصفات'; }
+                const waSpecMsg = `📱 *استفسار عن منتج*\n━━━━━━━━━━━━━━━━━━━\n📦 *المنتج:* ${product.name}\n💰 *السعر:* ${product.price?'$'+product.price:'غير محدد'}\n\n⚙️ *المواصفات:*\n${specsText2}\n━━━━━━━━━━━━━━━━━━━\nأرغب في الاستفسار عن هذا المنتج`;
+                modalDiv.remove();
+                sendWaMsgSilent(waSpecMsg);
             };
             document.getElementById('cancelSpecBtn').onclick = () => modalDiv.remove();
             modalDiv.addEventListener('click', function(e) { if (e.target === modalDiv) modalDiv.remove(); });
@@ -1985,9 +2111,8 @@
 
         window.copyPayCode = () => {
             navigator.clipboard.writeText(paymentSettings.code || '').then(() => {
-                const btn = document.getElementById('pay-copy-btn');
-                if (btn) { btn.textContent = '✓ تم النسخ';
-                    setTimeout(() => btn.textContent = 'نسخ', 2000); }
+                const val = document.getElementById('pay-code-val');
+                if (val) { const orig = val.textContent; val.textContent = '✓ تم النسخ'; setTimeout(() => val.textContent = orig, 2000); }
                 showToast('📋 تم نسخ الرقم بنجاح');
             });
         };
@@ -2072,12 +2197,20 @@
                 } catch (e) {}
                 const typeIcon = type === 'app' ? '📲' : type === 'saldo' ? '💰' : '🎮';
                 const typeLabel = type === 'app' ? 'تطبيق' : type === 'saldo' ? 'شحن رصيد' : 'لعبة';
+                const arLabel = type === 'app' ? 'تطبيق' : type === 'saldo' ? 'رصيد' : 'لعبة';
+                const sideColor = type === 'app' ? 'linear-gradient(180deg,#7c3aed 0%,#4c1d95 100%)' 
+                                : type === 'game' ? 'linear-gradient(180deg,#b91c1c 0%,#7f1d1d 100%)' 
+                                : 'linear-gradient(180deg,#0369a1 0%,#0c4a6e 100%)';
                 return `
                 <div class="recharge-item" onclick="window.openRch('${item.id}','${type}')">
-                    <div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''" alt="">`:typeIcon}</div>
-                    <div class="ri-name">${item.name}</div>
-                    <div class="ri-sub">${typeLabel}</div>
-                    ${priceBadge}
+                    <div class="ri-card-frame">
+                        <div class="ri-card-frame-inner">
+                            <div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''" alt="">`:typeIcon}</div>
+                        </div>
+                        <div class="ri-hanger"></div>
+                        <div class="ri-platform"></div>
+                    </div>
+                    <div class="ri-bottom">${item.name}</div>
                 </div>`;
             }).join('');
         }
@@ -2088,6 +2221,8 @@
             const isGamesCat = (cat.name === 'شحن الألعاب' || cat.name.includes('شحن الألعاب'));
             const isSaldoCat = (cat.name === 'شحن الأرصدة' || cat.name.includes('شحن الأرصدة'));
             document.getElementById('home-view').style.display = 'none';
+            const sb = document.getElementById('home-search-bar');
+            if (sb) sb.style.display = 'none';
             document.getElementById('products-view').style.display = 'block';
             document.getElementById('cv-ico').textContent = cat.icon || '📁';
             document.getElementById('cv-nm').textContent = cat.name;
@@ -2114,6 +2249,8 @@
             currentCatId = null;
             document.getElementById('products-view').style.display = 'none';
             document.getElementById('home-view').style.display = 'block';
+            const sb = document.getElementById('home-search-bar');
+            if (sb) sb.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             renderDrawer();
             setActiveNav('bn-home');
@@ -2195,8 +2332,13 @@
             const curr = item.currency || '';
             const currBadge = curr ? `<span class="rch-currency-badge">${curr}</span>` : '';
             const isSaldo = type === 'saldo';
-            const idLabel = isSaldo ? 'رقم هاتفك' : 'أدخل ID الخاص بك';
+            const idLabel = isSaldo ? 'رقم هاتفك' : 'ايدي الاعب';
             const idPlaceholder = isSaldo ? '09XXXXXXXX' : 'أدخل ID';
+
+            // Reset price pill
+            const pill = document.getElementById('rch-price-pill');
+            if (pill) { pill.style.display = 'none'; pill.textContent = '—'; }
+
             let qtyHtml = '';
             if (mode === 'fixed') {
                 const pkgs = item.packages ? JSON.parse(item.packages) : [];
@@ -2206,25 +2348,30 @@
                             <div style="font-weight:700;">${pk.label}</div>
                             <div style="font-size:.72rem;color:#f59e0b;">${pk.price?'$'+pk.price:''}</div>
                         </div>`).join('')}</div>
-                    <div style="margin-top:8px;"><input class="rch-input" id="custom-qty" type="text" placeholder="أو اكتب الكمية يدوياً" oninput="window.calculatePrice()"/></div>
-                    <div class="rch-price-display" id="price-display"><div id="price-value"></div></div>` :
-                    `<div><input class="rch-input" id="custom-qty" type="text" placeholder="أدخل الكمية" oninput="window.calculatePrice()"/><div class="rch-price-display" id="price-display"><div id="price-value"></div></div></div>`;
+                    <div style="margin-top:8px;"><input class="rch-input" id="custom-qty" type="text" placeholder="أو اكتب الكمية يدوياً" oninput="window.calculatePrice()"/></div>` :
+                    `<div><input class="rch-input" id="custom-qty" type="text" placeholder="أدخل الكمية" oninput="window.calculatePrice()"/></div>`;
             } else {
                 const minQ = item.minQty || 1,
                     minP = item.minPrice || 1;
                 qtyHtml = `
-                    <div style="font-size:.74rem;color:#94a3b8;margin-bottom:8px;">💡 الحد الأدنى: ${minQ} ${curr||'وحدة'} = <strong style="color:#f59e0b;">$${minP}</strong></div>
                     <div style="display:flex;align-items:center;gap:8px;">
                         <input class="rch-input" id="custom-qty" type="number" min="${minQ}" step="${minQ}" placeholder="${minQ}" oninput="window.calculatePrice()" dir="ltr" style="flex:1;"/>
                         ${currBadge}
-                    </div>
-                    <div class="rch-price-display" id="price-display"><div id="price-value"></div></div>`;
+                    </div>`;
             }
+
+            // OX.PROMAX style: العدد / الاجمالي info grid at top of body
             body.innerHTML = `
+                <div class="rch-info-grid" id="rch-info-grid" style="display:none;">
+                    <div class="rch-info-box"><span class="rib-label">الاجمالي</span><span class="rib-value" id="info-total">—</span></div>
+                    <div class="rch-info-box"><span class="rib-label">العدد</span><span class="rib-value" id="info-qty">—</span></div>
+                </div>
                 <div class="rch-step"><label>${idLabel}</label><input class="rch-input" id="user-id" type="${isSaldo?'tel':'text'}" placeholder="${idPlaceholder}" dir="ltr"/></div>
                 <div class="rch-step"><label>الكمية والسعر ${currBadge}</label>${qtyHtml}</div>
+                <div id="price-display" style="display:none;"><div id="price-value"></div></div>
                 <div class="rch-warning">⚠️ ${isSaldo?'تأكد من صحة رقم الهاتف قبل المتابعة':'تأكد من صحة ID قبل المتابعة'}</div>`;
             document.getElementById('rch-confirm-btn').onclick = sendRechargeOrder;
+
         }
 
         window.selectPackage = (i) => {
@@ -2235,8 +2382,7 @@
                     const qtyInput = document.getElementById('custom-qty');
                     if (qtyInput) qtyInput.value = pkgs[i].label;
                     calculatePrice();
-                    document.querySelectorAll('.qty-btn').forEach((btn, idx) => btn.classList.toggle('sel', idx ===
-                        i));
+                    document.querySelectorAll('.qty-btn').forEach((btn, idx) => btn.classList.toggle('sel', idx === i));
                 }
             } catch (e) {}
         };
@@ -2246,6 +2392,10 @@
             const qty = parseFloat(qtyInput?.value) || 0;
             const disp = document.getElementById('price-display');
             const val = document.getElementById('price-value');
+            const infoGrid = document.getElementById('rch-info-grid');
+            const infoTotal = document.getElementById('info-total');
+            const infoQty = document.getElementById('info-qty');
+            const pill = document.getElementById('rch-price-pill');
             if (!disp || !val) return;
             if (mode === 'auto') {
                 const minQ = selectedRchItem?.minQty || 1,
@@ -2254,13 +2404,25 @@
                     const price = ((qty / minQ) * minP).toFixed(2);
                     val.textContent = '$' + price;
                     disp.classList.add('show');
-                } else { disp.classList.remove('show'); }
+                    if (infoGrid) { infoGrid.style.display = 'grid'; }
+                    if (infoTotal) infoTotal.textContent = '$' + price;
+                    if (infoQty) infoQty.textContent = qty;
+                    if (pill) { pill.style.display = 'none'; }
+                } else {
+                    disp.classList.remove('show');
+                    if (infoGrid) infoGrid.style.display = 'none';
+                    if (pill) pill.style.display = 'none';
+                }
             } else if (mode === 'fixed' && selectedQtyIdx >= 0) {
                 try {
                     const pkgs = JSON.parse(selectedRchItem.packages || '[]');
                     if (pkgs[selectedQtyIdx] && pkgs[selectedQtyIdx].price) {
                         val.textContent = '$' + pkgs[selectedQtyIdx].price;
                         disp.classList.add('show');
+                        if (infoGrid) { infoGrid.style.display = 'grid'; }
+                        if (infoTotal) infoTotal.textContent = '$' + pkgs[selectedQtyIdx].price;
+                        if (infoQty) infoQty.textContent = pkgs[selectedQtyIdx].label || qty;
+                        if (pill) { pill.style.display = 'inline-block'; pill.textContent = '$ ' + pkgs[selectedQtyIdx].price; }
                     }
                 } catch (e) {}
             }
@@ -2343,6 +2505,55 @@
             document.getElementById('rch-overlay').classList.remove('open');
             selectedRchItem = null;
         };
+
+        function sendRechargeOrderWa() {
+            if (!selectedRchItem) { showToast('⚠️ حدث خطأ'); return; }
+            const uid = document.getElementById('user-id')?.value.trim();
+            if (!uid) { showToast('⚠️ أدخل ID الحساب'); return; }
+            const mode = selectedRchItem.priceMode || 'auto';
+            const curr = selectedRchItem.currency || '';
+            let qtyText = '', priceText = '';
+            const rawQty = document.getElementById('custom-qty')?.value || '';
+            if (mode === 'auto') {
+                const minQ = selectedRchItem.minQty || 1, minP = selectedRchItem.minPrice || 1;
+                const qty = parseFloat(rawQty);
+                if (!rawQty || qty < minQ) { showToast('⚠️ أدخل كمية لا تقل عن ' + minQ); return; }
+                const price = ((qty / minQ) * minP).toFixed(2);
+                qtyText = rawQty + (curr ? ' ' + curr : '');
+                priceText = '$' + price;
+            } else {
+                if (selectedQtyIdx >= 0) {
+                    try {
+                        const pkgs = JSON.parse(selectedRchItem.packages || '[]');
+                        if (pkgs[selectedQtyIdx]) {
+                            qtyText = pkgs[selectedQtyIdx].label + (curr ? ' ' + curr : '');
+                            priceText = pkgs[selectedQtyIdx].price ? '$' + pkgs[selectedQtyIdx].price : '';
+                        }
+                    } catch(e) {}
+                }
+                if (!qtyText && rawQty) qtyText = rawQty + (curr ? ' ' + curr : '');
+                if (!qtyText) { showToast('⚠️ اختر الكمية'); return; }
+            }
+            const rchItem = selectedRchItem;
+            const rchType = selectedRchType;
+            const idLabel = rchType === 'saldo' ? 'رقم الهاتف' : 'ID الحساب';
+            const typeEmoji = rchType === 'app' ? '📲' : rchType === 'saldo' ? '💰' : '🎮';
+            const waMsg = `⚡ *طلب شحن* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n🎯 *الخدمة:* ${rchItem.name}\n👤 *${idLabel}:* ${uid}\n📦 *الكمية:* ${qtyText}\n💰 *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━`;
+            push(ref(db, 'orders'), {
+                type: 'recharge',
+                itemName: rchItem.name,
+                userId: uid,
+                quantity: qtyText,
+                price: priceText,
+                timestamp: Date.now(),
+                status: 'pending_wa'
+            }).catch(console.error);
+            document.getElementById('rch-overlay').classList.remove('open');
+            selectedRchItem = null;
+            selectedQtyIdx = -1;
+            sendWaMsgSilent(waMsg);
+            showSuccessModal(rchItem.name, priceText);
+        }
         window.openSupport = () => {
             const msg = 'مرحباً، أحتاج إلى مساعدة 👋\nأتواصل معكم من خلال المتجر';
             sendWaMsgSilent(msg);
