@@ -1836,7 +1836,7 @@
             waNumbers = [],
             rechargeGames = [],
             rechargeApps = [],
-            rechargeSaldo = [],
+            rechargeSaldo = [], /* alias: rechargeBalance */
             customFields = [];
         let paymentSettings = { enabled: true, name: 'شام كاش', code: '0998765432', barcodeUrl: '' };
         let currentCatId = null,
@@ -2220,9 +2220,9 @@
 
         function showCat(cat) {
             currentCatId = cat.id;
-            const isAppsCat = (cat.name === 'شحن التطبيقات' || cat.name.includes('شحن التطبيقات'));
-            const isGamesCat = (cat.name === 'شحن الألعاب' || cat.name.includes('شحن الألعاب'));
-            const isSaldoCat = (cat.name === 'شحن الأرصدة' || cat.name.includes('شحن الأرصدة'));
+            const isAppsCat = (cat.catType === 'apps' || cat.name === 'شحن التطبيقات' || cat.name.includes('شحن التطبيقات') || cat.name.includes('تطبيقات'));
+            const isGamesCat = (cat.catType === 'games' || cat.name === 'شحن الألعاب' || cat.name.includes('شحن الألعاب') || cat.name.includes('ألعاب'));
+            const isSaldoCat = (cat.catType === 'balance' || cat.name === 'شحن الأرصدة' || cat.name.includes('شحن الأرصدة') || cat.name.includes('أرصدة') || cat.name.includes('رصيد') || cat.name.includes('ارصدة') || cat.name.includes('balance'));
             document.getElementById('home-view').style.display = 'none';
             const sb = document.getElementById('home-search-bar');
             if (sb) sb.style.display = 'none';
@@ -2335,8 +2335,16 @@
             const curr = item.currency || '';
             const currBadge = curr ? `<span class="rch-currency-badge">${curr}</span>` : '';
             const isSaldo = type === 'saldo';
-            const idLabel = isSaldo ? 'رقم هاتفك' : 'ايدي الاعب';
-            const idPlaceholder = isSaldo ? '09XXXXXXXX' : 'أدخل ID';
+            // استخدام fieldType المحدد من لوحة الإدارة إن وجد
+            const fieldType = item.fieldType || (isSaldo ? 'phone' : 'account');
+            const idLabel = fieldType === 'phone' ? 'رقم الهاتف'
+                          : fieldType === 'email' ? 'البريد الإلكتروني'
+                          : fieldType === 'other' ? 'المعلومات المطلوبة'
+                          : (isSaldo ? 'رقم هاتفك' : 'ايدي الاعب');
+            const idPlaceholder = fieldType === 'phone' ? '09XXXXXXXX'
+                                : fieldType === 'email' ? 'example@mail.com'
+                                : fieldType === 'other' ? 'أدخل المعلومات'
+                                : (isSaldo ? '09XXXXXXXX' : 'أدخل ID');
 
             // Reset price pill
             const pill = document.getElementById('rch-price-pill');
@@ -2645,7 +2653,7 @@
             if (cachedGames) rechargeGames = cachedGames;
             const cachedApps = await dbGet('rechargeApps');
             if (cachedApps) rechargeApps = cachedApps;
-            const cachedSaldo = await dbGet('rechargeSaldo');
+            const cachedSaldo = await dbGet('rechargeBalance');
             if (cachedSaldo) rechargeSaldo = cachedSaldo;
             const cachedWhats = await dbGet('whatsapp');
             if (cachedWhats) waNumbers = cachedWhats;
@@ -2690,12 +2698,11 @@
                 if (currentCatId) { const c = allCategories.find(x => x.id === currentCatId); if (c && (c.name
                         .includes('شحن التطبيقات'))) showCat(c); }
             });
-            onValue(ref(db, 'rechargeSaldo'), (s) => {
+            onValue(ref(db, 'rechargeBalance'), (s) => {
                 const list = s.val() ? Object.entries(s.val()).map(([id, v]) => ({ id, ...v })) : [];
                 rechargeSaldo = list;
-                dbSet('rechargeSaldo', list);
-                if (currentCatId) { const c = allCategories.find(x => x.id === currentCatId); if (c && (c.name
-                        .includes('شحن الأرصدة'))) showCat(c); }
+                dbSet('rechargeBalance', list);
+                if (currentCatId) { const c = allCategories.find(x => x.id === currentCatId); if (c && (c.catType === 'balance' || c.name.includes('أرصدة') || c.name.includes('رصيد') || c.name.includes('ارصدة'))) showCat(c); }
             });
             onValue(ref(db, 'whatsapp'), (s) => {
                 const list = s.val() ? Object.entries(s.val()).map(([id, v]) => ({ id, ...v })) : [];
