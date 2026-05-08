@@ -379,8 +379,8 @@
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
         @media(min-width:600px) {
             .products-grid {
@@ -424,7 +424,7 @@
         .product-card:active { transform: scale(0.97); }
 
         .prod-img-wrap {
-            height: 95px;
+            height: 75px;
             background: linear-gradient(160deg, #1c2840 0%, #111827 100%);
             overflow: hidden;
             display: flex;
@@ -463,10 +463,10 @@
         }
 
         .prod-info {
-            padding: 8px 9px 4px;
+            padding: 5px 7px 3px;
         }
         .prod-name {
-            font-size: 0.72rem;
+            font-size: 0.62rem;
             font-weight: 700;
             line-height: 1.3;
             color: #e2e8f0;
@@ -482,7 +482,7 @@
             margin-top: 4px;
         }
         .prod-price {
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             font-weight: 900;
             color: #f59e0b;
             letter-spacing: -0.5px;
@@ -1590,13 +1590,144 @@
         }
 
         /* ========== FOOTER ========== */
-        footer {
+        footer { margin-bottom: 74px; }
+        .footer-features {
+            padding: 6px 14px 6px;
+        }
+        .feats-toggle-btn {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-family: inherit;
+            color: #f59e0b;
+            font-size: 0.68rem;
+            font-weight: 800;
+            transition: background 0.2s;
+            margin-bottom: 0;
+        }
+        .feats-toggle-btn:hover { background: rgba(255,255,255,0.07); }
+
+        .feats-body {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+            opacity: 0;
+        }
+        .feats-body.open {
+            max-height: 300px;
+            opacity: 1;
+        }
+        .footer-features-title {
+            display: none;
+        }
+        .footer-features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        .footer-feat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            padding: 7px 9px;
             text-align: center;
-            padding: 12px;
-            color: #64748b;
-            font-size: 0.72rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-bottom: 70px;
+            transition: all 0.2s;
+            flex: 0 0 auto;
+            min-width: 72px;
+        }
+        .footer-feat-card:hover {
+            background: rgba(244,63,94,0.07);
+            border-color: rgba(244,63,94,0.2);
+        }
+        .footer-feat-icon { font-size: 1rem; display: block; margin-bottom: 3px; }
+        .footer-feat-label { font-size: 0.52rem; font-weight: 800; color: #e2e8f0; display: block; margin-bottom: 1px; white-space: nowrap; }
+        .footer-feat-sub { font-size: 0.44rem; color: #64748b; display: block; white-space: nowrap; }
+        .footer-copy {
+            text-align: center;
+            padding: 8px 14px 4px;
+            color: #475569;
+            font-size: 0.58rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: 8px;
+        }
+
+        /* ========== DAY/NIGHT TOGGLE ========== */
+        .theme-toggle {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            gap: 2px;
+            cursor: pointer;
+        }
+        .theme-toggle-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 16px;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.2s;
+            color: #94a3b8;
+        }
+        .theme-toggle-btn.active {
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.08);
+        }
+
+        /* Light mode overrides */
+        body.light-mode {
+            background: #f0f4f8;
+            color: #1e293b;
+            background-image: none;
+        }
+        body.light-mode #app-header {
+            background: rgba(255,255,255,0.92);
+            border-bottom-color: rgba(0,0,0,0.08);
+        }
+        body.light-mode .home-search-input-wrap {
+            background: #fff;
+            border-color: rgba(0,0,0,0.1);
+        }
+        body.light-mode .home-search-input-wrap input { color: #334155; }
+        body.light-mode #home-view,
+        body.light-mode #products-view { color: #1e293b; }
+        body.light-mode .cat-card .cc-body { background: #b91c1c; }
+        body.light-mode .product-card {
+            background: linear-gradient(160deg, #fff 0%, #f1f5f9 100%);
+            border-color: rgba(0,0,0,0.08);
+            color: #1e293b;
+        }
+        body.light-mode .prod-name { color: #1e293b; }
+        body.light-mode .prod-img-wrap { background: linear-gradient(160deg, #e2e8f0 0%, #f1f5f9 100%); }
+        body.light-mode .prod-img-wrap::after { background: linear-gradient(to top, #f1f5f9, transparent); }
+        body.light-mode .prod-spec-row { background: rgba(0,0,0,0.04); }
+        body.light-mode .prod-spec-lbl { color: #64748b; }
+        body.light-mode .prod-spec-val { color: #1e293b; }
+        body.light-mode .btn-buy { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        body.light-mode .back-btn { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); color: #1e293b; }
+        body.light-mode .footer-features { background: #fff; border-top-color: rgba(0,0,0,0.07); }
+        body.light-mode .footer-feat-card { background: #f8fafc; border-color: rgba(0,0,0,0.08); }
+        body.light-mode .footer-feat-label { color: #1e293b; }
+        body.light-mode .footer-copy { color: #94a3b8; border-top-color: rgba(0,0,0,0.06); }
+        body.light-mode .bottom-nav { background: rgba(255,255,255,0.96); border-top-color: rgba(0,0,0,0.08); }
+        body.light-mode .bn-item { color: #94a3b8; }
+        body.light-mode .theme-toggle { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
+        body.light-mode .hbtn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1e293b; }
+        body.light-mode .app-logo .name { background: linear-gradient(135deg, #1e293b, #f59e0b); -webkit-background-clip: text; }
+            50% { transform: translateX(50%) translateY(7px); }
         }
 
         /* ========== UTILS ========== */
@@ -1702,7 +1833,12 @@
                     <div class="name" id="app-name">مركز ابل ستور</div>
                 </div>
             </div>
-            <div class="h-right"></div>
+            <div class="h-right">
+                <div class="theme-toggle">
+                    <button class="theme-toggle-btn active" id="btn-night" onclick="setTheme('dark')" title="وضع ليلي">🌙</button>
+                    <button class="theme-toggle-btn" id="btn-day" onclick="setTheme('light')" title="وضع نهاري">☀️</button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -1717,6 +1853,7 @@
         <div class="cats-grid" id="cats-grid">
             <div class="state-msg"><div class="spinner"></div>جارٍ التحميل...</div>
         </div>
+
     </div>
 
     <div id="products-view">
@@ -1831,7 +1968,11 @@
     </div>
 
     <div style="height:74px"></div>
-    <footer>جميع الحقوق محفوظة © <span id="footer-nm">مركز ابل ستور</span></footer>
+
+    <footer>
+        <div class="footer-copy">جميع الحقوق محفوظة © <span id="footer-nm">مركز ابل ستور</span> 2025</div>
+
+    </footer>
 
     <script type="importmap">
         {"imports":{"firebase/app":"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js","firebase/database":"https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js"}}
@@ -2857,6 +2998,22 @@
                     .remove();
             }
         });
+        // Theme toggle
+        window.setTheme = function(mode) {
+            if (mode === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('btn-day').classList.add('active');
+                document.getElementById('btn-night').classList.remove('active');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.getElementById('btn-night').classList.add('active');
+                document.getElementById('btn-day').classList.remove('active');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        // Apply saved theme on load
+        if (localStorage.getItem('theme') === 'light') window.setTheme('light');
 
         console.log('🚀 مركز ابل ستور - الإصدار المحسن جاهز ✓');
     </script>
