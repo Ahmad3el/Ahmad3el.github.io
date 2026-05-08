@@ -1759,8 +1759,6 @@
         </div>
     </div>
 
-    <button class="support-fab" id="support-fab-btn" onclick="openSupport()">💬</button>
-
     <div class="bottom-nav">
         <button class="bn-item active" id="bn-home" onclick="goHome();setActiveNav('bn-home')"><span class="bn-icon">🏠</span><span class="bn-label">الرئيسية</span></button>
         <button class="bn-item" id="bn-search" onclick="openSearch();setActiveNav('bn-search')"><span class="bn-icon">🔍</span><span class="bn-label">بحث</span></button>
@@ -2732,19 +2730,31 @@
         }
 
         loadFromCacheAndListen();
-        history.replaceState({ view: 'home' }, '');
+        history.replaceState({ view: 'store' }, '');
+        history.pushState({ view: 'store' }, '');
 
-        // معالجة زر الرجوع
+        // تأكيد عند محاولة تحديث أو إغلاق الصفحة
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+        // معالجة زر الرجوع - خطوة بخطوة بدون خروج من الموقع
+        function handleBack() {
+            if (document.getElementById('rch-overlay').classList.contains('open')) { closeRch(); return; }
+            if (document.getElementById('search-screen').classList.contains('open')) { closeSearch(); return; }
+            if (document.getElementById('drawer').classList.contains('open')) { closeDrawer(); return; }
+            if (document.getElementById('pay-overlay').classList.contains('open')) { closePayModal(true); return; }
+            if (document.getElementById('shipping-modal').classList.contains('open')) { closeShippingModal(); return; }
+            if (document.getElementById('tempSpecModal')) { document.getElementById('tempSpecModal').remove(); return; }
+            if (currentCatId) { goHome(); return; }
+            // إذا كنا في الرئيسية لا تخرج من الموقع
+        }
+
         window.addEventListener('popstate', (e) => {
-            if (document.getElementById('rch-overlay').classList.contains('open')) closeRch();
-            else if (document.getElementById('search-screen').classList.contains('open')) closeSearch();
-            else if (document.getElementById('drawer').classList.contains('open')) closeDrawer();
-            else if (document.getElementById('pay-overlay').classList.contains('open')) closePayModal(true);
-            else if (document.getElementById('shipping-modal').classList.contains('open'))
-            closeShippingModal();
-            else if (document.getElementById('tempSpecModal')) document.getElementById('tempSpecModal')
-                .remove();
-            else if (e.state?.view === 'home') goHome();
+            handleBack();
+            // أعد إضافة الحالة دائماً حتى لا يخرج من الموقع
+            history.pushState({ view: 'store' }, '');
         });
 
         // إغلاق النوافذ بـ Escape
