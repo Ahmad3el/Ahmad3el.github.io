@@ -2256,7 +2256,7 @@
                 } catch(e) { specsText2 = 'لا توجد مواصفات'; }
                 const waSpecMsg = `📱 *استفسار عن منتج*\n━━━━━━━━━━━━━━━━━━━\n📦 *المنتج:* ${product.name}\n💰 *السعر:* ${product.price?'$'+product.price:'غير محدد'}\n\n⚙️ *المواصفات:*\n${specsText2}\n━━━━━━━━━━━━━━━━━━━\nأرغب في الاستفسار عن هذا المنتج`;
                 modalDiv.remove();
-                sendWaMsgSilent(waSpecMsg);
+                sendWaMsgSilent(waSpecMsg, 'products');
             };
             document.getElementById('cancelSpecBtn').onclick = () => modalDiv.remove();
             modalDiv.addEventListener('click', function(e) { if (e.target === modalDiv) modalDiv.remove(); });
@@ -2395,7 +2395,7 @@
                 status: 'pending'
             };
             push(ref(db, 'orders'), orderData).catch(console.error);
-            sendWaMsgSilent(waMsg);
+            sendWaMsgSilent(waMsg, 'products');
             showSuccessModal(product.name, product.price);
             currentProductForShipping = null;
             currentShippingData = null;
@@ -2522,14 +2522,25 @@
         }
 
         // ============ WhatsApp ============
-        function sendWaMsgSilent(msg) {
-            if (!waNumbers.length) return;
-            const waMsg = encodeURIComponent(msg);
-            if (waNumbers.length === 1) {
-                window.open(`https://wa.me/${waNumbers[0].number.replace(/\D/g,'')}?text=${waMsg}`, '_blank');
+        function filterWaByService(serviceType) {
+            if (!waNumbers.length) return [];
+            return waNumbers.filter(n => {
+                const services = Array.isArray(n.service) ? n.service : (n.service ? [n.service] : ['all']);
+                return services.includes('all') || services.includes(serviceType);
+            });
+        }
+
+        function sendWaMsgSilent(msg, serviceType) {
+            const filtered = filterWaByService(serviceType || 'all');
+            if (!filtered.length) {
                 return;
             }
-            document.getElementById('wa-nums').innerHTML = waNumbers.map(n => `
+            const waMsg = encodeURIComponent(msg);
+            if (filtered.length === 1) {
+                window.open(`https://wa.me/${filtered[0].number.replace(/\D/g,'')}?text=${waMsg}`, '_blank');
+                return;
+            }
+            document.getElementById('wa-nums').innerHTML = filtered.map(n => `
                 <button class="wa-num-btn" onclick="window.open('https://wa.me/${n.number.replace(/\D/g,'')}?text=${waMsg}','_blank');closeWa()">
                     📞 ${n.label||n.number}
                 </button>`).join('');
@@ -2713,7 +2724,7 @@
             // تعيين callback مخصص للشحن
             window.payCallback = (payFile) => {
                 const waMsg =
-                    `⚡ *طلب شحن جديد* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n🎯 *الخدمة:* ${rchItem.name}\n👤 *${idLabel}:* ${uid}\n📦 *الكمية:* ${qtyText}\n💰 *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━\n💳 *تم الدفع وإرفاق الإيصال*`;
+                    ` *طلب شحن جديد* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n *الخدمة:* ${rchItem.name}\n *${idLabel}:* ${uid}\n *الكمية:* ${qtyText}\n *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━\n *تم الدفع وإرفاق الإيصال*`;
 
                 push(ref(db, 'orders'), {
                     type: 'recharge',
@@ -2726,7 +2737,7 @@
                     status: 'pending'
                 }).catch(console.error);
 
-                sendWaMsgSilent(waMsg);
+                sendWaMsgSilent(waMsg, 'recharge');
                 showSuccessModal(rchItem.name, priceText);
             };
 
@@ -2773,8 +2784,8 @@
             const rchItem = selectedRchItem;
             const rchType = selectedRchType;
             const idLabel = rchType === 'saldo' ? 'رقم الهاتف' : 'ID الحساب';
-            const typeEmoji = rchType === 'app' ? '📲' : rchType === 'saldo' ? '💰' : '🎮';
-            const waMsg = `⚡ *طلب شحن* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n🎯 *الخدمة:* ${rchItem.name}\n👤 *${idLabel}:* ${uid}\n📦 *الكمية:* ${qtyText}\n💰 *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━`;
+            const typeEmoji = rchType === 'app' ? '' : rchType === 'saldo' ? '' : '';
+            const waMsg = ` *طلب شحن* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n *الخدمة:* ${rchItem.name}\n *${idLabel}:* ${uid}\n *الكمية:* ${qtyText}\n *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━`;
             push(ref(db, 'orders'), {
                 type: 'recharge',
                 itemName: rchItem.name,
@@ -2787,12 +2798,12 @@
             document.getElementById('rch-overlay').classList.remove('open');
             selectedRchItem = null;
             selectedQtyIdx = -1;
-            sendWaMsgSilent(waMsg);
+            sendWaMsgSilent(waMsg, 'recharge');
             showSuccessModal(rchItem.name, priceText);
         }
         window.openSupport = () => {
             const msg = 'مرحباً، أحتاج إلى مساعدة 👋\nأتواصل معكم من خلال المتجر';
-            sendWaMsgSilent(msg);
+            sendWaMsgSilent(msg, 'support');
         };
         window.closeWa = () => document.getElementById('wa-ov').classList.remove('open');
         window.openSearch = () => {
