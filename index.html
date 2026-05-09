@@ -784,25 +784,33 @@
             right: 0;
         }
         .drw-hdr {
-            padding: 18px 16px;
+            padding: 24px 16px 18px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            gap: 8px;
+            position: relative;
         }
-        .drw-hdr h3 {
-            font-size: 1rem;
-            font-weight: 800;
-            color: #fff;
+        .drw-hdr-top {
+            width: 100%;
+            display: flex;
+            justify-content: flex-left;
+            position: absolute;
+            top: 12px;
+            left: 12px;
         }
         .drw-close {
-            background: none;
-            border: none;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
             color: #94a3b8;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -812,6 +820,31 @@
         .drw-close:hover {
             background: rgba(255, 255, 255, 0.06);
             color: #fff;
+        }
+        .drw-logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 8px 30px rgba(244,63,94,0.4);
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .drw-logo-icon img {
+            width: 100%; height: 100%; object-fit: contain; border-radius: 18px;
+        }
+        .drw-logo-name {
+            font-size: 1rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            letter-spacing: -0.3px;
         }
         .drw-home {
             padding: 13px 16px;
@@ -1727,6 +1760,16 @@
         body.light-mode .theme-toggle { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
         body.light-mode .hbtn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1e293b; }
         body.light-mode .app-logo .name { background: linear-gradient(135deg, #1e293b, #f59e0b); -webkit-background-clip: text; }
+        body.light-mode .drw-logo-name { background: linear-gradient(135deg, #1e293b, #f43f5e); -webkit-background-clip: text; }
+        body.light-mode .drw-theme-label { color: #1e293b; }
+        body.light-mode .drw-theme-row { border-bottom-color: rgba(0,0,0,0.06); }
+        body.light-mode .ios-slider { background: rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.08); }
+        body.light-mode .drw-copy-brand { color: #94a3b8; }
+        body.light-mode .drw-copy-year { color: #cbd5e1; }
+        body.light-mode #splash-screen { background: #f0f4f8; }
+        body.light-mode .splash-bg-glow { opacity: 0.5; }
+        body.light-mode .splash-title { background: linear-gradient(135deg, #1e293b, #f43f5e); -webkit-background-clip: text; }
+        body.light-mode .splash-loader-track { background: rgba(0,0,0,0.08); }
             50% { transform: translateX(50%) translateY(7px); }
         }
 
@@ -1820,9 +1863,220 @@
             background: linear-gradient(135deg, #1e293b, #0f172a);
             color: #64748b;
         }
+
+        /* ========== SPLASH SCREEN ========== */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #0a0e17;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        #splash-screen.hide {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+        .splash-bg-glow {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 40%, rgba(244,63,94,0.18) 0%, transparent 65%),
+                radial-gradient(ellipse at 80% 80%, rgba(139,92,246,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .splash-logo-wrap {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            animation: splashLogoIn 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        @keyframes splashLogoIn {
+            from { opacity: 0; transform: scale(0.6) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .splash-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 46px;
+            box-shadow:
+                0 0 0 12px rgba(244,63,94,0.08),
+                0 0 0 24px rgba(244,63,94,0.04),
+                0 20px 60px rgba(244,63,94,0.4);
+            overflow: hidden;
+            animation: splashPulse 2s ease-in-out infinite;
+        }
+        @keyframes splashPulse {
+            0%, 100% { box-shadow: 0 0 0 12px rgba(244,63,94,0.08), 0 0 0 24px rgba(244,63,94,0.04), 0 20px 60px rgba(244,63,94,0.4); }
+            50% { box-shadow: 0 0 0 16px rgba(244,63,94,0.12), 0 0 0 32px rgba(244,63,94,0.06), 0 20px 80px rgba(244,63,94,0.55); }
+        }
+        .splash-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 24px; }
+        .splash-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 30%, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            text-align: center;
+            animation: splashTitleIn 0.8s 0.15s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        @keyframes splashTitleIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .splash-subtitle {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-top: -10px;
+            animation: splashTitleIn 0.8s 0.25s both;
+        }
+        .splash-loader {
+            margin-top: 48px;
+            width: 200px;
+            animation: splashTitleIn 0.8s 0.35s both;
+        }
+        .splash-loader-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .splash-loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #f43f5e, #f59e0b, #f43f5e);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            animation: splashLoad 1.8s ease forwards, splashBarShimmer 1.2s linear infinite;
+            width: 0%;
+        }
+        @keyframes splashLoad {
+            0% { width: 0%; }
+            30% { width: 40%; }
+            70% { width: 75%; }
+            90% { width: 90%; }
+            100% { width: 100%; }
+        }
+        @keyframes splashBarShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .splash-loader-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.68rem;
+            color: #475569;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== DRAWER THEME ROW ========== */
+        .drw-theme-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .drw-theme-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+        .drw-theme-label .dti {
+            width: 34px;
+            height: 34px;
+            background: rgba(139,92,246,0.12);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        /* iOS-style toggle switch */
+        .ios-toggle {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            cursor: pointer;
+        }
+        .ios-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .ios-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.12);
+            border-radius: 28px;
+            transition: background 0.3s;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ios-slider::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .ios-toggle input:checked + .ios-slider { background: linear-gradient(135deg, #6d28d9, #8b5cf6); border-color: rgba(139,92,246,0.4); }
+        .ios-toggle input:checked + .ios-slider::before { transform: translateX(22px); }
+
+        /* drawer copyright */
+        .drw-copy {
+            padding: 16px;
+            text-align: center;
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .drw-copy-brand {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #475569;
+            letter-spacing: 0.5px;
+        }
+        .drw-copy-brand span { color: #6d28d9; }
+        .drw-copy-year {
+            font-size: 0.6rem;
+            color: #334155;
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-bg-glow"></div>
+        <div class="splash-logo-wrap">
+            <div class="splash-icon" id="splash-icon">📱</div>
+            <div class="splash-title" id="splash-title">مركز ابل ستور</div>
+            <div class="splash-subtitle">متجرك الرقمي الموثوق</div>
+            <div class="splash-loader">
+                <div class="splash-loader-track">
+                    <div class="splash-loader-bar"></div>
+                </div>
+                <div class="splash-loader-text">جارٍ التحضير...</div>
+            </div>
+        </div>
+    </div>
 
     <header id="app-header">
         <div class="header-inner">
@@ -1834,10 +2088,9 @@
                 </div>
             </div>
             <div class="h-right">
-                <div class="theme-toggle">
-                    <button class="theme-toggle-btn active" id="btn-night" onclick="setTheme('dark')" title="وضع ليلي">🌙</button>
-                    <button class="theme-toggle-btn" id="btn-day" onclick="setTheme('light')" title="وضع نهاري">☀️</button>
-                </div>
+                <!-- theme toggle moved to drawer -->
+                <button class="theme-toggle-btn active" id="btn-night" style="display:none"></button>
+                <button class="theme-toggle-btn" id="btn-day" style="display:none"></button>
             </div>
         </div>
     </header>
@@ -1868,9 +2121,31 @@
     <!-- Drawer -->
     <div class="drw-overlay" id="drw-overlay" onclick="closeDrawer()"></div>
     <div class="drawer" id="drawer">
-        <div class="drw-hdr"><h3>🗂️ الأقسام</h3><button class="drw-close" onclick="closeDrawer()">×</button></div>
+        <div class="drw-hdr">
+            <button class="drw-close" onclick="closeDrawer()">×</button>
+            <div class="drw-logo-icon" id="drw-icon">📱</div>
+            <div class="drw-logo-name" id="drw-name">مركز ابل ستور</div>
+        </div>
         <button class="drw-home" onclick="goHome();closeDrawer()">🏠 الرئيسية</button>
         <div id="drw-cats"></div>
+
+        <!-- Theme toggle inside drawer like screenshot -->
+        <div class="drw-theme-row">
+            <div class="drw-theme-label">
+                <div class="dti" id="drw-theme-icon">🌙</div>
+                <span id="drw-theme-text">الوضع الداكن</span>
+            </div>
+            <label class="ios-toggle">
+                <input type="checkbox" id="drw-dark-toggle" checked onchange="toggleThemeFromDrawer(this)"/>
+                <span class="ios-slider"></span>
+            </label>
+        </div>
+
+        <!-- Copyright -->
+        <div class="drw-copy">
+            <div class="drw-copy-brand">برمجة وتصميم <span>ahmad-el</span></div>
+            <div class="drw-copy-year">© 2026 جميع الحقوق محفوظة</div>
+        </div>
     </div>
 
     <!-- Search -->
@@ -2087,19 +2362,29 @@
 
         function applyIcon(d) {
             const el = document.getElementById('app-icon');
-            if (!el) return;
-            if (d.type === 'url' && d.value) {
-                el.innerHTML =
-                    `<img src="${d.value}" style="width:100%;height:100%;object-fit:contain;border-radius:10px" alt="logo"/>`;
-                el.style.fontSize = '0';
-            } else if (d.value) {
-                el.textContent = d.value;
-                el.style.fontSize = '18px';
+            const drwEl = document.getElementById('drw-icon');
+            const splashEl = document.getElementById('splash-icon');
+            function setIconEl(target, radius) {
+                if (!target) return;
+                if (d.type === 'url' && d.value) {
+                    target.innerHTML = `<img src="${d.value}" style="width:100%;height:100%;object-fit:contain;border-radius:${radius}" alt="logo"/>`;
+                    target.style.fontSize = '0';
+                } else if (d.value) {
+                    target.textContent = d.value;
+                    target.style.fontSize = '';
+                }
             }
+            setIconEl(el, '10px');
+            setIconEl(drwEl, '18px');
+            setIconEl(splashEl, '24px');
         }
 
         function applyName(n) {
             document.getElementById('app-name').textContent = n;
+            const drwName = document.getElementById('drw-name');
+            if (drwName) drwName.textContent = n;
+            const splashTitle = document.getElementById('splash-title');
+            if (splashTitle) splashTitle.textContent = n;
             document.getElementById('footer-nm').textContent = n;
             document.title = n;
         }
@@ -3012,6 +3297,7 @@
         });
         // Theme toggle
         window.setTheme = function(mode) {
+            const isDark = mode !== 'light';
             if (mode === 'light') {
                 document.body.classList.add('light-mode');
                 document.getElementById('btn-day').classList.add('active');
@@ -3023,9 +3309,48 @@
                 document.getElementById('btn-day').classList.remove('active');
                 localStorage.setItem('theme', 'dark');
             }
+            // sync drawer toggle
+            const drwToggle = document.getElementById('drw-dark-toggle');
+            if (drwToggle) drwToggle.checked = isDark;
+            const drwIcon = document.getElementById('drw-theme-icon');
+            const drwText = document.getElementById('drw-theme-text');
+            if (drwIcon) drwIcon.textContent = isDark ? '🌙' : '☀️';
+            if (drwText) drwText.textContent = isDark ? 'الوضع الداكن' : 'الوضع النهاري';
         }
+
+        window.toggleThemeFromDrawer = function(checkbox) {
+            window.setTheme(checkbox.checked ? 'dark' : 'light');
+        }
+
         // Apply saved theme on load
         if (localStorage.getItem('theme') === 'light') window.setTheme('light');
+        else window.setTheme('dark');
+
+        // ====== SPLASH SCREEN ======
+        (function() {
+            // Update splash icon/title from app settings when available
+            const origApplyIcon = window.applyIcon;
+            const origApplyName = window.applyName;
+
+            function syncSplash() {
+                const iconEl = document.getElementById('app-icon');
+                const splashIconEl = document.getElementById('splash-icon');
+                if (iconEl && splashIconEl) splashIconEl.innerHTML = iconEl.innerHTML || iconEl.textContent;
+                const nameEl = document.getElementById('app-name');
+                const splashTitleEl = document.getElementById('splash-title');
+                if (nameEl && splashTitleEl) splashTitleEl.textContent = nameEl.textContent || nameEl.innerText;
+            }
+
+            // Hide splash after 2.2s (matching load bar animation)
+            setTimeout(() => {
+                syncSplash();
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.classList.add('hide');
+                    setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
+                }
+            }, 2200);
+        })();
 
         console.log('🚀 مركز ابل ستور - الإصدار المحسن جاهز ✓');
     </script>
