@@ -2978,6 +2978,7 @@
         <div class="profile-card">
             <div class="profile-avatar gold-shimmer" id="profile-avatar">؟</div>
             <div class="profile-name" id="profile-name">—</div>
+            <div id="profile-card-username" style="font-size:0.78rem;font-weight:700;color:#64748b;direction:ltr;margin-bottom:4px;letter-spacing:0.5px;">@—</div>
             <div class="profile-tier-badge gold-shimmer" id="profile-tier-badge">🆕 عضو جديد</div>
             <div class="profile-join-row">📅 عضو منذ <span id="profile-join-date">—</span></div>
         </div>
@@ -3039,32 +3040,6 @@
             </div>
         </div>
 
-        <!-- إدخال كود الخصم -->
-        <div class="profile-progress-card" style="margin-bottom:14px;">
-            <div style="font-size:0.82rem;font-weight:800;color:#94a3b8;margin-bottom:10px;">🎟️ كود الخصم</div>
-            <div style="display:flex;gap:8px;">
-                <input type="text" id="profile-coupon-input" placeholder="أدخل الكود هنا..." maxlength="30" dir="ltr" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;font-size:0.85rem;font-weight:700;color:#fff;font-family:inherit;outline:none;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"/>
-                <button onclick="window.applyCouponCode()" style="background:var(--gold-grad);color:#1a1200;border:none;border-radius:10px;padding:10px 16px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;">✅ تطبيق</button>
-            </div>
-            <div id="profile-coupon-msg" style="margin-top:6px;font-size:0.72rem;font-weight:700;min-height:16px;"></div>
-            <!-- الكود المفعّل حالياً -->
-            <div id="profile-active-coupon" style="display:none;margin-top:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:8px 12px;display:none;">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                    <div style="font-size:0.78rem;font-weight:900;color:#34d399;">🎟️ كود مفعّل: <span id="profile-active-coupon-code" style="direction:ltr;display:inline-block;"></span></div>
-                    <div style="font-size:0.9rem;font-weight:900;color:#10b981;" id="profile-active-coupon-pct"></div>
-                    <button onclick="window.removeCoupon()" style="background:rgba(244,63,94,0.15);border:none;border-radius:6px;padding:3px 8px;font-size:0.7rem;color:#fca5a5;cursor:pointer;font-family:inherit;">إزالة</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- خانة اسم المستخدم -->
-        <div class="profile-progress-card" style="margin-bottom:14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span style="font-size:0.82rem;font-weight:800;color:#94a3b8;">🆔 اسم المستخدم</span>
-                <span id="profile-username-display" style="font-size:0.88rem;font-weight:900;color:#f59e0b;direction:ltr;">—</span>
-            </div>
-        </div>
-
         <!-- تخفيض خاص -->
         <div id="profile-discount-card" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.05));border:1px solid rgba(16,185,129,0.35);border-radius:18px;padding:16px;margin-bottom:14px;">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
@@ -3083,6 +3058,31 @@
         <button onclick="window.logoutUser()" style="width:100%;margin-top:14px;background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.25);color:#f43f5e;border-radius:14px;padding:13px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;">
             🚪 تسجيل الخروج
         </button>
+    </div>
+
+    <!-- COUPON VIEW - صفحة كود الخصم المستقلة -->
+    <div id="coupon-view" style="display:none;max-width:1200px;margin:0 auto 40px;padding:0 14px;">
+        <div class="prod-topbar">
+            <button class="back-btn" onclick="goHome();setActiveNav('bn-home')">← رجوع</button>
+            <div class="cat-tb"><span class="ct-ico">🎟️</span><span class="ct-nm">كود الخصم</span></div>
+        </div>
+
+        <div class="profile-progress-card">
+            <div style="font-size:0.82rem;font-weight:800;color:#94a3b8;margin-bottom:10px;">🎟️ كود الخصم</div>
+            <div style="display:flex;gap:8px;">
+                <input type="text" id="profile-coupon-input" placeholder="أدخل الكود هنا..." maxlength="30" dir="ltr" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;font-size:0.85rem;font-weight:700;color:#fff;font-family:inherit;outline:none;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"/>
+                <button onclick="window.applyCouponCode()" style="background:var(--gold-grad);color:#1a1200;border:none;border-radius:10px;padding:10px 16px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;">✅ تطبيق</button>
+            </div>
+            <div id="profile-coupon-msg" style="margin-top:6px;font-size:0.72rem;font-weight:700;min-height:16px;"></div>
+            <!-- الكود المفعّل حالياً -->
+            <div id="profile-active-coupon" style="display:none;margin-top:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:8px 12px;display:none;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="font-size:0.78rem;font-weight:900;color:#34d399;">🎟️ كود مفعّل: <span id="profile-active-coupon-code" style="direction:ltr;display:inline-block;"></span></div>
+                    <div style="font-size:0.9rem;font-weight:900;color:#10b981;" id="profile-active-coupon-pct"></div>
+                    <button onclick="window.removeCoupon()" style="background:rgba(244,63,94,0.15);border:none;border-radius:6px;padding:3px 8px;font-size:0.7rem;color:#fca5a5;cursor:pointer;font-family:inherit;">إزالة</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Orders Status Modal -->
@@ -3258,6 +3258,7 @@
     <div class="bottom-nav">
         <button class="bn-item active" id="bn-home" onclick="goHome();setActiveNav('bn-home')"><span class="bn-icon">🏠</span><span class="bn-label">الرئيسية</span></button>
         <button class="bn-item" id="bn-search" onclick="openSearch();setActiveNav('bn-search')"><span class="bn-icon">🔍</span><span class="bn-label">بحث</span></button>
+        <button class="bn-item" id="bn-coupon" onclick="window.openCouponView();setActiveNav('bn-coupon')"><span class="bn-icon">🎟️</span><span class="bn-label">كود الخصم</span></button>
         <button class="bn-item" id="bn-profile" onclick="window.openProfile();setActiveNav('bn-profile')"><span class="bn-icon">👤</span><span class="bn-label">حسابي</span></button>
         <button class="bn-item" id="bn-support" onclick="openSupport()"><span class="bn-icon">💬</span><span class="bn-label">الدعم</span></button>
     </div>
@@ -3879,6 +3880,8 @@
 
             document.getElementById('profile-avatar').textContent = (profile.name || '؟').trim().charAt(0).toUpperCase();
             document.getElementById('profile-name').textContent = profile.name;
+            const cardUn = document.getElementById('profile-card-username');
+            if (cardUn) cardUn.textContent = profile.username ? '@' + profile.username : '';
             document.getElementById('profile-tier-badge').innerHTML = `${tier.icon} ${tier.label}`;
             document.getElementById('profile-join-date').textContent = joinDate;
             document.getElementById('profile-month-count').textContent = monthlyCount;
@@ -3974,8 +3977,24 @@
             document.getElementById('products-view').style.display = 'none';
             const sb = document.getElementById('home-search-bar');
             if (sb) sb.style.display = 'none';
+            const cv = document.getElementById('coupon-view');
+            if (cv) cv.style.display = 'none';
             document.getElementById('profile-view').style.display = 'block';
             renderProfile();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ============ فتح صفحة كود الخصم ============
+        window.openCouponView = () => {
+            currentCatId = null;
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('products-view').style.display = 'none';
+            const sb = document.getElementById('home-search-bar');
+            if (sb) sb.style.display = 'none';
+            const pv = document.getElementById('profile-view');
+            if (pv) pv.style.display = 'none';
+            document.getElementById('coupon-view').style.display = 'block';
+            updateCouponDisplay();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -4576,7 +4595,8 @@
                                 `<div class="ri-price-badge">${(() => { const d = applyDiscountToPrice(first.price); return d.hasDiscount ? 'من $'+d.final+' <s style=\'opacity:0.5\'>$'+first.price+'</s>' : 'من $'+first.price; })()}</div>`;
                         }
                     } else if (mode === 'auto' && item.minPrice) {
-                        priceBadge = `<div class="ri-price-badge">من $${item.minPrice}</div>`;
+                        const _dmp = applyDiscountToPrice(item.minPrice);
+                        priceBadge = `<div class="ri-price-badge">${_dmp.hasDiscount ? 'من $'+_dmp.final+' <s style=\'opacity:0.5\'>$'+item.minPrice+'</s>' : 'من $'+item.minPrice}</div>`;
                     }
                 } catch (e) {}
                 const typeIcon = type === 'app' ? '📲' : type === 'saldo' ? '💰' : '🎮';
@@ -4610,6 +4630,8 @@
             document.getElementById('products-view').style.display = 'block';
             const profileView = document.getElementById('profile-view');
             if (profileView) profileView.style.display = 'none';
+            const couponView = document.getElementById('coupon-view');
+            if (couponView) couponView.style.display = 'none';
             const simView = document.getElementById('sim-lines-view');
             if (simView) simView.style.display = 'none';
             document.getElementById('cv-ico').textContent = cat.icon || '📁';
@@ -4640,6 +4662,8 @@
             document.getElementById('home-view').style.display = 'block';
             const profileView = document.getElementById('profile-view');
             if (profileView) profileView.style.display = 'none';
+            const couponView = document.getElementById('coupon-view');
+            if (couponView) couponView.style.display = 'none';
             const simView = document.getElementById('sim-lines-view');
             if (simView) simView.style.display = 'none';
             const sb = document.getElementById('home-search-bar');
@@ -4760,7 +4784,7 @@
                     <div class="qty-grid">${pkgs.map((pk,i)=>`
                         <div class="qty-btn" onclick="window.selectPackage(${i})" id="pkg-${i}">
                             <div style="font-weight:700;">${pk.label}</div>
-                            <div style="font-size:.72rem;color:#f59e0b;">${pk.price?'$'+pk.price:''}</div>
+                            <div style="font-size:.72rem;color:#f59e0b;">${pk.price?(()=>{const _d=applyDiscountToPrice(pk.price);return _d.hasDiscount?'<s style=\'opacity:0.5;font-size:0.65rem\'>$'+pk.price+'</s> $'+_d.final:'$'+pk.price;})():''}</div>
                         </div>`).join('')}</div>
                     <div style="margin-top:8px;"><input class="rch-input" id="custom-qty" type="text" placeholder="أو اكتب الكمية يدوياً" oninput="window.calculatePrice()"/></div>` :
                     `<div><input class="rch-input" id="custom-qty" type="text" placeholder="أدخل الكمية" oninput="window.calculatePrice()"/></div>`;
@@ -4816,10 +4840,12 @@
                     minP = selectedRchItem?.minPrice || 1;
                 if (qty >= minQ && minQ > 0) {
                     const price = ((qty / minQ) * minP).toFixed(2);
-                    val.textContent = '$' + price;
+                    const _dAuto = applyDiscountToPrice(price);
+                    const dispP = _dAuto.hasDiscount ? _dAuto.final : price;
+                    val.textContent = _dAuto.hasDiscount ? `$${_dAuto.final} (بدل $${price})` : '$' + price;
                     disp.classList.add('show');
                     if (infoGrid) { infoGrid.style.display = 'grid'; }
-                    if (infoTotal) infoTotal.textContent = '$' + price;
+                    if (infoTotal) infoTotal.textContent = '$' + dispP;
                     if (infoQty) infoQty.textContent = qty;
                     if (pill) { pill.style.display = 'none'; }
                 } else {
@@ -4860,15 +4886,19 @@
                 const qty = parseFloat(rawQty);
                 if (!rawQty || qty < minQ) { showToast('⚠️ أدخل كمية لا تقل عن ' + minQ); return; }
                 const price = ((qty / minQ) * minP).toFixed(2);
+                const _dSend = applyDiscountToPrice(price);
                 qtyText = rawQty + (curr ? ' ' + curr : '');
-                priceText = '$' + price;
+                priceText = _dSend.hasDiscount ? '$' + _dSend.final + ' (بعد خصم ' + _dSend.discPct + '%)' : '$' + price;
             } else {
                 if (selectedQtyIdx >= 0) {
                     try {
                         const pkgs = JSON.parse(selectedRchItem.packages || '[]');
                         if (pkgs[selectedQtyIdx]) {
                             qtyText = pkgs[selectedQtyIdx].label + (curr ? ' ' + curr : '');
-                            priceText = pkgs[selectedQtyIdx].price ? '$' + pkgs[selectedQtyIdx].price : '';
+                            if (pkgs[selectedQtyIdx].price) {
+                                const _dPkg = applyDiscountToPrice(pkgs[selectedQtyIdx].price);
+                                priceText = _dPkg.hasDiscount ? '$' + _dPkg.final + ' (بعد خصم ' + _dPkg.discPct + '%)' : '$' + pkgs[selectedQtyIdx].price;
+                            } else { priceText = ''; }
                         }
                     } catch (e) {}
                 }
@@ -4939,15 +4969,19 @@
                 const qty = parseFloat(rawQty);
                 if (!rawQty || qty < minQ) { showToast('⚠️ أدخل كمية لا تقل عن ' + minQ); return; }
                 const price = ((qty / minQ) * minP).toFixed(2);
+                const _dWa = applyDiscountToPrice(price);
                 qtyText = rawQty + (curr ? ' ' + curr : '');
-                priceText = '$' + price;
+                priceText = _dWa.hasDiscount ? '$' + _dWa.final + ' (بعد خصم ' + _dWa.discPct + '%)' : '$' + price;
             } else {
                 if (selectedQtyIdx >= 0) {
                     try {
                         const pkgs = JSON.parse(selectedRchItem.packages || '[]');
                         if (pkgs[selectedQtyIdx]) {
                             qtyText = pkgs[selectedQtyIdx].label + (curr ? ' ' + curr : '');
-                            priceText = pkgs[selectedQtyIdx].price ? '$' + pkgs[selectedQtyIdx].price : '';
+                            if (pkgs[selectedQtyIdx].price) {
+                                const _dWaPkg = applyDiscountToPrice(pkgs[selectedQtyIdx].price);
+                                priceText = _dWaPkg.hasDiscount ? '$' + _dWaPkg.final + ' (بعد خصم ' + _dWaPkg.discPct + '%)' : '$' + pkgs[selectedQtyIdx].price;
+                            } else { priceText = ''; }
                         }
                     } catch(e) {}
                 }
@@ -5467,6 +5501,7 @@
             if (document.getElementById('shipping-modal').classList.contains('open')) { closeShippingModal(); return; }
             if (document.getElementById('tempSpecModal')) { document.getElementById('tempSpecModal').remove(); return; }
             if (document.getElementById('profile-view').style.display === 'block') { goHome(); setActiveNav('bn-home'); return; }
+            if (document.getElementById('coupon-view').style.display === 'block') { goHome(); setActiveNav('bn-home'); return; }
             if (currentCatId) { goHome(); return; }
             // إذا كنا في الرئيسية لا تخرج من الموقع
         }
