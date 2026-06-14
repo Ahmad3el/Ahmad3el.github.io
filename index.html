@@ -3027,6 +3027,36 @@
             <div class="profile-progress-next" id="profile-next-tier">—</div>
         </div>
 
+        <!-- شارة مكافأة المستوى التالي -->
+        <div id="profile-next-reward-card" style="display:none;background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(99,102,241,0.08));border:1px solid rgba(245,158,11,0.25);border-radius:18px;padding:14px 16px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:1.6rem;" id="profile-reward-icon">🎯</span>
+                <div style="flex:1;">
+                    <div style="font-size:0.82rem;font-weight:900;color:#f59e0b;" id="profile-reward-title">اصل إلى المستوى التالي!</div>
+                    <div style="font-size:0.7rem;color:#94a3b8;margin-top:3px;" id="profile-reward-desc">—</div>
+                </div>
+                <span style="font-size:1.4rem;">🎁</span>
+            </div>
+        </div>
+
+        <!-- إدخال كود الخصم -->
+        <div class="profile-progress-card" style="margin-bottom:14px;">
+            <div style="font-size:0.82rem;font-weight:800;color:#94a3b8;margin-bottom:10px;">🎟️ كود الخصم</div>
+            <div style="display:flex;gap:8px;">
+                <input type="text" id="profile-coupon-input" placeholder="أدخل الكود هنا..." maxlength="30" dir="ltr" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 12px;font-size:0.85rem;font-weight:700;color:#fff;font-family:inherit;outline:none;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"/>
+                <button onclick="window.applyCouponCode()" style="background:var(--gold-grad);color:#1a1200;border:none;border-radius:10px;padding:10px 16px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;">✅ تطبيق</button>
+            </div>
+            <div id="profile-coupon-msg" style="margin-top:6px;font-size:0.72rem;font-weight:700;min-height:16px;"></div>
+            <!-- الكود المفعّل حالياً -->
+            <div id="profile-active-coupon" style="display:none;margin-top:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:8px 12px;display:none;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="font-size:0.78rem;font-weight:900;color:#34d399;">🎟️ كود مفعّل: <span id="profile-active-coupon-code" style="direction:ltr;display:inline-block;"></span></div>
+                    <div style="font-size:0.9rem;font-weight:900;color:#10b981;" id="profile-active-coupon-pct"></div>
+                    <button onclick="window.removeCoupon()" style="background:rgba(244,63,94,0.15);border:none;border-radius:6px;padding:3px 8px;font-size:0.7rem;color:#fca5a5;cursor:pointer;font-family:inherit;">إزالة</button>
+                </div>
+            </div>
+        </div>
+
         <!-- خانة اسم المستخدم -->
         <div class="profile-progress-card" style="margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -3244,7 +3274,7 @@
     </script>
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, onValue, push } from "firebase/database";
+        import { getDatabase, ref, onValue, push, set, get } from "firebase/database";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAxMB-81yhQ05Ct5j_rhpkZF0yMWqLJwbI",
@@ -3557,7 +3587,6 @@
             errEl.textContent = '⏳ جارٍ التحقق...';
             errEl.style.color = '#f59e0b';
             try {
-                const { get } = await import('firebase/database');
                 const snap = await get(ref(db, 'users'));
                 const allUsers = snap.val() ? Object.values(snap.val()) : [];
                 if (allUsers.some(u => u.username === username)) {
@@ -3579,7 +3608,6 @@
 
             // حفظ في Firebase
             try {
-                const { set } = await import('firebase/database');
                 await set(ref(db, 'users/' + profile.userId), {
                     name: profile.name, username: profile.username,
                     password: pass,
@@ -3608,7 +3636,6 @@
             errEl.style.color = '#f59e0b';
 
             try {
-                const { get } = await import('firebase/database');
                 const snap = await get(ref(db, 'users'));
                 const allUsers = snap.val() ? Object.entries(snap.val()).map(([id,v]) => ({...v, _fbKey: id})) : [];
                 const found = allUsers.find(u => u.username === username);
@@ -3717,8 +3744,8 @@
 
         window.openWhatsAppLocked = () => {
             const profile = currentUserProfile;
-            const msg = `مرحباً، حسابي مقفل وأرجو المساعدة${profile ? '
-اسم المستخدم: ' + (profile.username || profile.name) : ''}`;
+            const extra = profile ? '\nاسم المستخدم: ' + (profile.username || profile.name) : '';
+            const msg = `مرحباً، حسابي مقفل وأرجو المساعدة${extra}`;
             sendWaMsgSilent(msg, 'support');
         };
 
@@ -3878,6 +3905,33 @@
                     ? `🎯 باقي ${tier.next - acceptedCount} طلب ناجح للوصول إلى ${getMembershipTier(tier.next).label}`
                     : '👑 لقد وصلت إلى أعلى مستوى عضوية TOP! شكراً لولائك الرائع 🌟';
             }
+
+            // شارة مكافأة المستوى التالي
+            const rewardCard = document.getElementById('profile-next-reward-card');
+            const rewardIcon = document.getElementById('profile-reward-icon');
+            const rewardTitle = document.getElementById('profile-reward-title');
+            const rewardDesc = document.getElementById('profile-reward-desc');
+            if (rewardCard) {
+                if (tier.next) {
+                    // تحديد المكافأة حسب المستوى التالي
+                    const rewards = {
+                        100: { icon: '🥈', title: 'اصل للعضو الفضي واحصل على كود خصم حصري!', desc: 'أكمل ' + (100 - acceptedCount) + ' طلب ناجح واحصل على كود خصم خاص 🎁' },
+                        200: { icon: '🥇', title: 'اصل للعضو الذهبي واحصل على كود خصم حصري!', desc: 'أكمل ' + (200 - acceptedCount) + ' طلب ناجح واحصل على كود خصم ذهبي 🌟' },
+                        300: { icon: '💎', title: 'اصل للعضو الألماسي واحصل على كود خصم!', desc: 'أكمل ' + (300 - acceptedCount) + ' طلب ناجح واحصل على تخفيض ألماسي 💎' },
+                        400: { icon: '👑', title: 'اصل لمستوى TOP واحصل على كود خصم ملكي!', desc: 'أكمل ' + (400 - acceptedCount) + ' طلب ناجح للوصول لأعلى مستوى 👑' },
+                    };
+                    const r = rewards[tier.next] || { icon: '🎯', title: 'اصل للمستوى التالي!', desc: 'واحصل على كود خصم حصري' };
+                    rewardCard.style.display = 'block';
+                    if (rewardIcon) rewardIcon.textContent = r.icon;
+                    if (rewardTitle) rewardTitle.textContent = r.title;
+                    if (rewardDesc) rewardDesc.textContent = r.desc;
+                } else {
+                    rewardCard.style.display = 'none';
+                }
+            }
+
+            // تحديث عرض الكوبون النشط
+            updateCouponDisplay();
 
             // تطبيق التخفيض وتحديث بطاقة الرئيسية
             applyUserDiscount(profile);
@@ -4059,16 +4113,90 @@
 
         // بطاقة المنتج
         // الحصول على نسبة تخفيض المستخدم الحالي
-        function getUserDiscountRate() {
-            const disc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--user-discount') || '0');
-            return isNaN(disc) ? 0 : disc;
+        // ===== نظام الخصم الموحّد (تخفيض الأدمن + كود الكوبون) =====
+        let _activeCoupon = null; // { code, discPct }
+
+        function getTotalDiscountRate() {
+            // تخفيض الأدمن
+            const adminDisc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--user-discount') || '0') || 0;
+            // تخفيض الكوبون
+            const couponDisc = _activeCoupon ? (_activeCoupon.discPct || 0) : 0;
+            // يُأخذ الأعلى (أو يُجمعان حسب السياسة - هنا نأخذ الأعلى)
+            return Math.max(adminDisc, couponDisc);
         }
+        function getUserDiscountRate() { return getTotalDiscountRate(); }
+
         function applyDiscountToPrice(price) {
-            const disc = getUserDiscountRate();
+            const disc = getTotalDiscountRate();
             if (!disc || !price) return { original: price, final: price, hasDiscount: false };
             const final = (parseFloat(price) * (1 - disc/100)).toFixed(2);
             return { original: price, final, hasDiscount: true, discPct: disc };
         }
+
+        // تطبيق كود الكوبون
+        window.applyCouponCode = async () => {
+            const input = document.getElementById('profile-coupon-input');
+            const msgEl = document.getElementById('profile-coupon-msg');
+            const code = (input.value || '').trim().toUpperCase();
+            if (!code) { msgEl.textContent = '⚠️ أدخل كود الخصم أولاً'; msgEl.style.color = '#f59e0b'; return; }
+            msgEl.textContent = '⏳ جارٍ التحقق...'; msgEl.style.color = '#94a3b8';
+            try {
+                const snap = await get(ref(db, 'coupons/' + code));
+                const coupon = snap.val();
+                if (!coupon) { msgEl.textContent = '❌ الكود غير صحيح أو غير موجود'; msgEl.style.color = '#f43f5e'; return; }
+                // التحقق من الصلاحية
+                const now = Date.now();
+                if (coupon.expiresAt && now > coupon.expiresAt) { msgEl.textContent = '❌ انتهت صلاحية هذا الكود'; msgEl.style.color = '#f43f5e'; return; }
+                if (coupon.usedCount !== undefined && coupon.maxUses !== undefined && coupon.usedCount >= coupon.maxUses) {
+                    msgEl.textContent = '❌ تم استنفاد عدد مرات استخدام هذا الكود'; msgEl.style.color = '#f43f5e'; return;
+                }
+                // تطبيق الكوبون
+                _activeCoupon = { code, discPct: coupon.discPct || 0 };
+                // تحديث عداد الاستخدام في Firebase
+                try { await set(ref(db, 'coupons/' + code + '/usedCount'), (coupon.usedCount || 0) + 1); } catch(e) {}
+                msgEl.textContent = '';
+                input.value = '';
+                updateCouponDisplay();
+                refreshAllPrices();
+                showToast('🎉 تم تطبيق خصم ' + coupon.discPct + '% بنجاح!');
+            } catch(e) {
+                msgEl.textContent = '❌ خطأ في الاتصال، حاول مجدداً'; msgEl.style.color = '#f43f5e';
+            }
+        };
+
+        window.removeCoupon = () => {
+            _activeCoupon = null;
+            updateCouponDisplay();
+            refreshAllPrices();
+            showToast('تم إزالة كود الخصم');
+        };
+
+        function updateCouponDisplay() {
+            const card = document.getElementById('profile-active-coupon');
+            const codeEl = document.getElementById('profile-active-coupon-code');
+            const pctEl = document.getElementById('profile-active-coupon-pct');
+            if (!card) return;
+            if (_activeCoupon) {
+                card.style.display = 'block';
+                if (codeEl) codeEl.textContent = _activeCoupon.code;
+                if (pctEl) pctEl.textContent = _activeCoupon.discPct + '% خصم';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+
+        // إعادة رسم الأسعار في كل المكان بعد تغيير الخصم
+        function refreshAllPrices() {
+            // إعادة رسم التصنيفات الحالية
+            if (typeof renderCats === 'function') try { renderCats(); } catch(e) {}
+            // إعادة رسم المنتجات إن كانت ظاهرة
+            const pv = document.getElementById('products-view');
+            if (pv && pv.style.display !== 'none' && typeof renderProducts === 'function') {
+                try { renderProducts(currentCatId); } catch(e) {}
+            }
+            renderProfile();
+        }
+        window.refreshAllPrices = refreshAllPrices;
 
         function productCard(p) {
             const disc = applyDiscountToPrice(p.price);
@@ -4445,7 +4573,7 @@
                             const first = pkgs[0];
                             const last = pkgs[pkgs.length - 1];
                             if (first.price) priceBadge =
-                                `<div class="ri-price-badge">من $${first.price}${pkgs.length>1&&last.price?' — $'+last.price:''}</div>`;
+                                `<div class="ri-price-badge">${(() => { const d = applyDiscountToPrice(first.price); return d.hasDiscount ? 'من $'+d.final+' <s style=\'opacity:0.5\'>$'+first.price+'</s>' : 'من $'+first.price; })()}</div>`;
                         }
                     } else if (mode === 'auto' && item.minPrice) {
                         priceBadge = `<div class="ri-price-badge">من $${item.minPrice}</div>`;
@@ -4703,12 +4831,15 @@
                 try {
                     const pkgs = JSON.parse(selectedRchItem.packages || '[]');
                     if (pkgs[selectedQtyIdx] && pkgs[selectedQtyIdx].price) {
-                        val.textContent = '$' + pkgs[selectedQtyIdx].price;
+                        const rawP = pkgs[selectedQtyIdx].price;
+                        const dscR = applyDiscountToPrice(rawP);
+                        const dispPrice = dscR.hasDiscount ? dscR.final : rawP;
+                        val.textContent = dscR.hasDiscount ? `$${dscR.final} (بدل $${rawP})` : '$' + rawP;
                         disp.classList.add('show');
                         if (infoGrid) { infoGrid.style.display = 'grid'; }
-                        if (infoTotal) infoTotal.textContent = '$' + pkgs[selectedQtyIdx].price;
+                        if (infoTotal) infoTotal.textContent = '$' + dispPrice;
                         if (infoQty) infoQty.textContent = pkgs[selectedQtyIdx].label || qty;
-                        if (pill) { pill.style.display = 'inline-block'; pill.textContent = '$ ' + pkgs[selectedQtyIdx].price; }
+                        if (pill) { pill.style.display = 'inline-block'; pill.textContent = '$ ' + dispPrice + (dscR.hasDiscount ? ' 🏷️' : ''); }
                     }
                 } catch (e) {}
             }
@@ -5429,7 +5560,6 @@
                         // التحقق من القفل أولاً من Firebase
                         if (profile.userId) {
                             try {
-                                const { get } = await import('firebase/database');
                                 const snap = await get(ref(db, 'users/' + profile.userId));
                                 const fbData = snap.val();
                                 if (fbData) {
