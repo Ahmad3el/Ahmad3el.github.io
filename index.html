@@ -16,6 +16,9 @@
             --accent3: #8b5cf6;
             --accent4: #06b6d4;
             --gold: #f59e0b;
+            --gold-light: #fde68a;
+            --gold-dark: #b45309;
+            --gold-grad: linear-gradient(135deg, #fde68a 0%, #f59e0b 55%, #b45309 100%);
             --green: #10b981;
             --text: #e2e8f0;
             --text2: #94a3b8;
@@ -559,6 +562,35 @@
             transform: translateY(-2px);
         }
         .btn-buy:active { transform: scale(0.96); }
+
+        /* ===== غير متاح ===== */
+        .card-unavailable {
+            pointer-events: none;
+            opacity: 0.55;
+            filter: grayscale(0.4);
+            position: relative;
+        }
+        .unavailable-badge {
+            position: absolute;
+            top: 8px; right: 8px; z-index: 10;
+            background: rgba(15,15,25,0.82);
+            border: 1px solid rgba(239,68,68,0.45);
+            color: #fca5a5;
+            font-size: 0.6rem; font-weight: 900;
+            padding: 3px 8px; border-radius: 20px;
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+        .btn-buy-unavailable {
+            width: calc(100% - 16px);
+            margin: 0 8px 8px;
+            padding: 10px;
+            border: none; border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            color: #4b5563; font-size: 0.8rem; font-weight: 800;
+            font-family: inherit; cursor: not-allowed;
+        }
 
         /* recharge grid */
         .recharge-grid {
@@ -1864,6 +1896,225 @@
             color: #64748b;
         }
 
+        /* ========== SIM COMPANY CARDS (inline in products-view) ========== */
+        .sim-companies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .sim-company-card {
+            border-radius: 20px;
+            padding: 24px 16px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.22s cubic-bezier(0.4,0,0.2,1), box-shadow 0.22s;
+            background: linear-gradient(160deg, #141c2e, #0e1520);
+            text-align: center;
+        }
+        .sim-company-card:hover { transform: translateY(-5px); }
+        .sim-company-card:active { transform: scale(0.96); }
+        .scc-glow {
+            position: absolute; width: 100px; height: 100px;
+            border-radius: 50%; filter: blur(40px); top: -20px; left: 50%; transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .mtn-glow { background: rgba(251,191,36,0.25); }
+        .syr-glow { background: rgba(244,63,94,0.25); }
+        .other-glow { background: rgba(99,102,241,0.25); }
+        .scc-logo {
+            width: 68px; height: 68px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 1;
+        }
+        .mtn-logo { background: linear-gradient(135deg, #fbbf24, #f59e0b); box-shadow: 0 8px 25px rgba(251,191,36,0.4); }
+        .syr-logo { background: linear-gradient(135deg, #f43f5e, #e11d48); box-shadow: 0 8px 25px rgba(244,63,94,0.4); }
+        .other-logo { background: linear-gradient(135deg, #6366f1, #4f46e5); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+        .scc-name { font-size: 1.1rem; font-weight: 900; color: #fff; position: relative; z-index: 1; }
+        .scc-sub { font-size: 0.7rem; color: #64748b; position: relative; z-index: 1; }
+        .scc-arrow {
+            position: absolute; bottom: 12px; left: 14px;
+            font-size: 0.9rem; color: rgba(255,255,255,0.2); transform: scaleX(-1);
+        }
+        .sim-company-card:hover .scc-arrow { color: rgba(255,255,255,0.5); }
+
+        /* ========== SIM LINES PICKER ========== */
+        .sim-picker-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 500;
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .sim-picker-overlay.open { opacity: 1; pointer-events: all; }
+        .sim-picker-sheet {
+            background: #111827; border-radius: 24px 24px 0 0; width: 100%; max-width: 540px;
+            padding: 0 0 32px; transform: translateY(40px); transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .sim-picker-overlay.open .sim-picker-sheet { transform: translateY(0); }
+        .sim-picker-handle {
+            width: 40px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 4px;
+            margin: 14px auto 20px;
+        }
+        .sim-picker-title {
+            text-align: center; font-size: 1rem; font-weight: 900; color: #fff;
+            padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .sim-company-btns {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+            padding: 20px 18px 0;
+        }
+        .sim-company-btn {
+            border-radius: 18px; padding: 22px 14px; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            border: 1px solid rgba(255,255,255,0.08); transition: transform 0.22s, box-shadow 0.22s;
+            position: relative; overflow: hidden;
+        }
+        .sim-company-btn:hover { transform: translateY(-4px); }
+        .sim-company-btn:active { transform: scale(0.95); }
+        .sim-company-btn.mtn-btn { background: linear-gradient(160deg, #1a1200, #2a1e00); }
+        .sim-company-btn.mtn-btn:hover { box-shadow: 0 12px 35px rgba(255,190,0,0.3); border-color: rgba(255,190,0,0.35); }
+        .sim-company-btn.syr-btn { background: linear-gradient(160deg, #1a0000, #2a0a0a); }
+        .sim-company-btn.syr-btn:hover { box-shadow: 0 12px 35px rgba(244,63,94,0.3); border-color: rgba(244,63,94,0.35); }
+        .sim-company-icon { font-size: 2.4rem; line-height: 1; }
+        .sim-company-name { font-size: 0.95rem; font-weight: 900; color: #fff; }
+        .sim-company-sub { font-size: 0.7rem; color: #64748b; }
+
+        /* SIM Order Form */
+        .sim-form-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 600;
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(8px);
+        }
+        .sim-form-overlay.open { opacity: 1; pointer-events: all; }
+        .sim-form-sheet {
+            background: #111827; border-radius: 24px 24px 0 0; width: 100%; max-width: 540px;
+            max-height: 92vh; overflow-y: auto;
+            transform: translateY(60px); transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .sim-form-overlay.open .sim-form-sheet { transform: translateY(0); }
+        .sim-form-header {
+            position: sticky; top: 0; background: #111827; z-index: 2;
+            padding: 14px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .sim-form-company-badge {
+            width: 44px; height: 44px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;
+        }
+        .sim-form-company-badge.mtn { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+        .sim-form-company-badge.syr { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        .sim-form-header-info { flex: 1; }
+        .sim-form-header-title { font-size: 0.95rem; font-weight: 900; color: #fff; }
+        .sim-form-header-sub { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+        .sim-form-close-btn {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8; width: 34px; height: 34px; border-radius: 10px;
+            cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;
+        }
+        .sim-form-body { padding: 20px; }
+        .sim-line-select-grid {
+            display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;
+        }
+        .sim-line-card {
+            border: 1.5px solid rgba(255,255,255,0.07); border-radius: 14px;
+            padding: 11px 14px; cursor: pointer; transition: all 0.22s;
+            background: rgba(255,255,255,0.02);
+            display: flex; align-items: center; gap: 12px; position: relative;
+        }
+        .sim-line-card:hover { border-color: rgba(244,63,94,0.35); background: rgba(244,63,94,0.05); }
+        .sim-line-card.selected {
+            border-color: rgba(244,63,94,0.6);
+            background: linear-gradient(135deg, rgba(244,63,94,0.08), rgba(244,63,94,0.04));
+            box-shadow: 0 0 0 1px rgba(244,63,94,0.15), 0 4px 16px rgba(244,63,94,0.1);
+        }
+        .slc-check {
+            display: none; width: 20px; height: 20px; background: #f43f5e;
+            border-radius: 50%; align-items: center; justify-content: center;
+            font-size: 0.62rem; font-weight: 900; color: #fff; flex-shrink: 0;
+            margin-right: auto;
+        }
+        .sim-line-card.selected .slc-check { display: flex; }
+        .sim-line-card-img {
+            width: 38px; height: 38px; object-fit: contain; border-radius: 10px;
+            flex-shrink: 0; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .sim-line-card-info { flex: 1; min-width: 0; }
+        .sim-line-card-name { font-size: 0.85rem; font-weight: 800; color: #e2e8f0; }
+        .sim-line-card-price {
+            display: inline-flex; align-items: center; gap: 3px;
+            background: rgba(245,158,11,0.1); color: #f59e0b;
+            border: 1px solid rgba(245,158,11,0.2);
+            padding: 2px 8px; border-radius: 8px;
+            font-size: 0.72rem; font-weight: 800; margin-top: 4px;
+        }
+
+        .sim-field-label { font-size: 0.8rem; font-weight: 800; color: #94a3b8; margin-bottom: 7px; display: block; }
+
+        /* عرض بيانات الخط ثابتاً بدون ضغط */
+        .sim-selected-line-info {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px; padding: 12px 14px; margin-bottom: 6px;
+        }
+        .ssl-name { font-size: 0.9rem; font-weight: 800; color: #e2e8f0; flex: 1; }
+        .ssl-price {
+            background: rgba(245,158,11,0.1); color: #f59e0b;
+            border: 1px solid rgba(245,158,11,0.2);
+            padding: 3px 10px; border-radius: 10px;
+            font-size: 0.78rem; font-weight: 800; white-space: nowrap;
+        }
+        .sim-input {
+            width: 100%; padding: 12px 16px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px; color: #e2e8f0; font-family: inherit; font-size: 0.88rem;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+            direction: rtl; margin-bottom: 14px;
+        }
+        .sim-input:focus { border-color: rgba(244,63,94,0.5); box-shadow: 0 0 0 3px rgba(244,63,94,0.1); }
+        .sim-input::placeholder { color: #4b5563; }
+
+        .sim-id-upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .sim-id-upload-box {
+            border: 1.5px dashed rgba(255,255,255,0.12); border-radius: 14px;
+            padding: 16px 10px; text-align: center; cursor: pointer;
+            transition: all 0.2s; background: rgba(255,255,255,0.02); position: relative;
+        }
+        .sim-id-upload-box:hover { border-color: rgba(244,63,94,0.4); background: rgba(244,63,94,0.04); }
+        .sim-id-upload-box.uploaded { border-color: rgba(16,185,129,0.5); background: rgba(16,185,129,0.04); }
+        .sim-id-upload-icon { font-size: 1.8rem; margin-bottom: 6px; }
+        .sim-id-upload-label { font-size: 0.68rem; font-weight: 700; color: #94a3b8; line-height: 1.4; }
+        .sim-id-upload-status { font-size: 0.65rem; color: #10b981; margin-top: 4px; font-weight: 700; }
+        .sim-id-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .sim-id-preview { width: 100%; height: 65px; object-fit: cover; border-radius: 10px; margin-top: 6px; }
+
+        .sim-submit-btn {
+            width: 100%; padding: 15px; border: none; border-radius: 16px;
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            color: #fff; font-weight: 900; font-size: 1rem; cursor: pointer;
+            font-family: inherit; letter-spacing: 0.3px;
+            box-shadow: 0 6px 24px rgba(244,63,94,0.4);
+            transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px;
+        }
+        .sim-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(244,63,94,0.5); }
+        .sim-submit-btn:active { transform: scale(0.97); }
+        .sim-section-divider {
+            display: flex; align-items: center; gap: 10px; margin: 16px 0 14px;
+        }
+        .sim-section-divider::before, .sim-section-divider::after {
+            content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06);
+        }
+        .sim-section-divider-text { font-size: 0.72rem; color: #4b5563; font-weight: 700; white-space: nowrap; }
+        .sim-required-star { color: #f43f5e; margin-right: 2px; }
+
         /* ========== SPLASH SCREEN ========== */
         #splash-screen {
             position: fixed;
@@ -2058,6 +2309,503 @@
             color: #334155;
             margin-top: 3px;
         }
+
+        /* ========================================================
+           ✨ لمسات أسطورية ذهبية - تسجيل الدخول + البروفايل + التأثيرات
+           ======================================================== */
+
+        /* --- تأثير اللمعان الذهبي المتحرك --- */
+        .gold-shimmer { position: relative; overflow: hidden; }
+        .gold-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 60%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmerSweep 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes shimmerSweep {
+            0% { left: -150%; }
+            55% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        /* --- جزيئات ذهبية عائمة (خلفية شاشات الترحيب) --- */
+        .gold-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+        .gold-particle {
+            position: absolute;
+            bottom: -10%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,0.9), rgba(245,158,11,0));
+            opacity: 0.55;
+            animation: goldFloat linear infinite;
+        }
+        @keyframes goldFloat {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+            10% { opacity: 0.6; }
+            50% { transform: translateY(-55vh) translateX(15px) scale(1.2); }
+            90% { opacity: 0.35; }
+            100% { transform: translateY(-110vh) translateX(-10px) scale(0.6); opacity: 0; }
+        }
+
+        /* ========== AUTH / LOGIN SCREEN ========== */
+        .auth-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: #0a0e17;
+            background-image:
+                radial-gradient(ellipse at 50% 25%, rgba(245,158,11,0.16) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 85%, rgba(139,92,246,0.08) 0%, transparent 50%);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .auth-screen.open { display: flex; animation: fadeIn 0.4s; }
+        .auth-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 380px;
+            background: linear-gradient(160deg, #151e2e 0%, #0e1520 100%);
+            border: 1px solid rgba(245,158,11,0.22);
+            border-radius: 24px;
+            padding: 34px 26px 28px;
+            text-align: center;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(245,158,11,0.05);
+            animation: slideUp 0.5s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .auth-icon {
+            width: 78px; height: 78px;
+            border-radius: 22px;
+            margin: 0 auto 16px;
+            background: var(--gold-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.3rem;
+            box-shadow: 0 10px 35px rgba(245,158,11,0.45), 0 0 0 8px rgba(245,158,11,0.08);
+            animation: splashPulse 2.4s ease-in-out infinite;
+        }
+        .auth-title { font-size: 1.18rem; font-weight: 900; color: #fff; margin-bottom: 5px; letter-spacing: -0.3px; }
+        .auth-title span {
+            background: var(--gold-grad);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .auth-subtitle { font-size: 0.8rem; color: #94a3b8; margin-bottom: 24px; }
+        .auth-field { text-align: right; margin-bottom: 14px; }
+        .auth-field label {
+            display: block; font-size: 0.8rem; font-weight: 700; color: #94a3b8; margin-bottom: 6px;
+        }
+        .auth-input {
+            width: 100%;
+            background: var(--surface3);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+            transition: var(--transition);
+            direction: rtl;
+        }
+        .auth-input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.12);
+        }
+        .auth-input::placeholder { color: #4b5563; }
+        .auth-error {
+            color: #f43f5e;
+            font-size: 0.78rem;
+            font-weight: 700;
+            min-height: 18px;
+            margin-bottom: 4px;
+            transition: var(--transition);
+        }
+        .auth-submit-btn {
+            width: 100%;
+            background: var(--gold-grad);
+            color: #1a1200;
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            margin-top: 8px;
+            box-shadow: 0 8px 26px rgba(245,158,11,0.4);
+            transition: var(--transition);
+        }
+        .auth-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 34px rgba(245,158,11,0.55);
+            filter: brightness(1.05);
+        }
+        .auth-submit-btn:active { transform: scale(0.97); }
+        .auth-note {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 16px;
+            line-height: 1.6;
+        }
+
+        /* ========== PROFILE VIEW (لا يمكن تعديله - عرض فقط) ========== */
+        #profile-view {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 14px;
+        }
+        .profile-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(160deg, #1c2840 0%, #11182c 100%);
+            border: 1px solid rgba(245,158,11,0.22);
+            border-radius: 22px;
+            padding: 30px 20px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 40px rgba(245,158,11,0.07);
+        }
+        .profile-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.14) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .profile-avatar {
+            position: relative; z-index: 1;
+            width: 86px; height: 86px;
+            border-radius: 50%;
+            background: var(--gold-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.3rem; font-weight: 900; color: #1a1200;
+            margin: 0 auto 14px;
+            box-shadow: 0 10px 30px rgba(245,158,11,0.45), 0 0 0 6px rgba(245,158,11,0.1);
+        }
+        .profile-name {
+            position: relative; z-index: 1;
+            font-size: 1.2rem; font-weight: 900; color: #fff; margin-bottom: 8px;
+        }
+        .profile-tier-badge {
+            position: relative; z-index: 1;
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.06));
+            border: 1px solid rgba(245,158,11,0.35);
+            color: #fbbf24; font-weight: 800; font-size: 0.8rem;
+            padding: 6px 18px; border-radius: 30px; margin-bottom: 10px;
+        }
+        .profile-join-row {
+            position: relative; z-index: 1;
+            font-size: 0.78rem; color: #94a3b8;
+        }
+        .profile-stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;
+        }
+        .profile-stat-box {
+            background: linear-gradient(160deg, #151e2e 0%, #0e1520 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 16px 6px;
+            text-align: center;
+            transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), border-color 0.25s;
+        }
+        .profile-stat-box:hover { transform: translateY(-4px); border-color: rgba(245,158,11,0.3); }
+        .psb-icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .psb-value { font-size: 1.25rem; font-weight: 900; color: #f59e0b; letter-spacing: -0.5px; }
+        .psb-label { font-size: 0.62rem; color: #64748b; margin-top: 3px; font-weight: 700; }
+        .profile-progress-card {
+            background: linear-gradient(160deg, #151e2e 0%, #0e1520 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        /* ===== بطاقة حالة الطلبات (قيد المراجعة / مقبولة / مرفوضة) ===== */
+        .profile-orders-status-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(160deg, #151e2e 0%, #0e1520 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        .profile-orders-status-title {
+            font-size: 0.85rem; font-weight: 800; color: #e2e8f0; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .profile-status-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+        }
+        .profile-status-box {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            padding: 16px 6px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: linear-gradient(160deg, #1a2332 0%, #0e1520 100%);
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), border-color 0.25s, box-shadow 0.25s;
+        }
+        .profile-status-box:hover { transform: translateY(-4px); }
+        .profile-status-box .psb-icon {
+            font-size: 1.45rem; margin-bottom: 6px;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+        }
+        .profile-status-box .psb-value {
+            font-size: 1.3rem; font-weight: 900; letter-spacing: -0.5px;
+        }
+        .profile-status-box .psb-label {
+            font-size: 0.62rem; color: #94a3b8; margin-top: 3px; font-weight: 700;
+        }
+        .profile-status-box.status-pending {
+            border-color: rgba(245,158,11,0.25);
+            box-shadow: 0 6px 22px -8px rgba(245,158,11,0.25);
+        }
+        .profile-status-box.status-pending .psb-value { color: #f59e0b; }
+        .profile-status-box.status-pending:hover {
+            border-color: rgba(245,158,11,0.5);
+            box-shadow: 0 10px 30px -8px rgba(245,158,11,0.4);
+        }
+        .profile-status-box.status-accepted {
+            border-color: rgba(16,185,129,0.25);
+            box-shadow: 0 6px 22px -8px rgba(16,185,129,0.25);
+        }
+        .profile-status-box.status-accepted .psb-value { color: #10b981; }
+        .profile-status-box.status-accepted:hover {
+            border-color: rgba(16,185,129,0.5);
+            box-shadow: 0 10px 30px -8px rgba(16,185,129,0.4);
+        }
+        .profile-status-box.status-rejected {
+            border-color: rgba(244,63,94,0.25);
+            box-shadow: 0 6px 22px -8px rgba(244,63,94,0.25);
+        }
+        .profile-status-box.status-rejected .psb-value { color: #f43f5e; }
+        .profile-status-box.status-rejected:hover {
+            border-color: rgba(244,63,94,0.5);
+            box-shadow: 0 10px 30px -8px rgba(244,63,94,0.4);
+        }
+        body.light-mode .profile-orders-status-card,
+        body.light-mode .profile-status-box {
+            background: linear-gradient(160deg, #fff 0%, #f1f5f9 100%);
+            border-color: rgba(0,0,0,0.08);
+        }
+        body.light-mode .profile-orders-status-title { color: #1e293b; }
+        body.light-mode .profile-status-box .psb-label { color: #64748b; }
+
+        /* ===== مودال حالة الطلبات ===== */
+        .osm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 600;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            padding: 16px;
+        }
+        .osm-overlay.open {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        .osm-modal {
+            background: #0e1117;
+            border-radius: 22px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(244,63,94,0.1);
+            animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .osm-head {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+        .osm-head-icon {
+            width: 46px; height: 46px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .osm-head-title { font-size: 0.95rem; font-weight: 800; color: #fff; }
+        .osm-head-sub { font-size: 0.7rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+        .osm-close {
+            background: rgba(255,255,255,0.12);
+            border: none; color: #fff;
+            width: 32px; height: 32px; border-radius: 10px;
+            font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        .osm-close:hover { background: rgba(255,255,255,0.22); }
+        .osm-body {
+            padding: 16px 20px 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .osm-overlay.status-pending .osm-head { background: linear-gradient(135deg, #f59e0b, #b45309); }
+        .osm-overlay.status-accepted .osm-head { background: linear-gradient(135deg, #10b981, #047857); }
+        .osm-overlay.status-rejected .osm-head { background: linear-gradient(135deg, #f43f5e, #b91c1c); }
+
+        .osm-order-card {
+            background: linear-gradient(160deg, #151e2e 0%, #0e1520 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .osm-order-card:last-child { margin-bottom: 0; }
+        .osm-order-name { font-size: 0.92rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .osm-order-meta { font-size: 0.72rem; color: #94a3b8; margin-bottom: 10px; }
+        .osm-order-msg {
+            font-size: 0.8rem; line-height: 1.8; font-weight: 600;
+            border-radius: 12px; padding: 10px 12px;
+            display: flex; align-items: flex-start; gap: 8px;
+        }
+        .osm-order-msg.pending {
+            background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); color: #fbbf24;
+        }
+        .osm-order-msg.accepted {
+            background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #34d399;
+        }
+        .osm-order-msg.rejected {
+            background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.25); color: #fb7185;
+        }
+        .osm-last-note {
+            font-size: 0.7rem; color: #64748b; text-align: center;
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px dashed rgba(255,255,255,0.08);
+        }
+        .osm-empty {
+            text-align: center; padding: 40px 10px; color: #64748b; font-size: 0.85rem;
+        }
+        body.light-mode .osm-modal { background: #fff; }
+        body.light-mode .osm-order-card {
+            background: linear-gradient(160deg, #fff 0%, #f1f5f9 100%);
+            border-color: rgba(0,0,0,0.08);
+        }
+        body.light-mode .osm-order-name { color: #1e293b; }
+        body.light-mode .osm-last-note { color: #94a3b8; border-top-color: rgba(0,0,0,0.08); }
+        .profile-progress-label {
+            font-size: 0.85rem; font-weight: 800; color: #e2e8f0; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .profile-progress-track {
+            height: 10px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden;
+        }
+        .profile-progress-fill {
+            height: 100%; width: 0%; border-radius: 10px;
+            background: var(--gold-grad);
+            background-size: 200% 100%;
+            animation: splashBarShimmer 2.2s linear infinite;
+            transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+        }
+        .profile-progress-next { font-size: 0.74rem; color: #94a3b8; margin-top: 9px; text-align: center; }
+        .profile-note {
+            font-size: 0.74rem; color: #64748b; text-align: center;
+            padding: 12px 16px; line-height: 1.7;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+        }
+
+        /* شارة VIP على شكل تاج بزاوية الشاشة عند بلوغ مستوى متقدم */
+        .header-vip-badge {
+            display: none;
+            position: fixed;
+            top: 64px;
+            inset-inline-end: 12px;
+            z-index: 250;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1px;
+            width: 56px;
+            height: 56px;
+            background: var(--gold-grad);
+            color: #1a1200;
+            font-size: 1.4rem;
+            font-weight: 900;
+            border-radius: 50% 50% 50% 8px;
+            box-shadow: 0 8px 24px -6px rgba(245,158,11,0.55), 0 0 0 3px rgba(245,158,11,0.12);
+            cursor: pointer;
+            animation: splashPulse 3s ease-in-out infinite;
+            transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        .header-vip-badge:hover { transform: scale(1.08) rotate(-4deg); }
+        .header-vip-badge .vip-crown-icon { font-size: 1.5rem; line-height: 1; }
+        .header-vip-badge .vip-crown-label {
+            font-size: 0.5rem; font-weight: 900; letter-spacing: 0.5px; line-height: 1;
+        }
+        .header-vip-badge.show { display: flex; }
+
+        /* ========== شريط النجاح الذهبي (Confetti) ========== */
+        .gold-confetti-piece {
+            position: fixed;
+            top: 38%;
+            width: 8px; height: 8px;
+            z-index: 1000;
+            pointer-events: none;
+            border-radius: 2px;
+            animation: confettiFall 1.7s ease-out forwards;
+        }
+        @keyframes confettiFall {
+            0%   { opacity: 1; transform: translate(0,0) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--x), 60vh) rotate(var(--r)); }
+        }
+
+        /* ========== تأثير وميض ذهبي خفيف على شعار التطبيق ========== */
+        .app-logo .icon {
+            position: relative;
+        }
+        .app-logo .icon::after {
+            content: '';
+            position: absolute; inset: -3px;
+            border-radius: 14px;
+            border: 1.5px solid transparent;
+            background: var(--gold-grad) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.35s;
+            pointer-events: none;
+        }
+        .app-logo:hover .icon::after { opacity: 0.8; }
+
+        /* Light mode overrides for new elements */
+        body.light-mode .auth-screen { background: #f0f4f8; }
+        body.light-mode .auth-card { background: linear-gradient(160deg, #fff 0%, #f1f5f9 100%); border-color: rgba(245,158,11,0.25); }
+        body.light-mode .auth-title { color: #1e293b; }
+        body.light-mode .auth-input { background: #fff; border-color: rgba(0,0,0,0.1); color: #1e293b; }
+        body.light-mode .profile-card,
+        body.light-mode .profile-stat-box,
+        body.light-mode .profile-progress-card {
+            background: linear-gradient(160deg, #fff 0%, #f1f5f9 100%);
+            border-color: rgba(0,0,0,0.08);
+            color: #1e293b;
+        }
+        body.light-mode .profile-name { color: #1e293b; }
+        body.light-mode .profile-note { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.06); }
     </style>
 </head>
 <body>
@@ -2078,6 +2826,71 @@
         </div>
     </div>
 
+    <!-- AUTH / WELCOME SCREEN -->
+    <div class="auth-screen" id="auth-screen">
+        <div class="gold-particles" id="auth-particles"></div>
+        <div class="auth-card" style="max-width:400px;">
+            <div class="auth-icon gold-shimmer">👑</div>
+            <div class="auth-title">مرحباً بك في <span id="auth-store-name">مركز ابل ستور</span></div>
+
+            <!-- Tabs -->
+            <div style="display:flex;background:rgba(255,255,255,0.05);border-radius:12px;padding:4px;margin-bottom:20px;gap:4px;">
+                <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:9px;border:none;border-radius:9px;font-family:inherit;font-size:0.82rem;font-weight:800;cursor:pointer;background:var(--gold-grad);color:#1a1200;transition:all 0.25s;">📝 تسجيل جديد</button>
+                <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:9px;border:none;border-radius:9px;font-family:inherit;font-size:0.82rem;font-weight:800;cursor:pointer;background:transparent;color:#64748b;transition:all 0.25s;">🔑 تسجيل دخول</button>
+            </div>
+
+            <!-- Register Fields -->
+            <div id="auth-register-fields">
+                <div class="auth-field">
+                    <label>👤 الاسم الكامل</label>
+                    <input type="text" id="auth-name" class="auth-input" placeholder="أدخل اسمك الكامل" maxlength="30" autocomplete="off"/>
+                </div>
+                <div class="auth-field">
+                    <label>🆔 اسم المستخدم</label>
+                    <input type="text" id="auth-username" class="auth-input" placeholder="مثال: ahmad123 (بالإنجليزية)" maxlength="20" autocomplete="off" dir="ltr" style="text-align:right;"/>
+                </div>
+                <div class="auth-field">
+                    <label>🔒 كلمة المرور</label>
+                    <input type="password" id="auth-pass" class="auth-input" placeholder="8 أحرف: حروف + أرقام + رمز" maxlength="30" autocomplete="off"/>
+                </div>
+                <div id="auth-pass-strength" style="margin-top:-8px;margin-bottom:8px;font-size:0.72rem;font-weight:700;min-height:18px;"></div>
+                <div class="auth-error" id="auth-error"></div>
+                <button class="auth-submit-btn" onclick="window.submitRegister()">✨ إنشاء الحساب</button>
+                <div class="auth-note">🔐 احفظ بياناتك جيداً — ستحتاجها لتسجيل الدخول مرة أخرى</div>
+            </div>
+
+            <!-- Login Fields -->
+            <div id="auth-login-fields" style="display:none;">
+                <div class="auth-field">
+                    <label>🆔 اسم المستخدم</label>
+                    <input type="text" id="login-username" class="auth-input" placeholder="أدخل اسم المستخدم" maxlength="20" autocomplete="off" dir="ltr" style="text-align:right;"/>
+                </div>
+                <div class="auth-field">
+                    <label>🔒 كلمة المرور</label>
+                    <input type="password" id="login-pass" class="auth-input" placeholder="أدخل كلمة المرور" maxlength="30" autocomplete="off" onkeydown="if(event.key==='Enter')window.submitLogin()"/>
+                </div>
+                <div class="auth-error" id="login-error"></div>
+                <button class="auth-submit-btn" onclick="window.submitLogin()">🔑 دخول</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCKED ACCOUNT SCREEN -->
+    <div class="auth-screen" id="locked-screen" style="z-index:9999;">
+        <div class="auth-card" style="text-align:center;">
+            <div style="font-size:4rem;margin-bottom:16px;">🔒</div>
+            <div class="auth-title" style="color:#f43f5e;">حسابك مقفل</div>
+            <div class="auth-subtitle" style="color:#94a3b8;margin-bottom:20px;">تم قفل حسابك من قبل الإدارة<br/>يرجى مراجعة الإدارة لتتمكن من فتح حسابك</div>
+            <button onclick="window.openWhatsAppLocked()" style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:14px;padding:14px;font-size:0.95rem;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;">
+                <span style="font-size:1.3rem;">💬</span> تواصل عبر واتساب
+            </button>
+            <button onclick="window.logoutUser()" style="width:100%;background:rgba(255,255,255,0.06);color:#94a3b8;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:12px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;">
+                تسجيل الخروج
+            </button>
+        </div>
+    </div>
+
+
     <header id="app-header">
         <div class="header-inner">
             <div class="h-left">
@@ -2095,6 +2908,12 @@
         </div>
     </header>
 
+    <!-- شارة VIP على شكل تاج في زاوية الشاشة -->
+    <div class="header-vip-badge" id="header-vip-badge" onclick="window.openProfile();setActiveNav('bn-profile')">
+        <span class="vip-crown-icon">👑</span>
+        <span class="vip-crown-label" id="header-vip-label">VIP</span>
+    </div>
+
     <!-- Search Bar like screenshot -->
     <div class="home-search-bar" id="home-search-bar">
         <div class="home-search-input-wrap" onclick="openSearch()">
@@ -2103,6 +2922,28 @@
     </div>
 
     <div id="home-view">
+        <!-- بطاقة العضوية الرئيسية (تظهر عند تسجيل الدخول) -->
+        <div id="home-membership-card" style="display:none;background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.04));border:1px solid rgba(245,158,11,0.25);border-radius:18px;padding:14px 16px;margin-bottom:16px;display:none;cursor:pointer;transition:all 0.25s;" onclick="window.openProfile();setActiveNav('bn-profile')" onmouseover="this.style.borderColor='rgba(245,158,11,0.5)'" onmouseout="this.style.borderColor='rgba(245,158,11,0.25)'">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div id="home-member-avatar" style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#b45309);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;color:#1a1200;flex-shrink:0;box-shadow:0 4px 14px rgba(245,158,11,0.4);">؟</div>
+                <div style="flex:1;min-width:0;">
+                    <div id="home-member-name" style="font-size:0.88rem;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">—</div>
+                    <div id="home-member-tier" style="font-size:0.72rem;font-weight:700;color:#f59e0b;margin-top:2px;">🆕 عضو جديد</div>
+                </div>
+                <div style="text-align:center;flex-shrink:0;">
+                    <div id="home-member-points" style="font-size:1.1rem;font-weight:900;color:#f59e0b;">0</div>
+                    <div style="font-size:0.6rem;color:#64748b;font-weight:700;">نقطة</div>
+                </div>
+                <div id="home-member-discount-pill" style="display:none;background:linear-gradient(135deg,#10b981,#047857);color:#fff;font-size:0.7rem;font-weight:800;padding:4px 10px;border-radius:20px;flex-shrink:0;"></div>
+            </div>
+            <!-- شريط تقدم العضوية -->
+            <div id="home-member-progress-wrap" style="margin-top:10px;">
+                <div style="height:5px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;">
+                    <div id="home-member-progress-fill" style="height:100%;background:linear-gradient(90deg,#f59e0b,#fde68a);border-radius:5px;transition:width 0.7s cubic-bezier(0.4,0,0.2,1);width:0%;"></div>
+                </div>
+                <div id="home-member-progress-label" style="font-size:0.62rem;color:#64748b;margin-top:4px;text-align:left;direction:ltr;"></div>
+            </div>
+        </div>
         <div class="cats-grid" id="cats-grid">
             <div class="state-msg"><div class="spinner"></div>جارٍ التحميل...</div>
         </div>
@@ -2116,6 +2957,117 @@
         </div>
         <div id="recharge-grid" class="recharge-grid" style="display:none;"></div>
         <div class="products-grid" id="products-grid"></div>
+        <!-- واجهة شراء الخطوط -->
+        <div id="sim-lines-view" style="display:none;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <div style="font-size:2rem;margin-bottom:6px;">📡</div>
+                <div style="font-size:1rem;font-weight:900;color:#fff;margin-bottom:4px;">شراء خطوط الهاتف</div>
+                <div style="font-size:0.78rem;color:#64748b;">اختر الشركة للبدء بطلب الخط</div>
+            </div>
+            <div class="sim-companies-grid" id="sim-companies-grid"></div>
+        </div>
+    </div>
+
+    <!-- PROFILE VIEW - عرض فقط، لا يمكن التعديل -->
+    <div id="profile-view">
+        <div class="prod-topbar">
+            <button class="back-btn" onclick="goHome()">← رجوع</button>
+            <div class="cat-tb"><span class="ct-ico">👤</span><span class="ct-nm">ملفي الشخصي</span></div>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-avatar gold-shimmer" id="profile-avatar">؟</div>
+            <div class="profile-name" id="profile-name">—</div>
+            <div class="profile-tier-badge gold-shimmer" id="profile-tier-badge">🆕 عضو جديد</div>
+            <div class="profile-join-row">📅 عضو منذ <span id="profile-join-date">—</span></div>
+        </div>
+
+        <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+                <div class="psb-icon">🛍️</div>
+                <div class="psb-value" id="profile-month-count">0</div>
+                <div class="psb-label">منتجات هذا الشهر</div>
+            </div>
+            <div class="profile-stat-box">
+                <div class="psb-icon">📦</div>
+                <div class="psb-value" id="profile-total-count">0</div>
+                <div class="psb-label">إجمالي الطلبات</div>
+            </div>
+            <div class="profile-stat-box">
+                <div class="psb-icon">⭐</div>
+                <div class="psb-value" id="profile-points">0</div>
+                <div class="psb-label">نقاط الولاء</div>
+            </div>
+        </div>
+
+        <div class="profile-orders-status-card">
+            <div class="profile-orders-status-title">📊 حالة طلباتي</div>
+            <div class="profile-status-grid">
+                <div class="profile-status-box status-pending" onclick="showOrdersStatusModal('pending')">
+                    <div class="psb-icon">⏳</div>
+                    <div class="psb-value" id="profile-pending-count">0</div>
+                    <div class="psb-label">قيد المراجعة</div>
+                </div>
+                <div class="profile-status-box status-accepted" onclick="showOrdersStatusModal('accepted')">
+                    <div class="psb-icon">✅</div>
+                    <div class="psb-value" id="profile-accepted-count">0</div>
+                    <div class="psb-label">مقبولة</div>
+                </div>
+                <div class="profile-status-box status-rejected" onclick="showOrdersStatusModal('rejected')">
+                    <div class="psb-icon">❌</div>
+                    <div class="psb-value" id="profile-rejected-count">0</div>
+                    <div class="psb-label">مرفوضة</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-progress-card">
+            <div class="profile-progress-label">🏆 مستوى العضوية</div>
+            <div class="profile-progress-track"><div class="profile-progress-fill" id="profile-progress-fill"></div></div>
+            <div class="profile-progress-next" id="profile-next-tier">—</div>
+        </div>
+
+        <!-- خانة اسم المستخدم -->
+        <div class="profile-progress-card" style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.82rem;font-weight:800;color:#94a3b8;">🆔 اسم المستخدم</span>
+                <span id="profile-username-display" style="font-size:0.88rem;font-weight:900;color:#f59e0b;direction:ltr;">—</span>
+            </div>
+        </div>
+
+        <!-- تخفيض خاص -->
+        <div id="profile-discount-card" style="display:none;background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.05));border:1px solid rgba(16,185,129,0.35);border-radius:18px;padding:16px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <span style="font-size:1.3rem;">🎁</span>
+                <div>
+                    <div style="font-size:0.88rem;font-weight:900;color:#34d399;">لديك تخفيض خاص!</div>
+                    <div style="font-size:0.72rem;color:#64748b;">ممنوح من الإدارة</div>
+                </div>
+                <div id="profile-discount-badge" style="margin-right:auto;background:linear-gradient(135deg,#10b981,#047857);color:#fff;font-size:1.1rem;font-weight:900;padding:6px 16px;border-radius:30px;"></div>
+            </div>
+            <div style="font-size:0.75rem;color:#94a3b8;">تُخصم هذه النسبة تلقائياً من جميع الأسعار الظاهرة لك</div>
+        </div>
+
+        <div class="profile-note">ℹ️ هذه بياناتك الشخصية، لا يمكن تعديلها — يمكنك فقط الاطلاع عليها.</div>
+
+        <button onclick="window.logoutUser()" style="width:100%;margin-top:14px;background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.25);color:#f43f5e;border-radius:14px;padding:13px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;">
+            🚪 تسجيل الخروج
+        </button>
+    </div>
+
+    <!-- Orders Status Modal -->
+    <div class="osm-overlay" id="osm-overlay" onclick="closeOrdersStatusModal(event)">
+        <div class="osm-modal" onclick="event.stopPropagation()">
+            <div class="osm-head">
+                <div class="osm-head-icon" id="osm-head-icon">📦</div>
+                <div style="flex:1;">
+                    <div class="osm-head-title" id="osm-head-title">طلباتي</div>
+                    <div class="osm-head-sub" id="osm-head-sub"></div>
+                </div>
+                <button class="osm-close" onclick="closeOrdersStatusModal()">×</button>
+            </div>
+            <div class="osm-body" id="osm-body"></div>
+        </div>
     </div>
 
     <!-- Drawer -->
@@ -2236,9 +3188,47 @@
         </div>
     </div>
 
+    <!-- SIM Company Picker -->
+    <div class="sim-picker-overlay" id="sim-picker-overlay" onclick="if(event.target===this)closeSimPicker()">
+        <div class="sim-picker-sheet">
+            <div class="sim-picker-handle"></div>
+            <div class="sim-picker-title">📡 اختر شركة الخط</div>
+            <div class="sim-company-btns">
+                <div class="sim-company-btn mtn-btn" onclick="openSimForm('mtn')">
+                    <div class="sim-company-icon">🟡</div>
+                    <div class="sim-company-name">MTN</div>
+                    <div class="sim-company-sub">شراء خط MTN</div>
+                </div>
+                <div class="sim-company-btn syr-btn" onclick="openSimForm('syriatel')">
+                    <div class="sim-company-icon">🔴</div>
+                    <div class="sim-company-name">Syriatel</div>
+                    <div class="sim-company-sub">شراء خط سيريتيل</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIM Order Form -->
+    <div class="sim-form-overlay" id="sim-form-overlay" onclick="if(event.target===this)closeSimForm()">
+        <div class="sim-form-sheet">
+            <div class="sim-form-header">
+                <div class="sim-form-company-badge" id="sim-form-badge">📡</div>
+                <div class="sim-form-header-info">
+                    <div class="sim-form-header-title" id="sim-form-title">شراء خط</div>
+                    <div class="sim-form-header-sub" id="sim-form-sub">أدخل بياناتك لطلب الخط</div>
+                </div>
+                <button class="sim-form-close-btn" onclick="closeSimForm()">✕</button>
+            </div>
+            <div class="sim-form-body" id="sim-form-body">
+                <!-- سيتم ملء المحتوى ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
     <div class="bottom-nav">
         <button class="bn-item active" id="bn-home" onclick="goHome();setActiveNav('bn-home')"><span class="bn-icon">🏠</span><span class="bn-label">الرئيسية</span></button>
         <button class="bn-item" id="bn-search" onclick="openSearch();setActiveNav('bn-search')"><span class="bn-icon">🔍</span><span class="bn-label">بحث</span></button>
+        <button class="bn-item" id="bn-profile" onclick="window.openProfile();setActiveNav('bn-profile')"><span class="bn-icon">👤</span><span class="bn-label">حسابي</span></button>
         <button class="bn-item" id="bn-support" onclick="openSupport()"><span class="bn-icon">💬</span><span class="bn-label">الدعم</span></button>
     </div>
 
@@ -2309,6 +3299,651 @@
             } catch (e) {}
         }
 
+        // ============================================================
+        // ✨ نظام البروفايل الشخصي (تسجيل أول مرة فقط - عرض فقط بعد ذلك)
+        // ============================================================
+        let currentUserProfile = null;
+        let userOrdersData = [];
+        let userOrdersListenerAttached = false;
+
+        async function getUserProfile() {
+            if (currentUserProfile) return currentUserProfile;
+            const p = await dbGet('userProfile');
+            if (p) currentUserProfile = p;
+            return currentUserProfile;
+        }
+
+        async function saveUserProfile(profile) {
+            currentUserProfile = profile;
+            await dbSet('userProfile', profile);
+        }
+
+        // ============ مراقبة طلبات المستخدم وحالاتها (مقبول / مرفوض / قيد المراجعة) ============
+        function attachUserOrdersListener(profile) {
+            if (userOrdersListenerAttached || !profile || !profile.userId) return;
+            userOrdersListenerAttached = true;
+            try {
+                // نستمع لكل الطلبات ونصفّي طلبات هذا المستخدم محلياً
+                // (تجنباً للحاجة إلى فهرس orderByChild على userId في قواعد Firebase)
+                onValue(ref(db, 'orders'), async (snap) => {
+                    const val = snap.val();
+                    const allOrders = val ? Object.entries(val).map(([id, v]) => ({ id, ...v })) : [];
+                    const liveOrders = allOrders.filter(o => o.userId === profile.userId);
+
+                    // دمج الطلبات الحية مع الأرشيف المحفوظ في البروفايل
+                    // (حتى لو حذف المطور الطلبات من قائمة orders، تبقى نسخة محفوظة عند المستخدم)
+                    const p = await getUserProfile();
+                    if (p) {
+                        const archive = p.ordersHistory || [];
+                        const archiveMap = {};
+                        archive.forEach(o => { archiveMap[o.id] = o; });
+                        // الطلبات الحية تطغى على الأرشيف (لتعكس آخر حالة محدثة)
+                        liveOrders.forEach(o => { archiveMap[o.id] = o; });
+                        const merged = Object.values(archiveMap).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+                        p.ordersHistory = merged;
+                        await saveUserProfile(p);
+                        userOrdersData = merged;
+                    } else {
+                        userOrdersData = liveOrders;
+                    }
+
+                    const pv = document.getElementById('profile-view');
+                    if (pv && pv.style.display === 'block') renderProfile();
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        // ============ تحميل أرشيف الطلبات المحفوظ محلياً (قبل وصول البيانات الحية) ============
+        async function loadOrdersArchive() {
+            const p = await getUserProfile();
+            if (p && p.ordersHistory && p.ordersHistory.length) {
+                userOrdersData = p.ordersHistory;
+            }
+        }
+
+        // ============ حساب عدد الطلبات حسب الحالة ============
+        function getOrdersStatusCounts() {
+            let pending = 0, accepted = 0, rejected = 0;
+            userOrdersData.forEach(o => {
+                const st = (o.status || '').toLowerCase();
+                if (st === 'accepted' || st === 'approved' || st === 'confirmed' || st === 'completed') accepted++;
+                else if (st === 'rejected' || st === 'declined' || st === 'cancelled' || st === 'canceled') rejected++;
+                else pending++; // pending, pending_wa, أو أي حالة غير محددة تُعتبر قيد المراجعة
+            });
+            return { pending, accepted, rejected };
+        }
+
+        // ============ تصنيف الطلب حسب الحالة ============
+        function classifyOrderStatus(o) {
+            const st = (o.status || '').toLowerCase();
+            if (st === 'accepted' || st === 'approved' || st === 'confirmed' || st === 'completed') return 'accepted';
+            if (st === 'rejected' || st === 'declined' || st === 'cancelled' || st === 'canceled') return 'rejected';
+            return 'pending';
+        }
+
+        // ============ اسم الطلب للعرض ============
+        function getOrderDisplayName(o) {
+            return o.productName || o.itemName || o.lineName || o.name || 'طلب';
+        }
+
+        // ============ تفاصيل مختصرة للطلب (السعر + التاريخ) ============
+        function getOrderMeta(o) {
+            const parts = [];
+            if (o.price) parts.push(`💰 ${o.price}`);
+            if (o.timestamp) {
+                const d = new Date(o.timestamp);
+                parts.push('🕓 ' + d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' }) + ' - ' + d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }));
+            }
+            return parts.join('  •  ');
+        }
+
+        // ============ نص الرسالة حسب حالة الطلب ============
+        function getOrderStatusMessage(o, status) {
+            if (status === 'pending') {
+                return '⏳ طلبك قيد المراجعة، يرجى الانتظار لحظات حتى يتم تنفيذ طلبك.';
+            }
+            if (status === 'accepted') {
+                return '✅ تم تنفيذ طلبك بنجاح، نشكرك على ثقتك بنا!';
+            }
+            // rejected
+            const reason = o.rejectReason || o.reason || o.rejectionReason;
+            if (reason) return `❌ طلبك مرفوض، السبب: ${reason}`;
+            return '❌ طلبك مرفوض، يرجى التأكد من صورة الإشعار أو المعلومات المدخلة والمحاولة مجدداً.';
+        }
+
+        // ============ فتح مودال حالة الطلبات ============
+        window.showOrdersStatusModal = (status) => {
+            const overlay = document.getElementById('osm-overlay');
+            const body = document.getElementById('osm-body');
+            const titleEl = document.getElementById('osm-head-title');
+            const subEl = document.getElementById('osm-head-sub');
+            const iconEl = document.getElementById('osm-head-icon');
+
+            overlay.classList.remove('status-pending', 'status-accepted', 'status-rejected');
+            overlay.classList.add('status-' + status);
+
+            const filtered = userOrdersData.filter(o => classifyOrderStatus(o) === status)
+                .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            let html = '';
+            if (status === 'pending') {
+                titleEl.textContent = 'الطلبات قيد المراجعة';
+                subEl.textContent = `${filtered.length} طلب قيد التنفيذ`;
+                iconEl.textContent = '⏳';
+                if (!filtered.length) {
+                    html = '<div class="osm-empty">لا توجد طلبات قيد المراجعة حالياً</div>';
+                } else {
+                    filtered.forEach(o => {
+                        html += `
+                            <div class="osm-order-card">
+                                <div class="osm-order-name">${getOrderDisplayName(o)}</div>
+                                <div class="osm-order-meta">${getOrderMeta(o)}</div>
+                                <div class="osm-order-msg pending">${getOrderStatusMessage(o, 'pending')}</div>
+                            </div>`;
+                    });
+                }
+            } else if (status === 'accepted') {
+                titleEl.textContent = 'آخر طلب مقبول';
+                subEl.textContent = 'تم تنفيذ طلبك بنجاح';
+                iconEl.textContent = '✅';
+                if (!filtered.length) {
+                    html = '<div class="osm-empty">لا توجد طلبات مقبولة حتى الآن</div>';
+                } else {
+                    const o = filtered[0];
+                    html = `
+                        <div class="osm-order-card">
+                            <div class="osm-order-name">${getOrderDisplayName(o)}</div>
+                            <div class="osm-order-meta">${getOrderMeta(o)}</div>
+                            <div class="osm-order-msg accepted">${getOrderStatusMessage(o, 'accepted')}</div>
+                        </div>
+                        <div class="osm-last-note">ℹ️ هذا آخر طلب مقبول لك${filtered.length > 1 ? ` (من إجمالي ${filtered.length} طلب مقبول)` : ''}</div>`;
+                }
+            } else {
+                titleEl.textContent = 'آخر طلب مرفوض';
+                subEl.textContent = 'سبب الرفض وتفاصيل الطلب';
+                iconEl.textContent = '❌';
+                if (!filtered.length) {
+                    html = '<div class="osm-empty">لا توجد طلبات مرفوضة حتى الآن</div>';
+                } else {
+                    const o = filtered[0];
+                    html = `
+                        <div class="osm-order-card">
+                            <div class="osm-order-name">${getOrderDisplayName(o)}</div>
+                            <div class="osm-order-meta">${getOrderMeta(o)}</div>
+                            <div class="osm-order-msg rejected">${getOrderStatusMessage(o, 'rejected')}</div>
+                        </div>
+                        <div class="osm-last-note">ℹ️ هذا آخر طلب مرفوض لك${filtered.length > 1 ? ` (من إجمالي ${filtered.length} طلب مرفوض)` : ''}</div>`;
+                }
+            }
+
+            body.innerHTML = html;
+            overlay.classList.add('open');
+        };
+
+        window.closeOrdersStatusModal = (e) => {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('osm-overlay').classList.remove('open');
+        };
+
+        // إنشاء جزيئات ذهبية عائمة في الخلفية
+        function spawnGoldParticles(containerId, count) {
+            const wrap = document.getElementById(containerId);
+            if (!wrap) return;
+            wrap.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'gold-particle';
+                const size = 4 + Math.random() * 10;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (6 + Math.random() * 8) + 's';
+                p.style.animationDelay = (Math.random() * 8) + 's';
+                wrap.appendChild(p);
+            }
+        }
+
+        // ============ شاشة تسجيل الدخول الأولى ============
+        // ============ Auth tab switcher ============
+        window.switchAuthTab = function(tab) {
+            const isReg = tab === 'register';
+            document.getElementById('auth-register-fields').style.display = isReg ? 'block' : 'none';
+            document.getElementById('auth-login-fields').style.display = isReg ? 'none' : 'block';
+            document.getElementById('tab-register').style.background = isReg ? 'var(--gold-grad)' : 'transparent';
+            document.getElementById('tab-register').style.color = isReg ? '#1a1200' : '#64748b';
+            document.getElementById('tab-login').style.background = isReg ? 'transparent' : 'var(--gold-grad)';
+            document.getElementById('tab-login').style.color = isReg ? '#64748b' : '#1a1200';
+        };
+
+        // ============ قوة كلمة المرور ============
+        const authPassInput = document.getElementById('auth-pass');
+        if (authPassInput) {
+            authPassInput.addEventListener('input', function() {
+                const pass = this.value;
+                const el = document.getElementById('auth-pass-strength');
+                if (!el) return;
+                const hasUpper = /[A-Z]/.test(pass);
+                const hasLower = /[a-z]/.test(pass);
+                const hasNum = /[0-9]/.test(pass);
+                const hasSymbol = /[^A-Za-z0-9]/.test(pass);
+                const len = pass.length >= 8;
+                const score = [hasUpper, hasLower, hasNum, hasSymbol, len].filter(Boolean).length;
+                if (!pass) { el.textContent = ''; return; }
+                if (score <= 2) { el.textContent = '⚠️ ضعيفة'; el.style.color = '#f43f5e'; }
+                else if (score === 3) { el.textContent = '🔸 متوسطة'; el.style.color = '#f59e0b'; }
+                else if (score === 4) { el.textContent = '🔷 جيدة'; el.style.color = '#06b6d4'; }
+                else { el.textContent = '✅ قوية جداً'; el.style.color = '#10b981'; }
+            });
+        }
+
+        // ============ تسجيل مستخدم جديد ============
+        window.submitRegister = async () => {
+            const name = document.getElementById('auth-name').value.trim();
+            const username = document.getElementById('auth-username').value.trim().toLowerCase();
+            const pass = document.getElementById('auth-pass').value.trim();
+            const errEl = document.getElementById('auth-error');
+            errEl.textContent = '';
+
+            if (!name) { errEl.textContent = '⚠️ يرجى إدخال الاسم الكامل'; return; }
+            if (!username) { errEl.textContent = '⚠️ يرجى إدخال اسم المستخدم'; return; }
+            if (!/^[a-z0-9_]{3,20}$/.test(username)) { errEl.textContent = '⚠️ اسم المستخدم: 3-20 حرف إنجليزي أو رقم أو _'; return; }
+
+            // التحقق من قوة كلمة المرور
+            const hasUpper = /[A-Z]/.test(pass), hasLower = /[a-z]/.test(pass), hasNum = /[0-9]/.test(pass), hasSymbol = /[^A-Za-z0-9]/.test(pass);
+            const score = [hasUpper, hasLower, hasNum, hasSymbol, pass.length >= 8].filter(Boolean).length;
+            if (!pass || score < 3) { errEl.textContent = '⚠️ كلمة المرور ضعيفة — استخدم أحرف كبيرة وصغيرة وأرقام ورموز'; return; }
+
+            // التحقق من عدم وجود اسم المستخدم مسبقاً في Firebase
+            errEl.textContent = '⏳ جارٍ التحقق...';
+            errEl.style.color = '#f59e0b';
+            try {
+                const { get } = await import('firebase/database');
+                const snap = await get(ref(db, 'users'));
+                const allUsers = snap.val() ? Object.values(snap.val()) : [];
+                if (allUsers.some(u => u.username === username)) {
+                    errEl.textContent = '⚠️ اسم المستخدم مستخدم بالفعل، اختر اسماً آخر';
+                    errEl.style.color = '#f43f5e';
+                    return;
+                }
+            } catch(e) {}
+
+            errEl.textContent = '';
+            errEl.style.color = '#f43f5e';
+
+            const profile = {
+                name, username, password: pass,
+                userId: 'usr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+                joinedAt: Date.now(), orders: [], locked: false, discount: 0
+            };
+            await saveUserProfile(profile);
+
+            // حفظ في Firebase
+            try {
+                const { set } = await import('firebase/database');
+                await set(ref(db, 'users/' + profile.userId), {
+                    name: profile.name, username: profile.username,
+                    password: pass,
+                    userId: profile.userId, joinedAt: profile.joinedAt,
+                    locked: false, discount: 0
+                });
+            } catch (e) {}
+
+            hideAuthScreen();
+            applyVipBadge(profile);
+            attachUserOrdersListener(profile);
+            applyUserDiscount(profile);
+            listenUserLockStatus(profile.userId);
+            setTimeout(() => showToast(`🎉 مرحباً بك ${name}! تم إنشاء حسابك بنجاح`), 350);
+        };
+
+        // ============ تسجيل دخول ============
+        window.submitLogin = async () => {
+            const username = document.getElementById('login-username').value.trim().toLowerCase();
+            const pass = document.getElementById('login-pass').value.trim();
+            const errEl = document.getElementById('login-error');
+            errEl.textContent = '';
+            if (!username || !pass) { errEl.textContent = '⚠️ أدخل اسم المستخدم وكلمة المرور'; return; }
+
+            errEl.textContent = '⏳ جارٍ التحقق...';
+            errEl.style.color = '#f59e0b';
+
+            try {
+                const { get } = await import('firebase/database');
+                const snap = await get(ref(db, 'users'));
+                const allUsers = snap.val() ? Object.entries(snap.val()).map(([id,v]) => ({...v, _fbKey: id})) : [];
+                const found = allUsers.find(u => u.username === username);
+
+                if (!found) { errEl.textContent = '❌ اسم المستخدم غير موجود'; errEl.style.color = '#f43f5e'; return; }
+
+                // التحقق من كلمة المرور: نجرب من Firebase أولاً ثم من البروفايل المحلي
+                const localProfile = await getUserProfile();
+                const storedPass = found.password || (localProfile && localProfile.username === username ? localProfile.password : null);
+
+                if (storedPass !== pass) { errEl.textContent = '❌ كلمة المرور غير صحيحة'; errEl.style.color = '#f43f5e'; return; }
+
+                // التحقق من القفل
+                if (found.locked) {
+                    errEl.textContent = '';
+                    hideAuthScreen();
+                    showLockedScreen();
+                    // حفظ بيانات المستخدم المقفل مؤقتاً
+                    const lockedProfile = { ...found, password: pass };
+                    await saveUserProfile(lockedProfile);
+                    return;
+                }
+
+                // بناء البروفايل من Firebase + البيانات المحلية
+                const mergedProfile = {
+                    name: found.name || '',
+                    username: found.username || username,
+                    password: pass,
+                    userId: found.userId || found._fbKey,
+                    joinedAt: found.joinedAt || Date.now(),
+                    orders: localProfile && localProfile.username === username ? (localProfile.orders || []) : [],
+                    ordersHistory: localProfile && localProfile.username === username ? (localProfile.ordersHistory || []) : [],
+                    locked: found.locked || false,
+                    discount: found.discount || 0
+                };
+                await saveUserProfile(mergedProfile);
+                errEl.textContent = '';
+                errEl.style.color = '#f43f5e';
+                hideAuthScreen();
+                applyVipBadge(mergedProfile);
+                attachUserOrdersListener(mergedProfile);
+                applyUserDiscount(mergedProfile);
+                listenUserLockStatus(mergedProfile.userId);
+                setTimeout(() => showToast(`👋 مرحباً بعودتك يا ${mergedProfile.name}!`), 350);
+            } catch(e) {
+                errEl.textContent = '❌ خطأ في الاتصال، حاول مجدداً';
+                errEl.style.color = '#f43f5e';
+                console.error(e);
+            }
+        };
+
+        // ============ تسجيل الخروج ============
+        window.logoutUser = async () => {
+            if (!confirm('هل تريد تسجيل الخروج؟')) return;
+            await saveUserProfile(null);
+            currentUserProfile = null;
+            userOrdersData = [];
+            userOrdersListenerAttached = false;
+            document.documentElement.style.setProperty('--user-discount', '0');
+            const hCard = document.getElementById('home-membership-card');
+            if (hCard) hCard.style.display = 'none';
+            const badge = document.getElementById('header-vip-badge');
+            if (badge) badge.classList.remove('show');
+            // إخفاء شاشة القفل إن كانت ظاهرة
+            hideLockScreen();
+            goHome();
+            showAuthScreen();
+        };
+
+        // ============ شاشة القفل ============
+        function showLockedScreen() {
+            const el = document.getElementById('locked-screen');
+            if (el) el.classList.add('open');
+        }
+        function hideLockScreen() {
+            const el = document.getElementById('locked-screen');
+            if (el) el.classList.remove('open');
+        }
+
+        // مراقبة حالة القفل في Firebase
+        function listenUserLockStatus(userId) {
+            if (!userId) return;
+            onValue(ref(db, 'users/' + userId + '/locked'), async (snap) => {
+                const locked = snap.val();
+                const profile = await getUserProfile();
+                if (profile) {
+                    profile.locked = locked || false;
+                    profile.discount = profile.discount || 0;
+                    await saveUserProfile(profile);
+                    if (locked) { showLockedScreen(); }
+                    else { hideLockScreen(); }
+                }
+            });
+            // مراقبة التخفيض
+            onValue(ref(db, 'users/' + userId + '/discount'), async (snap) => {
+                const disc = snap.val() || 0;
+                const profile = await getUserProfile();
+                if (profile) {
+                    profile.discount = disc;
+                    await saveUserProfile(profile);
+                    applyUserDiscount(profile);
+                    renderProfile();
+                }
+            });
+        }
+
+        window.openWhatsAppLocked = () => {
+            const profile = currentUserProfile;
+            const msg = `مرحباً، حسابي مقفل وأرجو المساعدة${profile ? '
+اسم المستخدم: ' + (profile.username || profile.name) : ''}`;
+            sendWaMsgSilent(msg, 'support');
+        };
+
+        // ============ تطبيق تخفيض المستخدم على الأسعار ============
+        function applyUserDiscount(profile) {
+            const disc = profile && profile.discount ? parseFloat(profile.discount) : 0;
+            document.documentElement.style.setProperty('--user-discount', disc);
+            // تحديث بطاقة التخفيض في البروفايل
+            const discCard = document.getElementById('profile-discount-card');
+            const discBadge = document.getElementById('profile-discount-badge');
+            if (discCard && discBadge) {
+                if (disc > 0) {
+                    discCard.style.display = 'block';
+                    discBadge.textContent = disc + '% خصم';
+                } else {
+                    discCard.style.display = 'none';
+                }
+            }
+            // تحديث حبة التخفيض في البطاقة الرئيسية
+            const homePill = document.getElementById('home-member-discount-pill');
+            if (homePill) {
+                if (disc > 0) { homePill.style.display = 'block'; homePill.textContent = '🎁 ' + disc + '% خصم'; }
+                else { homePill.style.display = 'none'; }
+            }
+        }
+        window.applyUserDiscount = applyUserDiscount;
+
+        function showAuthScreen() {
+            const el = document.getElementById('auth-screen');
+            if (!el) return;
+            el.classList.add('open');
+            spawnGoldParticles('auth-particles', 18);
+        }
+        function hideAuthScreen() {
+            const el = document.getElementById('auth-screen');
+            if (!el) return;
+            el.classList.remove('open');
+        }
+
+        // ============ تحديد مستوى العضوية بناءً على الطلبات الناجحة ============
+        function getMembershipTier(acceptedOrders) {
+            if (acceptedOrders >= 400) return { label: 'عضو TOP ✨', icon: '👑', next: null };
+            if (acceptedOrders >= 300) return { label: 'عضو ألماسي', icon: '💎', next: 400 };
+            if (acceptedOrders >= 200) return { label: 'عضو ذهبي', icon: '🥇', next: 300 };
+            if (acceptedOrders >= 100) return { label: 'عضو فضي', icon: '🥈', next: 200 };
+            return { label: 'عضو جديد', icon: '🆕', next: 100 };
+        }
+
+        // تحديث بطاقة الرئيسية
+        function updateHomeMemberCard(profile, acceptedCount) {
+            const card = document.getElementById('home-membership-card');
+            if (!card || !profile) return;
+            card.style.display = 'block';
+            const tier = getMembershipTier(acceptedCount);
+            const avatarEl = document.getElementById('home-member-avatar');
+            const nameEl = document.getElementById('home-member-name');
+            const tierEl = document.getElementById('home-member-tier');
+            const ptsEl = document.getElementById('home-member-points');
+            const fillEl = document.getElementById('home-member-progress-fill');
+            const labelEl2 = document.getElementById('home-member-progress-label');
+            if (avatarEl) avatarEl.textContent = (profile.name||'؟').charAt(0).toUpperCase();
+            if (nameEl) nameEl.textContent = profile.name || '—';
+            if (tierEl) tierEl.textContent = tier.icon + ' ' + tier.label;
+            if (ptsEl) ptsEl.textContent = acceptedCount;
+            const pct = tier.next ? Math.min(100,(acceptedCount/tier.next)*100) : 100;
+            if (fillEl) fillEl.style.width = pct + '%';
+            if (labelEl2) {
+                labelEl2.textContent = tier.next
+                    ? `${acceptedCount} / ${tier.next} للمستوى التالي`
+                    : 'أعلى مستوى 👑';
+            }
+        }
+        window.updateHomeMemberCard = updateHomeMemberCard;
+
+        // إظهار/إخفاء شارة VIP
+        function applyVipBadge(profile) {
+            const badge = document.getElementById('header-vip-badge');
+            const labelEl = document.getElementById('header-vip-label');
+            if (!badge || !profile) return;
+            const accepted = getOrdersStatusCounts().accepted;
+            const tier = getMembershipTier(accepted);
+            updateHomeMemberCard(profile, accepted);
+            if (accepted >= 100) {
+                badge.querySelector('.vip-crown-icon').textContent = tier.icon;
+                if (labelEl) labelEl.textContent = tier.label.replace('عضو ', '');
+                badge.title = tier.label;
+                badge.classList.add('show');
+            } else {
+                badge.classList.remove('show');
+            }
+        }
+
+        // ============ تسجيل عملية شراء جديدة في ملف المستخدم ============
+        async function recordPurchase() {
+            const profile = await getUserProfile();
+            if (!profile) return;
+            profile.orders = profile.orders || [];
+            profile.orders.push(Date.now());
+            await saveUserProfile(profile);
+            applyVipBadge(profile);
+            // مزامنة اختيارية مع فايربيس
+            try {
+                push(ref(db, `users/${profile.userId}/purchases`), { timestamp: Date.now() });
+            } catch (e) {}
+            const pv = document.getElementById('profile-view');
+            if (pv && pv.style.display === 'block') renderProfile();
+        }
+        window.recordPurchase = recordPurchase;
+
+        // ============ عرض صفحة البروفايل (عرض فقط) ============
+        async function renderProfile() {
+            const profile = await getUserProfile();
+            if (!profile) return;
+            if (!userOrdersData.length) await loadOrdersArchive();
+            const now = new Date();
+            const curMonth = now.getMonth(), curYear = now.getFullYear();
+            const orders = profile.orders || [];
+            const monthlyCount = orders.filter(t => {
+                const d = new Date(t);
+                return d.getMonth() === curMonth && d.getFullYear() === curYear;
+            }).length;
+            const totalCount = orders.length;
+
+            // العضوية تعتمد على الطلبات الناجحة (المقبولة)
+            attachUserOrdersListener(profile);
+            const statusCounts = getOrdersStatusCounts();
+            const acceptedCount = statusCounts.accepted;
+            const tier = getMembershipTier(acceptedCount);
+            const progressPct = tier.next ? Math.min(100, (acceptedCount / tier.next) * 100) : 100;
+            const joinDate = new Date(profile.joinedAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            document.getElementById('profile-avatar').textContent = (profile.name || '؟').trim().charAt(0).toUpperCase();
+            document.getElementById('profile-name').textContent = profile.name;
+            document.getElementById('profile-tier-badge').innerHTML = `${tier.icon} ${tier.label}`;
+            document.getElementById('profile-join-date').textContent = joinDate;
+            document.getElementById('profile-month-count').textContent = monthlyCount;
+            document.getElementById('profile-total-count').textContent = totalCount;
+
+            // عرض اسم المستخدم
+            const unEl = document.getElementById('profile-username-display');
+            if (unEl) unEl.textContent = profile.username || '—';
+
+            // نقاط الولاء = الطلبات المقبولة
+            document.getElementById('profile-points').textContent = acceptedCount;
+            const pendingEl = document.getElementById('profile-pending-count');
+            const acceptedEl = document.getElementById('profile-accepted-count');
+            const rejectedEl = document.getElementById('profile-rejected-count');
+            if (pendingEl) pendingEl.textContent = statusCounts.pending;
+            if (acceptedEl) acceptedEl.textContent = acceptedCount;
+            if (rejectedEl) rejectedEl.textContent = statusCounts.rejected;
+
+            const fill = document.getElementById('profile-progress-fill');
+            if (fill) fill.style.width = progressPct + '%';
+            const nextLabel = document.getElementById('profile-next-tier');
+            if (nextLabel) {
+                nextLabel.textContent = tier.next
+                    ? `🎯 باقي ${tier.next - acceptedCount} طلب ناجح للوصول إلى ${getMembershipTier(tier.next).label}`
+                    : '👑 لقد وصلت إلى أعلى مستوى عضوية TOP! شكراً لولائك الرائع 🌟';
+            }
+
+            // تطبيق التخفيض وتحديث بطاقة الرئيسية
+            applyUserDiscount(profile);
+            updateHomeMemberCard(profile, acceptedCount);
+
+            // رسالة تهنئة TOP عند بلوغ 400 طلب ناجح لأول مرة
+            if (acceptedCount >= 400 && !profile.topCelebrated) {
+                profile.topCelebrated = true;
+                await saveUserProfile(profile);
+                setTimeout(() => showTopCelebration(), 500);
+            }
+        }
+
+        function showTopCelebration() {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px);';
+            modal.innerHTML = `
+            <div style="background:linear-gradient(160deg,#1c2840,#0e1520);border:1.5px solid rgba(245,158,11,0.5);border-radius:28px;padding:36px 28px;text-align:center;max-width:380px;width:100%;box-shadow:0 0 60px rgba(245,158,11,0.3);">
+                <div style="font-size:4rem;margin-bottom:12px;">👑</div>
+                <div style="font-size:1.3rem;font-weight:900;color:#f59e0b;margin-bottom:10px;">مبروك! أنت الآن TOP!</div>
+                <div style="font-size:0.9rem;color:#e2e8f0;line-height:1.8;margin-bottom:20px;">
+                    وصلت إلى أعلى مستوى عضوية في متجرنا<br/>
+                    <strong style="color:#f59e0b;">400 طلب ناجح!</strong><br/>
+                    شكراً لثقتك ووفائك الرائع معنا 🌟
+                </div>
+                <button onclick="this.closest('div[style]').remove()" style="width:100%;background:var(--gold-grad);color:#1a1200;border:none;border-radius:14px;padding:14px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:inherit;">
+                    🎉 شكراً! استمر في التسوق
+                </button>
+            </div>`;
+            document.body.appendChild(modal);
+            goldenConfetti();
+            modal.addEventListener('click', function(e){ if(e.target===modal) modal.remove(); });
+        }
+        window.renderProfile = renderProfile;
+
+        // ============ فتح/إغلاق صفحة البروفايل ============
+        window.openProfile = () => {
+            currentCatId = null;
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('products-view').style.display = 'none';
+            const sb = document.getElementById('home-search-bar');
+            if (sb) sb.style.display = 'none';
+            document.getElementById('profile-view').style.display = 'block';
+            renderProfile();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ============ تأثير قصّ ورق ذهبي عند نجاح الطلب ============
+        function goldenConfetti() {
+            const colors = ['#f59e0b', '#fde68a', '#fbbf24', '#f43f5e', '#fff'];
+            for (let i = 0; i < 28; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'gold-confetti-piece';
+                piece.style.left = (40 + Math.random() * 20) + '%';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.setProperty('--x', (Math.random() * 240 - 120) + 'px');
+                piece.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+                piece.style.animationDelay = (Math.random() * 0.25) + 's';
+                document.body.appendChild(piece);
+                setTimeout(() => piece.remove(), 2200);
+            }
+        }
+        window.goldenConfetti = goldenConfetti;
+
+
         // المتغيرات العامة
         let allProducts = [],
             allCategories = [],
@@ -2316,7 +3951,8 @@
             rechargeGames = [],
             rechargeApps = [],
             rechargeSaldo = [], /* alias: rechargeBalance */
-            customFields = [];
+            customFields = [],
+            simLinesData = [];
         let paymentSettings = { enabled: true, name: 'شام كاش', code: '0998765432', barcodeUrl: '' };
         let currentCatId = null,
             selectedRchItem = null,
@@ -2325,6 +3961,7 @@
         let currentProductForShipping = null,
             currentShippingData = null;
         window.payFileData = null;
+        window.payFileHash = null;
         window.payCallback = null;
 
         // ============ وظائف العرض ============
@@ -2385,6 +4022,8 @@
             if (drwName) drwName.textContent = n;
             const splashTitle = document.getElementById('splash-title');
             if (splashTitle) splashTitle.textContent = n;
+            const authStoreName = document.getElementById('auth-store-name');
+            if (authStoreName) authStoreName.textContent = n;
             document.getElementById('footer-nm').textContent = n;
             document.title = n;
         }
@@ -2419,10 +4058,28 @@
         window.setActiveNav = setActiveNav;
 
         // بطاقة المنتج
+        // الحصول على نسبة تخفيض المستخدم الحالي
+        function getUserDiscountRate() {
+            const disc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--user-discount') || '0');
+            return isNaN(disc) ? 0 : disc;
+        }
+        function applyDiscountToPrice(price) {
+            const disc = getUserDiscountRate();
+            if (!disc || !price) return { original: price, final: price, hasDiscount: false };
+            const final = (parseFloat(price) * (1 - disc/100)).toFixed(2);
+            return { original: price, final, hasDiscount: true, discPct: disc };
+        }
+
         function productCard(p) {
+            const disc = applyDiscountToPrice(p.price);
             const hasOff = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price || 0);
             let prHtml;
-            if (hasOff) {
+            if (disc.hasDiscount) {
+                prHtml = `<div class="price-row">
+                    <span class="prod-price sale">$${disc.final}</span>
+                    <span class="orig-price">$${p.price}</span>
+                </div>`;
+            } else if (hasOff) {
                 prHtml = `<div class="price-row">
                     <span class="prod-price sale">$${p.price}</span>
                     <span class="orig-price">$${p.originalPrice}</span>
@@ -2456,7 +4113,9 @@
             }
 
             return `
-            <div class="product-card">
+            <div class="product-card${p.available===false?' card-unavailable':''}">
+                ${p.available===false?`<span class="unavailable-badge">🚫 غير متاح</span>`:''}
+                ${p.freeShipping&&p.available!==false?`<span class="unavailable-badge" style="background:rgba(6,182,212,0.18);border-color:rgba(6,182,212,0.45);color:#67e8f9;">🚚 شحن مجاني</span>`:''}
                 <div class="prod-img-wrap">
                     ${hasOff?`<span class="disc-float">-${Math.round((1-parseFloat(p.price)/parseFloat(p.originalPrice))*100)}%</span>`:''}
                     ${p.imageUrl?`<img src="${p.imageUrl}" onerror="this.style.display='none'" loading="lazy" alt="">`:'<div class="no-img-ph" style="font-size:1.8rem;">📦</div>'}
@@ -2466,7 +4125,10 @@
                     ${prHtml}
                 </div>
                 ${specsHtml}
-                <button class="btn-buy" onclick="window.openProductSpecs('${p.id}')">🛒 شراء الآن</button>
+                ${p.available===false
+                    ? `<button class="btn-buy-unavailable">🚫 غير متاح حالياً</button>`
+                    : `<button class="btn-buy" onclick="window.openProductSpecs('${p.id}')">🛒 شراء الآن</button>`
+                }
             </div>`;
         }
 
@@ -2502,7 +4164,16 @@
                     <h3 style="color:#fff;font-size:1rem;font-weight:800;">${product.name}</h3>
                 </div>
                 <div style="padding:20px;">
-                    <div style="margin-bottom:14px;font-size:1.1rem;"><strong>💰 السعر:</strong> <span style="color:#f59e0b;font-weight:900;">${product.price?'$'+product.price:'غير محدد'}</span></div>`;
+                    <div style="margin-bottom:14px;font-size:1.1rem;">
+                        <strong>💰 السعر:</strong>
+                        ${(() => {
+                            const dsc = applyDiscountToPrice(product.price);
+                            if (dsc.hasDiscount) {
+                                return `<span style="color:#f43f5e;font-weight:900;">$${dsc.final}</span> <span style="text-decoration:line-through;color:#64748b;font-size:0.85rem;">$${product.price}</span> <span style="background:rgba(16,185,129,0.15);color:#34d399;border-radius:8px;padding:2px 8px;font-size:0.72rem;font-weight:800;">-${dsc.discPct}%</span>`;
+                            }
+                            return `<span style="color:#f59e0b;font-weight:900;">${product.price?'$'+product.price:'غير محدد'}</span>`;
+                        })()}
+                    </div>`;
             if (specsList.length) {
                 specsHtml +=
                     `<div style="background:rgba(15,23,42,.6);border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,.04);"><div style="font-weight:800;margin-bottom:10px;color:#f43f5e;">⚙️ المواصفات التقنية:</div>`;
@@ -2575,24 +4246,89 @@
             document.getElementById('pay-overlay').classList.add('open');
             window.payCallback = null;
             window.payFileData = null;
+            window.payFileHash = null;
+        }
+
+        // ============ توليد بصمة (Hash) لملف إثبات الدفع لمنع تكرار رفع نفس الصورة ============
+        async function hashDataUrl(dataUrl) {
+            try {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(dataUrl);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            } catch (e) {
+                // fallback بسيط في حال عدم توفر crypto.subtle
+                let hash = 0;
+                for (let i = 0; i < dataUrl.length; i++) {
+                    hash = ((hash << 5) - hash) + dataUrl.charCodeAt(i);
+                    hash |= 0;
+                }
+                return 'fb_' + hash;
+            }
+        }
+
+        // تسجيل بصمة صورة الدفع بعد إرسال الطلب بنجاح لمنع إعادة استخدامها
+        async function registerUsedPaymentHash(hash) {
+            if (!hash) return;
+            const profile = await getUserProfile();
+            if (!profile) return;
+            profile.usedPaymentHashes = profile.usedPaymentHashes || [];
+            if (!profile.usedPaymentHashes.includes(hash)) {
+                profile.usedPaymentHashes.push(hash);
+                // الاحتفاظ بآخر 200 بصمة فقط لتجنب تضخم البيانات
+                if (profile.usedPaymentHashes.length > 200) {
+                    profile.usedPaymentHashes = profile.usedPaymentHashes.slice(-200);
+                }
+                await saveUserProfile(profile);
+            }
         }
 
         window.handlePayFile = (input) => {
             const f = input.files[0];
             if (!f) return;
             const reader = new FileReader();
-            reader.onload = e => {
-                window.payFileData = e.target.result;
+            reader.onload = async (e) => {
+                const dataUrl = e.target.result;
+                // التحقق من عدم تكرار استخدام نفس ملف إثبات الدفع (صورة أو PDF)
+                const hash = await hashDataUrl(dataUrl);
+                const profile = await getUserProfile();
+                const usedHashes = (profile && profile.usedPaymentHashes) || [];
+                if (usedHashes.includes(hash)) {
+                    showToast('⚠️ تم استخدام هذا الملف كإثبات دفع من قبل، يرجى إرفاق ملف جديد');
+                    input.value = '';
+                    window.payFileData = null;
+                    window.payFileHash = null;
+                    document.getElementById('pay-preview').classList.remove('show');
+                    document.getElementById('pay-preview-content').innerHTML = '';
+                    return;
+                }
+                window.payFileData = dataUrl;
+                window.payFileHash = hash;
                 const pv = document.getElementById('pay-preview');
                 const pc = document.getElementById('pay-preview-content');
-                pc.innerHTML =
-                    `<img src="${window.payFileData}" style="width:100%;border-radius:12px;max-height:180px;object-fit:contain;" alt="إثبات الدفع">`;
+                const isImage = f.type.startsWith('image/');
+                if (isImage) {
+                    pc.innerHTML =
+                        `<img src="${window.payFileData}" style="width:100%;border-radius:12px;max-height:180px;object-fit:contain;" alt="إثبات الدفع">`;
+                } else {
+                    const fileName = f.name || 'ملف إثبات الدفع';
+                    pc.innerHTML =
+                        `<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px;">
+                            <span style="font-size:1.8rem;">📄</span>
+                            <div style="flex:1;overflow:hidden;">
+                                <div style="font-size:0.8rem;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${fileName}</div>
+                                <div style="font-size:0.68rem;color:#64748b;">تم إرفاق الملف بنجاح</div>
+                            </div>
+                        </div>`;
+                }
                 pv.classList.add('show');
             };
             reader.readAsDataURL(f);
         };
         window.removePayFile = () => {
             window.payFileData = null;
+            window.payFileHash = null;
             document.getElementById('pay-preview').classList.remove('show');
             document.getElementById('pay-preview-content').innerHTML = '';
             document.getElementById('pay-file-input').value = '';
@@ -2632,6 +4368,7 @@
         window.submitPayment = () => {
             if (!window.payFileData) { showToast('⚠️ يرجى إرفاق إثبات الدفع'); return; }
             document.getElementById('pay-overlay').classList.remove('open');
+            registerUsedPaymentHash(window.payFileHash);
             if (window.payCallback) {
                 // طلب شحن - استخدام الـ callback المخصص
                 const cb = window.payCallback;
@@ -2641,10 +4378,12 @@
                 // طلب منتج عادي
                 finalizeOrderWithPayment(window.payFileData);
             }
+            window.payFileHash = null;
         };
         window.closePayModal = (cancel) => {
             document.getElementById('pay-overlay').classList.remove('open');
             window.payFileData = null;
+            window.payFileHash = null;
             window.payCallback = null;
             if (cancel) {
                 currentProductForShipping = null;
@@ -2671,6 +4410,7 @@
             const orderData = {
                 productName: product.name,
                 price: product.price ? `$${product.price}` : '',
+                userId: (currentUserProfile && currentUserProfile.userId) || '',
                 customerName: name,
                 customerPhone: phone,
                 customerAddress: address,
@@ -2682,6 +4422,7 @@
             push(ref(db, 'orders'), orderData).catch(console.error);
             sendWaMsgSilent(waMsg, 'products');
             showSuccessModal(product.name, product.price);
+            recordPurchase();
             currentProductForShipping = null;
             currentShippingData = null;
         }
@@ -2717,7 +4458,8 @@
                                 : type === 'game' ? 'linear-gradient(180deg,#b91c1c 0%,#7f1d1d 100%)' 
                                 : 'linear-gradient(180deg,#0369a1 0%,#0c4a6e 100%)';
                 return `
-                <div class="recharge-item" onclick="window.openRch('${item.id}','${type}')">
+                <div class="recharge-item${item.available===false?' card-unavailable':''}" ${item.available===false?'':'onclick="window.openRch(\''+item.id+'\',\''+type+'\')"'}>
+                    ${item.available===false?`<span class="unavailable-badge">🚫 غير متاح</span>`:''}
                     <div class="ri-card-frame">
                         <div class="ri-card-frame-inner">
                             <div class="ri-icon">${item.imageUrl?`<img src="${item.imageUrl}" onerror="this.src=''" alt="">`:typeIcon}</div>
@@ -2735,13 +4477,19 @@
             const isAppsCat = (cat.catType === 'apps' || cat.name === 'شحن التطبيقات' || cat.name.includes('شحن التطبيقات') || cat.name.includes('تطبيقات'));
             const isGamesCat = (cat.catType === 'games' || cat.name === 'شحن الألعاب' || cat.name.includes('شحن الألعاب') || cat.name.includes('ألعاب'));
             const isSaldoCat = (cat.catType === 'balance' || cat.name === 'شحن الأرصدة' || cat.name.includes('شحن الأرصدة') || cat.name.includes('أرصدة') || cat.name.includes('رصيد') || cat.name.includes('ارصدة') || cat.name.includes('balance'));
+            const isSimLinesCat = (cat.catType === 'simLines' || cat.name.includes('شراء خطوط') || cat.name.includes('خطوط') || cat.name.includes('SIM') || cat.name.includes('sim') || cat.name.includes('esim') || cat.name.includes('eSIM'));
             document.getElementById('home-view').style.display = 'none';
             document.getElementById('products-view').style.display = 'block';
+            const profileView = document.getElementById('profile-view');
+            if (profileView) profileView.style.display = 'none';
+            const simView = document.getElementById('sim-lines-view');
+            if (simView) simView.style.display = 'none';
             document.getElementById('cv-ico').textContent = cat.icon || '📁';
             document.getElementById('cv-nm').textContent = cat.name;
             if (isAppsCat) showRechargeItems('app');
             else if (isGamesCat) showRechargeItems('game');
             else if (isSaldoCat) showRechargeItems('saldo');
+            else if (isSimLinesCat) showSimLinesPicker();
             else {
                 document.getElementById('recharge-grid').style.display = 'none';
                 document.getElementById('products-grid').style.display = 'grid';
@@ -2762,6 +4510,10 @@
             currentCatId = null;
             document.getElementById('products-view').style.display = 'none';
             document.getElementById('home-view').style.display = 'block';
+            const profileView = document.getElementById('profile-view');
+            if (profileView) profileView.style.display = 'none';
+            const simView = document.getElementById('sim-lines-view');
+            if (simView) simView.style.display = 'none';
             const sb = document.getElementById('home-search-bar');
             if (sb) sb.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2790,6 +4542,7 @@
 
         // ============ Success Modal ============
         function showSuccessModal(productName, price) {
+            goldenConfetti();
             const wrap = document.createElement('div');
             wrap.style.cssText =
                 'position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
@@ -3005,6 +4758,7 @@
             document.getElementById('pay-preview-content').innerHTML = '';
             document.getElementById('pay-file-input').value = '';
             window.payFileData = null;
+            window.payFileHash = null;
             document.getElementById('pay-overlay').classList.add('open');
 
             // تعيين callback مخصص للشحن
@@ -3015,7 +4769,8 @@
                 push(ref(db, 'orders'), {
                     type: 'recharge',
                     itemName: rchItem.name,
-                    userId: uid,
+                    userId: (currentUserProfile && currentUserProfile.userId) || uid,
+                    accountId: uid,
                     quantity: qtyText,
                     price: priceText,
                     paymentFile: payFile,
@@ -3025,6 +4780,7 @@
 
                 sendWaMsgSilent(waMsg, 'recharge');
                 showSuccessModal(rchItem.name, priceText);
+                recordPurchase();
             };
 
             // مسح البيانات المؤقتة
@@ -3075,7 +4831,8 @@
             push(ref(db, 'orders'), {
                 type: 'recharge',
                 itemName: rchItem.name,
-                userId: uid,
+                userId: (currentUserProfile && currentUserProfile.userId) || uid,
+                accountId: uid,
                 quantity: qtyText,
                 price: priceText,
                 timestamp: Date.now(),
@@ -3253,6 +5010,308 @@
             });
         }
 
+        // ============ شراء الخطوط ============
+        let currentSimCompany = null;
+        let selectedSimLineId = null;
+        let simIdFront = null, simIdBack = null;
+
+        function showSimLinesPicker() {
+            document.getElementById('recharge-grid').style.display = 'none';
+            document.getElementById('products-grid').style.display = 'none';
+            // نعرض واجهة الخطوط مباشرة داخل products-view
+            const simView = document.getElementById('sim-lines-view');
+            if (simView) simView.style.display = 'block';
+            // تحديث شبكة الشركات
+            renderSimCompanies();
+        }
+
+        function renderSimCompanies() {
+            const grid = document.getElementById('sim-companies-grid');
+            if (!grid) return;
+            const mtnLines  = simLinesData.filter(s => s.company === 'mtn');
+            const syrLines  = simLinesData.filter(s => s.company === 'syriatel');
+            const otherLines= simLinesData.filter(s => s.company === 'other' || !s.company);
+            const mtnCount  = mtnLines.length;
+            const syrCount  = syrLines.length;
+            const otherCount= otherLines.length;
+            // خط غير متاح إذا كل خطوطه available===false
+            const mtnUnavail  = mtnCount > 0  && mtnLines.every(s => s.available === false);
+            const syrUnavail  = syrCount > 0  && syrLines.every(s => s.available === false);
+            const otherUnavail= otherCount > 0 && otherLines.every(s => s.available === false);
+
+            let html = '';
+            if (mtnCount > 0 || simLinesData.length === 0) {
+                html += `
+                <div class="sim-company-card${mtnUnavail?' card-unavailable':''}" ${mtnUnavail?'':'onclick="openSimForm(\'mtn\')"'}>
+                    ${mtnUnavail?`<span class="unavailable-badge">🚫 غير متاح</span>`:''}
+                    <div class="scc-glow mtn-glow"></div>
+                    <div class="scc-logo mtn-logo"><span style="font-size:2rem;">🟡</span></div>
+                    <div class="scc-name">MTN</div>
+                    <div class="scc-sub">${mtnUnavail ? 'غير متاح حالياً' : mtnCount > 0 ? mtnCount + ' خط متاح' : 'اضغط للطلب'}</div>
+                    ${!mtnUnavail?`<div class="scc-arrow">←</div>`:''}
+                </div>`;
+            }
+            if (syrCount > 0 || simLinesData.length === 0) {
+                html += `
+                <div class="sim-company-card${syrUnavail?' card-unavailable':''}" ${syrUnavail?'':'onclick="openSimForm(\'syriatel\')"'}>
+                    ${syrUnavail?`<span class="unavailable-badge">🚫 غير متاح</span>`:''}
+                    <div class="scc-glow syr-glow"></div>
+                    <div class="scc-logo syr-logo"><span style="font-size:2rem;">🔴</span></div>
+                    <div class="scc-name">Syriatel</div>
+                    <div class="scc-sub">${syrUnavail ? 'غير متاح حالياً' : syrCount > 0 ? syrCount + ' خط متاح' : 'اضغط للطلب'}</div>
+                    ${!syrUnavail?`<div class="scc-arrow">←</div>`:''}
+                </div>`;
+            }
+            if (otherCount > 0) {
+                html += `
+                <div class="sim-company-card${otherUnavail?' card-unavailable':''}" ${otherUnavail?'':'onclick="openSimForm(\'other\')"'}>
+                    ${otherUnavail?`<span class="unavailable-badge">🚫 غير متاح</span>`:''}
+                    <div class="scc-glow other-glow"></div>
+                    <div class="scc-logo other-logo"><span style="font-size:2rem;">📡</span></div>
+                    <div class="scc-name">خطوط أخرى</div>
+                    <div class="scc-sub">${otherUnavail ? 'غير متاح حالياً' : otherCount + ' خط متاح'}</div>
+                    ${!otherUnavail?`<div class="scc-arrow">←</div>`:''}
+                </div>`;
+            }
+            if (!html) {
+                html = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b">📡 لا توجد خطوط متاحة حالياً</div>`;
+            }
+            grid.innerHTML = html;
+        }
+        window.closeSimPicker = () => {
+            document.getElementById('sim-picker-overlay').classList.remove('open');
+        };
+        window.openSimForm = (company) => {
+            currentSimCompany = company;
+            selectedSimLineId = null;
+            simIdFront = null;
+            simIdBack = null;
+            closeSimPicker();
+            const badge = document.getElementById('sim-form-badge');
+            const title = document.getElementById('sim-form-title');
+            const sub = document.getElementById('sim-form-sub');
+            if (company === 'mtn') {
+                badge.textContent = '🟡';
+                badge.className = 'sim-form-company-badge mtn';
+                title.textContent = 'شراء خط MTN';
+                sub.textContent = 'أدخل بياناتك لطلب خط MTN';
+            } else {
+                badge.textContent = '🔴';
+                badge.className = 'sim-form-company-badge syr';
+                title.textContent = 'شراء خط Syriatel';
+                sub.textContent = 'أدخل بياناتك لطلب خط سيريتيل';
+            }
+            buildSimFormBody(company);
+            document.getElementById('sim-form-overlay').classList.add('open');
+        };
+        window.closeSimForm = () => {
+            document.getElementById('sim-form-overlay').classList.remove('open');
+            simIdFront = null;
+            simIdBack = null;
+            selectedSimLineId = null;
+        };
+
+        function buildSimFormBody(company) {
+            const filtered = simLinesData.filter(s => s.company === company || (company === 'other' && (!s.company || s.company === 'other')));
+
+            // تحديد الخط الأول تلقائياً
+            const line = filtered.length ? filtered[0] : null;
+            if (line) selectedSimLineId = line.id;
+
+            // عرض ثابت للسعر فقط (بدون ضغط)
+            const linesHtml = line ? `
+                <div class="sim-selected-line-info">
+                    ${line.imageUrl ? `<img src="${line.imageUrl}" style="width:36px;height:36px;object-fit:contain;border-radius:9px;flex-shrink:0;border:1px solid rgba(255,255,255,0.08)" alt="">` : `<span style="font-size:1.5rem;flex-shrink:0">📡</span>`}
+                    <span class="ssl-name">${line.name}</span>
+                    ${line.price ? `<span class="ssl-price">💰 ${line.price} ${line.currency||''}</span>` : ''}
+                </div>
+                <div class="sim-section-divider"><span class="sim-section-divider-text">معلومات صاحب الخط</span></div>
+            ` : `<div class="sim-section-divider"><span class="sim-section-divider-text">معلومات صاحب الخط</span></div>`;
+
+            const fieldsSource = line || { fieldPhone: 'required', fieldAddress: 'optional', fieldIdFront: 'required', fieldIdBack: 'required' };
+
+            document.getElementById('sim-form-body').innerHTML = `
+                ${linesHtml}
+                <div id="sim-dynamic-fields">
+                    ${buildSimDynamicFields(fieldsSource)}
+                </div>
+                <button class="sim-submit-btn" onclick="submitSimOrder()">✅ تأكيد الطلب والمتابعة للدفع</button>
+            `;
+
+            // تحديث السعر في header subtitle
+            if (line && line.price) {
+                const sub = document.getElementById('sim-form-sub');
+                if (sub) sub.innerHTML = `<span style="color:#f59e0b;font-weight:800;font-size:0.8rem">💰 ${line.price} ${line.currency||''}</span>`;
+            }
+        }
+
+        function buildSimDynamicFields(fields) {
+            let html = '';
+            const fp = fields.fieldPhone || 'required';
+            const fa = fields.fieldAddress || 'optional';
+            const fif = fields.fieldIdFront || 'required';
+            const fib = fields.fieldIdBack || 'required';
+
+            // الاسم دائماً مطلوب
+            html += `<label class="sim-field-label">👤 الاسم الكامل <span class="sim-required-star">*</span></label>
+                <input class="sim-input" id="sim-full-name" type="text" placeholder="أدخل الاسم الثلاثي"/>`;
+
+            if (fp !== 'hidden') {
+                html += `<label class="sim-field-label">📱 رقم الهاتف ${fp==='required'?'<span class="sim-required-star">*</span>':'<span style="color:#4b5563;font-size:0.7rem;font-weight:600">(اختياري)</span>'}</label>
+                <input class="sim-input" id="sim-phone" type="tel" placeholder="09XXXXXXXX" dir="ltr"/>`;
+            } else {
+                html += `<input type="hidden" id="sim-phone" value=""/>`;
+            }
+
+            if (fa !== 'hidden') {
+                html += `<label class="sim-field-label">📍 العنوان ${fa==='required'?'<span class="sim-required-star">*</span>':'<span style="color:#4b5563;font-size:0.7rem;font-weight:600">(اختياري)</span>'}</label>
+                <input class="sim-input" id="sim-address" type="text" placeholder="المدينة / الحي"/>`;
+            } else {
+                html += `<input type="hidden" id="sim-address" value=""/>`;
+            }
+
+            const showUpload = fif !== 'hidden' || fib !== 'hidden';
+            if (showUpload) {
+                html += `<div class="sim-section-divider"><span class="sim-section-divider-text">صور الهوية</span></div>
+                <div class="sim-id-upload-grid">`;
+                if (fif !== 'hidden') {
+                    html += `<div class="sim-id-upload-box" id="sim-front-box">
+                        <div class="sim-id-upload-icon">🪪</div>
+                        <div class="sim-id-upload-label">الوجه الأمامي${fif==='required'?' <span style="color:#f43f5e">*</span>':' <span style="color:#64748b;font-size:0.62rem">(اختياري)</span>'}</div>
+                        <div class="sim-id-upload-status" id="sim-front-status"></div>
+                        <input class="sim-id-upload-input" type="file" accept="image/*" onchange="handleSimIdUpload(this,'front')"/>
+                    </div>`;
+                }
+                if (fib !== 'hidden') {
+                    html += `<div class="sim-id-upload-box" id="sim-back-box">
+                        <div class="sim-id-upload-icon">🪪</div>
+                        <div class="sim-id-upload-label">الوجه الخلفي${fib==='required'?' <span style="color:#f43f5e">*</span>':' <span style="color:#64748b;font-size:0.62rem">(اختياري)</span>'}</div>
+                        <div class="sim-id-upload-status" id="sim-back-status"></div>
+                        <input class="sim-id-upload-input" type="file" accept="image/*" onchange="handleSimIdUpload(this,'back')"/>
+                    </div>`;
+                }
+                html += `</div>`;
+            }
+            return html;
+        }
+
+        window.selectSimLine = (id) => {
+            selectedSimLineId = id;
+            simIdFront = null;
+            simIdBack = null;
+            document.querySelectorAll('.sim-line-card').forEach(c => c.classList.remove('selected'));
+            const el = document.getElementById('slcard-' + id);
+            if (el) el.classList.add('selected');
+            // تحديث السعر في header
+            const line = simLinesData.find(s => s.id === id);
+            if (line) {
+                const sub = document.getElementById('sim-form-sub');
+                if (sub) {
+                    if (line.price) {
+                        sub.innerHTML = `<span style="color:#f59e0b;font-weight:800">💰 ${line.price} ${line.currency||''}</span>`;
+                    } else {
+                        sub.textContent = line.name;
+                    }
+                }
+                const savedName = document.getElementById('sim-full-name')?.value || '';
+                const savedPhone = document.getElementById('sim-phone')?.value || '';
+                const savedAddr = document.getElementById('sim-address')?.value || '';
+                const dynDiv = document.getElementById('sim-dynamic-fields');
+                if (dynDiv) {
+                    dynDiv.innerHTML = buildSimDynamicFields(line);
+                    if (document.getElementById('sim-full-name')) document.getElementById('sim-full-name').value = savedName;
+                    if (document.getElementById('sim-phone')) document.getElementById('sim-phone').value = savedPhone;
+                    if (document.getElementById('sim-address')) document.getElementById('sim-address').value = savedAddr;
+                }
+            }
+        };
+
+        window.handleSimIdUpload = (input, side) => {
+            const f = input.files[0];
+            if (!f) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                if (side === 'front') {
+                    simIdFront = e.target.result;
+                    const box = document.getElementById('sim-front-box');
+                    const status = document.getElementById('sim-front-status');
+                    if (box) box.classList.add('uploaded');
+                    if (status) status.textContent = '✅ تم الرفع';
+                } else {
+                    simIdBack = e.target.result;
+                    const box = document.getElementById('sim-back-box');
+                    const status = document.getElementById('sim-back-status');
+                    if (box) box.classList.add('uploaded');
+                    if (status) status.textContent = '✅ تم الرفع';
+                }
+            };
+            reader.readAsDataURL(f);
+        };
+
+        window.submitSimOrder = () => {
+            const name = document.getElementById('sim-full-name')?.value.trim();
+            const phone = document.getElementById('sim-phone')?.value.trim() || '';
+            const address = document.getElementById('sim-address')?.value.trim() || '';
+
+            const selectedLine = selectedSimLineId ? simLinesData.find(s => s.id === selectedSimLineId) : null;
+            const fp = selectedLine?.fieldPhone || 'required';
+            const fa = selectedLine?.fieldAddress || 'optional';
+            const fif = selectedLine?.fieldIdFront || 'required';
+            const fib = selectedLine?.fieldIdBack || 'required';
+
+            if (!name) { showToast('⚠️ يرجى إدخال الاسم الكامل'); return; }
+            if (fp === 'required' && !phone) { showToast('⚠️ يرجى إدخال رقم الهاتف'); return; }
+            if (fa === 'required' && !address) { showToast('⚠️ يرجى إدخال العنوان'); return; }
+            if (fif === 'required' && !simIdFront) { showToast('⚠️ يرجى رفع صورة الهوية الأمامية'); return; }
+            if (fib === 'required' && !simIdBack) { showToast('⚠️ يرجى رفع صورة الهوية الخلفية'); return; }
+
+            const companyName = currentSimCompany === 'mtn' ? 'MTN' : currentSimCompany === 'syriatel' ? 'Syriatel' : 'أخرى';
+            const lineName = selectedLine ? selectedLine.name : 'خط ' + companyName;
+            const linePrice = selectedLine ? (selectedLine.price + ' ' + (selectedLine.currency || '')) : '';
+
+            const orderData = {
+                type: 'simLine',
+                company: currentSimCompany,
+                companyName,
+                lineName,
+                linePrice,
+                userId: (currentUserProfile && currentUserProfile.userId) || '',
+                customerName: name,
+                customerPhone: phone,
+                customerAddress: address,
+                ...(simIdFront ? { idFront: simIdFront } : {}),
+                ...(simIdBack ? { idBack: simIdBack } : {}),
+                createdAt: Date.now(),
+                status: 'pending'
+            };
+            push(ref(db, 'orders'), orderData).catch(console.error);
+
+            const waMsg = `📡 *طلب شراء خط جديد*\n━━━━━━━━━━━━━━━━━━━\n🏢 *الشركة:* ${companyName}\n📋 *الخط:* ${lineName}${linePrice?' — '+linePrice:''}\n\n👤 *الاسم:* ${name}\n📱 *الهاتف:* ${phone||'غير مضاف'}\n📍 *العنوان:* ${address||'غير مضاف'}\n━━━━━━━━━━━━━━━━━━━\n🪪 صور الهوية مرفقة في النظام`;
+            closeSimForm();
+
+            window.payCallback = (payFile) => {
+                push(ref(db, 'orders'), { ...orderData, paymentProof: payFile }).catch(console.error);
+                sendWaMsgSilent(waMsg, 'simLines');
+                showSuccessModal(lineName + ' — ' + companyName, linePrice);
+                recordPurchase();
+            };
+            document.getElementById('pay-preview').classList.remove('show');
+            document.getElementById('pay-preview-content').innerHTML = '';
+            document.getElementById('pay-file-input').value = '';
+            document.getElementById('pay-overlay').classList.add('open');
+            window.payFileData = null;
+            window.payFileHash = null;
+        };
+
+        // إضافة في handleBack أيضاً
+        const origHandleBack = window.handleBack || null;
+
+        // ============ Firebase Sim Lines Listener ============
+        onValue(ref(db, 'simLines'), (s) => {
+            const list = s.val() ? Object.entries(s.val()).map(([id, v]) => ({ id, ...v })) : [];
+            simLinesData = list;
+        });
+
         loadFromCacheAndListen();
         history.replaceState({ view: 'store' }, '');
         history.pushState({ view: 'store' }, '');
@@ -3265,12 +5324,18 @@
 
         // معالجة زر الرجوع - خطوة بخطوة بدون خروج من الموقع
         function handleBack() {
+            // شاشة تسجيل الدخول مطلوبة - لا تسمح بالخروج منها بالرجوع
+            if (document.getElementById('auth-screen').classList.contains('open')) { return; }
+            if (document.getElementById('osm-overlay').classList.contains('open')) { closeOrdersStatusModal(); return; }
+            if (document.getElementById('sim-form-overlay').classList.contains('open')) { closeSimForm(); return; }
+            if (document.getElementById('sim-picker-overlay').classList.contains('open')) { closeSimPicker(); return; }
             if (document.getElementById('rch-overlay').classList.contains('open')) { closeRch(); return; }
             if (document.getElementById('search-screen').classList.contains('open')) { closeSearch(); return; }
             if (document.getElementById('drawer').classList.contains('open')) { closeDrawer(); return; }
             if (document.getElementById('pay-overlay').classList.contains('open')) { closePayModal(true); return; }
             if (document.getElementById('shipping-modal').classList.contains('open')) { closeShippingModal(); return; }
             if (document.getElementById('tempSpecModal')) { document.getElementById('tempSpecModal').remove(); return; }
+            if (document.getElementById('profile-view').style.display === 'block') { goHome(); setActiveNav('bn-home'); return; }
             if (currentCatId) { goHome(); return; }
             // إذا كنا في الرئيسية لا تخرج من الموقع
         }
@@ -3284,7 +5349,8 @@
         // إغلاق النوافذ بـ Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                if (document.getElementById('search-screen').classList.contains('open')) closeSearch();
+                if (document.getElementById('osm-overlay').classList.contains('open')) closeOrdersStatusModal();
+                else if (document.getElementById('search-screen').classList.contains('open')) closeSearch();
                 else if (document.getElementById('drawer').classList.contains('open')) closeDrawer();
                 else if (document.getElementById('rch-overlay').classList.contains('open')) closeRch();
                 else if (document.getElementById('pay-overlay').classList.contains('open')) closePayModal(
@@ -3349,6 +5415,41 @@
                     splash.classList.add('hide');
                     setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
                 }
+
+                // مزامنة اسم/أيقونة المتجر مع شاشة تسجيل الدخول
+                const storeNameEl = document.getElementById('app-name');
+                const authStoreNameEl = document.getElementById('auth-store-name');
+                if (storeNameEl && authStoreNameEl) authStoreNameEl.textContent = storeNameEl.textContent || authStoreNameEl.textContent;
+
+                // ✨ التحقق من وجود بروفايل محفوظ - أول مرة أم زائر عائد؟
+                getUserProfile().then(async profile => {
+                    if (!profile) {
+                        showAuthScreen();
+                    } else {
+                        // التحقق من القفل أولاً من Firebase
+                        if (profile.userId) {
+                            try {
+                                const { get } = await import('firebase/database');
+                                const snap = await get(ref(db, 'users/' + profile.userId));
+                                const fbData = snap.val();
+                                if (fbData) {
+                                    profile.locked = fbData.locked || false;
+                                    profile.discount = fbData.discount || 0;
+                                    await saveUserProfile(profile);
+                                }
+                            } catch(e) {}
+                        }
+                        if (profile.locked) {
+                            showLockedScreen();
+                            return;
+                        }
+                        applyVipBadge(profile);
+                        attachUserOrdersListener(profile);
+                        applyUserDiscount(profile);
+                        if (profile.userId) listenUserLockStatus(profile.userId);
+                        setTimeout(() => showToast(`👋 مرحباً بعودتك يا ${profile.name}!`), 400);
+                    }
+                });
             }, 2200);
         })();
 
