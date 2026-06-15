@@ -1393,10 +1393,7 @@
             color: #94a3b8;
         }
         .pay-file-input {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
+            display: none;
         }
         .pay-preview {
             display: none;
@@ -3202,9 +3199,10 @@
                     </div>
                 </div>
                 <div class="pay-step"><span class="pay-step-lbl">2️⃣ أرفق إثبات الدفع</span>
-                    <div class="pay-upload-area" id="pay-upload-area"><span class="pay-upload-icon">📎</span>
-                        <div class="pay-upload-text">اضغط لاختيار صورة أو ملف</div>
-                        <input class="pay-file-input" id="pay-file-input" type="file" accept="image/*,.pdf" onchange="handlePayFile(this)"/></div>
+                    <div class="pay-upload-area" id="pay-upload-area" onclick="document.getElementById('pay-file-input').click()"><span class="pay-upload-icon">📄</span>
+                        <div class="pay-upload-text">اضغط لاختيار ملف إثبات الدفع</div>
+                        </div>
+                    <input id="pay-file-input" type="file" accept="image/*,application/pdf" style="display:none;position:fixed;top:-9999px;left:-9999px;opacity:0;" onchange="handlePayFile(this)"/>
                     <div class="pay-preview" id="pay-preview"><button class="pay-remove-btn" onclick="removePayFile()">✕</button>
                         <div id="pay-preview-content"></div></div>
                 </div>
@@ -4486,42 +4484,53 @@
         window.handlePayFile = (input) => {
             const f = input.files[0];
             if (!f) return;
+            const isImage = f.type.startsWith('image/');
+            const isPdf = f.type === 'application/pdf' || /\.pdf$/i.test(f.name || '');
+            if (!isImage && !isPdf) {
+                showToast('⚠️ يُسمح فقط بإرفاق صورة أو PDF كإثبات دفع');
+                input.value = '';
+                return;
+            }
             const reader = new FileReader();
+            reader.onerror = () => {
+                showToast('❌ حدث خطأ أثناء قراءة الملف، حاول مجدداً');
+                input.value = '';
+            };
             reader.onload = async (e) => {
-                const dataUrl = e.target.result;
-                // التحقق من عدم تكرار استخدام نفس ملف إثبات الدفع (صورة أو PDF)
-                const hash = await hashDataUrl(dataUrl);
-                const profile = await getUserProfile();
-                const usedHashes = (profile && profile.usedPaymentHashes) || [];
-                if (usedHashes.includes(hash)) {
-                    showToast('⚠️ تم استخدام هذا الملف كإثبات دفع من قبل، يرجى إرفاق ملف جديد');
-                    input.value = '';
-                    window.payFileData = null;
-                    window.payFileHash = null;
-                    document.getElementById('pay-preview').classList.remove('show');
-                    document.getElementById('pay-preview-content').innerHTML = '';
-                    return;
-                }
-                window.payFileData = dataUrl;
-                window.payFileHash = hash;
-                const pv = document.getElementById('pay-preview');
-                const pc = document.getElementById('pay-preview-content');
-                const isImage = f.type.startsWith('image/');
-                if (isImage) {
-                    pc.innerHTML =
-                        `<img src="${window.payFileData}" style="width:100%;border-radius:12px;max-height:180px;object-fit:contain;" alt="إثبات الدفع">`;
-                } else {
-                    const fileName = f.name || 'ملف إثبات الدفع';
-                    pc.innerHTML =
-                        `<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px;">
+                try {
+                    const dataUrl = e.target.result;
+                    const hash = await hashDataUrl(dataUrl);
+                    const profile = await getUserProfile();
+                    const usedHashes = (profile && profile.usedPaymentHashes) || [];
+                    if (usedHashes.includes(hash)) {
+                        showToast('⚠️ تم استخدام هذا الملف كإثبات دفع من قبل، يرجى إرفاق ملف جديد');
+                        input.value = '';
+                        window.payFileData = null;
+                        window.payFileHash = null;
+                        document.getElementById('pay-preview').classList.remove('show');
+                        document.getElementById('pay-preview-content').innerHTML = '';
+                        return;
+                    }
+                    window.payFileData = dataUrl;
+                    window.payFileHash = hash;
+                    const pv = document.getElementById('pay-preview');
+                    const pc = document.getElementById('pay-preview-content');
+                    if (isImage) {
+                        pc.innerHTML = `<img src="${dataUrl}" style="width:100%;border-radius:12px;max-height:180px;object-fit:contain;" alt="إثبات الدفع">`;
+                    } else {
+                        const fileName = f.name || 'ملف إثبات الدفع';
+                        pc.innerHTML = `<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px;">
                             <span style="font-size:1.8rem;">📄</span>
                             <div style="flex:1;overflow:hidden;">
                                 <div style="font-size:0.8rem;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${fileName}</div>
-                                <div style="font-size:0.68rem;color:#64748b;">تم إرفاق الملف بنجاح</div>
+                                <div style="font-size:0.68rem;color:#10b981;">✅ تم إرفاق الملف بنجاح</div>
                             </div>
                         </div>`;
+                    }
+                    pv.classList.add('show');
+                } catch(err) {
+                    showToast('❌ حدث خطأ، حاول مجدداً');
                 }
-                pv.classList.add('show');
             };
             reader.readAsDataURL(f);
         };
@@ -4536,24 +4545,37 @@
             const img = document.getElementById('pay-barcode-img');
             if (!img || !img.src) return;
             const src = img.src;
-            const a = document.createElement('a');
-            if (src.startsWith('data:')) {
-                a.href = src;
-                a.download = 'barcode-payment.png';
-                a.click();
-            } else {
-                fetch(src)
-                    .then(r => r.blob())
-                    .then(blob => {
-                        const url = URL.createObjectURL(blob);
-                        a.href = url;
-                        a.download = 'barcode-payment.png';
-                        a.click();
-                        setTimeout(() => URL.revokeObjectURL(url), 2000);
-                    })
-                    .catch(() => { window.open(src, '_blank'); });
+            try {
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.style.display = 'none';
+                if (src.startsWith('data:')) {
+                    a.href = src;
+                    a.download = 'barcode-payment.png';
+                    a.click();
+                    document.body.removeChild(a);
+                    showToast('📥 جاري تحميل الباركود...');
+                } else {
+                    fetch(src)
+                        .then(r => r.blob())
+                        .then(blob => {
+                            const url = URL.createObjectURL(blob);
+                            a.href = url;
+                            a.download = 'barcode-payment.png';
+                            a.click();
+                            document.body.removeChild(a);
+                            setTimeout(() => URL.revokeObjectURL(url), 3000);
+                            showToast('📥 جاري تحميل الباركود...');
+                        })
+                        .catch(() => {
+                            document.body.removeChild(a);
+                            // بدلاً من window.open نعرض رسالة للمستخدم
+                            showToast('⚠️ لا يمكن تحميل الباركود، يمكنك تصوير الشاشة');
+                        });
+                }
+            } catch(e) {
+                showToast('⚠️ لا يمكن تحميل الباركود، يمكنك تصوير الشاشة');
             }
-            showToast('📥 جاري تحميل الباركود...');
         };
 
         window.copyPayCode = () => {
