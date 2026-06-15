@@ -2826,6 +2826,21 @@
         </div>
     </div>
 
+    <!-- PROMO COUPON POPUP -->
+    <div id="promo-coupon-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99998;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px);">
+        <div style="background:var(--surface,#1a1b2e);border:1px solid rgba(245,158,11,0.35);border-radius:20px;padding:24px;max-width:360px;width:100%;text-align:center;position:relative;">
+            <button onclick="closePromoCouponPopup()" style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.08);border:none;border-radius:50%;width:30px;height:30px;color:#fff;font-size:1rem;cursor:pointer;line-height:1;">×</button>
+            <div style="font-size:2.5rem;margin-bottom:10px;">🎁</div>
+            <div style="font-size:1rem;font-weight:900;color:#e8e8f8;margin-bottom:6px;">عرض خاص لك!</div>
+            <div id="promo-coupon-gift" style="font-size:0.82rem;color:#94a3b8;margin-bottom:16px;line-height:1.7;"></div>
+            <div style="background:rgba(245,158,11,0.1);border:1px dashed rgba(245,158,11,0.4);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:10px;">
+                <span id="promo-coupon-code" style="font-size:1.1rem;font-weight:900;color:#fcd34d;letter-spacing:2px;direction:ltr;"></span>
+                <button onclick="copyPromoCouponCode()" style="background:var(--gold-grad);color:#1a1200;border:none;border-radius:10px;padding:8px 14px;font-size:0.78rem;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;">📋 نسخ</button>
+            </div>
+            <button onclick="closePromoCouponPopup()" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#e2e8f0;border-radius:14px;padding:12px;font-size:0.85rem;font-weight:800;cursor:pointer;font-family:inherit;">حسناً، شكراً</button>
+        </div>
+    </div>
+
     <!-- AUTH / WELCOME SCREEN -->
     <div class="auth-screen" id="auth-screen">
         <div class="gold-particles" id="auth-particles"></div>
@@ -2848,6 +2863,10 @@
                 <div class="auth-field">
                     <label>🆔 اسم المستخدم</label>
                     <input type="text" id="auth-username" class="auth-input" placeholder="مثال: ahmad123 (بالإنجليزية)" maxlength="20" autocomplete="off" dir="ltr" style="text-align:right;"/>
+                </div>
+                <div class="auth-field">
+                    <label>📱 رقم الهاتف الكامل</label>
+                    <input type="tel" id="auth-phone" class="auth-input" placeholder="09XXXXXXXX" maxlength="15" autocomplete="off" dir="ltr" style="text-align:right;"/>
                 </div>
                 <div class="auth-field">
                     <label>🔒 كلمة المرور</label>
@@ -3333,6 +3352,14 @@
         // ============================================================
         // ✨ نظام البروفايل الشخصي (تسجيل أول مرة فقط - عرض فقط بعد ذلك)
         // ============================================================
+        // ============ توليد كود الطلب ============
+        function generateOrderCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let code = '';
+            for (let i = 0; i < 12; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+            return code;
+        }
+
         let currentUserProfile = null;
         let userOrdersData = [];
         let userOrdersListenerAttached = false;
@@ -3572,12 +3599,14 @@
             const name = document.getElementById('auth-name').value.trim();
             const username = document.getElementById('auth-username').value.trim().toLowerCase();
             const pass = document.getElementById('auth-pass').value.trim();
+            const phone = document.getElementById('auth-phone') ? document.getElementById('auth-phone').value.trim() : '';
             const errEl = document.getElementById('auth-error');
             errEl.textContent = '';
 
             if (!name) { errEl.textContent = '⚠️ يرجى إدخال الاسم الكامل'; return; }
             if (!username) { errEl.textContent = '⚠️ يرجى إدخال اسم المستخدم'; return; }
             if (!/^[a-z0-9_]{3,20}$/.test(username)) { errEl.textContent = '⚠️ اسم المستخدم: 3-20 حرف إنجليزي أو رقم أو _'; return; }
+            if (!phone) { errEl.textContent = '⚠️ يرجى إدخال رقم الهاتف الكامل'; return; }
 
             // التحقق من قوة كلمة المرور
             const hasUpper = /[A-Z]/.test(pass), hasLower = /[a-z]/.test(pass), hasNum = /[0-9]/.test(pass), hasSymbol = /[^A-Za-z0-9]/.test(pass);
@@ -3603,7 +3632,8 @@
             const profile = {
                 name, username, password: pass,
                 userId: 'usr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
-                joinedAt: Date.now(), orders: [], locked: false, discount: 0
+                joinedAt: Date.now(), orders: [], locked: false, discount: 0,
+                phone: phone || ''
             };
             await saveUserProfile(profile);
 
@@ -3612,6 +3642,7 @@
                 await set(ref(db, 'users/' + profile.userId), {
                     name: profile.name, username: profile.username,
                     password: pass,
+                    phone: phone || '',
                     userId: profile.userId, joinedAt: profile.joinedAt,
                     locked: false, discount: 0
                 });
@@ -3739,6 +3770,27 @@
                     await saveUserProfile(profile);
                     applyUserDiscount(profile);
                     renderProfile();
+                }
+            });
+            // مراقبة تسجيل الخروج القسري
+            onValue(ref(db, 'users/' + userId + '/forceLogout'), async (snap) => {
+                const ts = snap.val();
+                if (!ts) return;
+                const profile = await getUserProfile();
+                if (!profile) return;
+                const lastSeen = profile._lastForceLogout || 0;
+                if (ts > lastSeen) {
+                    showToast('🚪 تم تسجيل خروجك من قبل الإدارة');
+                    setTimeout(async () => {
+                        await saveUserProfile(null);
+                        currentUserProfile = null;
+                        userOrdersData = [];
+                        userOrdersListenerAttached = false;
+                        document.documentElement.style.setProperty('--user-discount', '0');
+                        const hCard = document.getElementById('home-membership-card');
+                        if (hCard) hCard.style.display = 'none';
+                        showAuthScreen();
+                    }, 1500);
                 }
             });
         }
@@ -4554,10 +4606,13 @@
             const waMsg =
                 `🛍️ *طلب شراء جديد* 📦\n━━━━━━━━━━━━━━━━━━━\n👤 *العميل:* ${name}\n📞 *رقم التواصل:* ${phone}\n📍 *العنوان:* ${address||'غير مضاف'}\n\n📱 *المنتج:* ${product.name}\n💰 *السعر:* ${product.price?'$'+product.price:'غير محدد'}\n\n⚙️ *المواصفات:*\n${specsText}\n━━━━━━━━━━━━━━━━━━━\n💳 *تم الدفع وإرفاق الإيصال*`;
 
+            const orderCode = generateOrderCode();
             const orderData = {
+                orderCode,
                 productName: product.name,
                 price: product.price ? `$${product.price}` : '',
                 userId: (currentUserProfile && currentUserProfile.userId) || '',
+                username: (currentUserProfile && currentUserProfile.username) || '',
                 customerName: name,
                 customerPhone: phone,
                 customerAddress: address,
@@ -4567,11 +4622,103 @@
                 status: 'pending'
             };
             push(ref(db, 'orders'), orderData).catch(console.error);
-            sendWaMsgSilent(waMsg, 'products');
-            showSuccessModal(product.name, product.price);
+            showOrderChoiceModal(waMsg, product.name, product.price, 'products', orderCode);
             recordPurchase();
             currentProductForShipping = null;
             currentShippingData = null;
+        }
+
+        // ===== نافذة اختيار طريقة المتابعة بعد الطلب =====
+        function showOrderChoiceModal(waMsg, productName, productPrice, waType, orderCode) {
+            waType = waType || 'products';
+            let overlay = document.getElementById('order-choice-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'order-choice-overlay';
+                overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px);';
+                overlay.innerHTML = `
+                    <div style="background:var(--surface,#1a1b2e);border:1px solid rgba(99,102,241,0.3);border-radius:20px;padding:24px;max-width:360px;width:100%;text-align:center;">
+                        <div style="font-size:2.5rem;margin-bottom:10px;">🎉</div>
+                        <div style="font-size:1rem;font-weight:900;color:#e8e8f8;margin-bottom:6px;">تم استلام طلبك!</div>
+                        <div id="oc-product-name" style="font-size:0.82rem;color:#a5b4fc;font-weight:700;margin-bottom:16px;"></div>
+                        <div id="oc-choice-area">
+                            <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:20px;line-height:1.7;">كيف تريد تنفيذ طلبك؟</div>
+                            <div style="display:flex;flex-direction:column;gap:10px;">
+                                <button id="oc-wa-btn" style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:14px;padding:14px;font-size:0.92rem;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;">
+                                    <span style="font-size:1.2rem;">💬</span> تنفيذ يدوي عبر التواصل مع الإدارة
+                                </button>
+                                <button id="oc-auto-btn" style="width:100%;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);border-radius:14px;padding:14px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;">
+                                    <span style="font-size:1.2rem;">⚡</span> تنفيذ تلقائي بعد التحقق
+                                </button>
+                            </div>
+                        </div>
+                        <div id="oc-auto-msg" style="display:none;">
+                            <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:14px;padding:14px;margin-bottom:12px;">
+                                <div style="font-size:0.75rem;color:#a5b4fc;font-weight:700;margin-bottom:8px;">🔖 كود طلبك</div>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <div id="oc-order-code" style="flex:1;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;font-family:monospace;font-size:1.05rem;font-weight:800;color:#fff;letter-spacing:0.05em;word-break:break-all;"></div>
+                                    <button id="oc-copy-code-btn" style="background:rgba(99,102,241,0.2);color:#a5b4fc;border:1px solid rgba(99,102,241,0.35);border-radius:10px;padding:10px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;">📋 نسخ</button>
+                                </div>
+                            </div>
+                            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px;font-size:0.78rem;color:#6ee7b7;line-height:1.6;margin-bottom:14px;">
+                                ✅ سيتم تنفيذ طلبك تلقائياً خلال ثوانٍ بعد التحقق من الدفع والتأكد من صحة المعلومات المدخلة.<br/>
+                                ⏳ إذا تأخر طلبك، يرجى الضغط على "دعم" وإرسال هذا الكود للإدارة لمتابعة طلبك وتنفيذه بسرعة.
+                            </div>
+                            <button id="oc-done-btn" style="width:100%;background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3);border-radius:14px;padding:12px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:inherit;">✅ حسناً</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(overlay);
+            }
+            const pName = document.getElementById('oc-product-name');
+            if (pName) pName.textContent = productName + (productPrice ? ' — $' + productPrice : '');
+            const waBtn = document.getElementById('oc-wa-btn');
+            const autoBtn = document.getElementById('oc-auto-btn');
+            const autoMsg = document.getElementById('oc-auto-msg');
+            const choiceArea = document.getElementById('oc-choice-area');
+            const codeEl = document.getElementById('oc-order-code');
+            const copyBtn = document.getElementById('oc-copy-code-btn');
+            const doneBtn = document.getElementById('oc-done-btn');
+            if (codeEl) codeEl.textContent = orderCode || '—';
+            waBtn.onclick = () => {
+                sendWaMsgSilent(waMsg, waType);
+                overlay.style.display = 'none';
+                showSuccessModal(productName, productPrice);
+            };
+            let autoCloseTimer = null;
+            const finish = () => {
+                if (autoCloseTimer) clearTimeout(autoCloseTimer);
+                overlay.style.display = 'none';
+                choiceArea.style.display = 'block';
+                autoMsg.style.display = 'none';
+                showSuccessModal(productName, productPrice);
+            };
+            autoBtn.onclick = () => {
+                choiceArea.style.display = 'none';
+                autoMsg.style.display = 'block';
+                if (copyBtn) {
+                    copyBtn.onclick = () => {
+                        navigator.clipboard?.writeText(orderCode || '').then(() => {
+                            showToast('✅ تم نسخ كود الطلب');
+                        }).catch(() => {
+                            try {
+                                const ta = document.createElement('textarea');
+                                ta.value = orderCode || '';
+                                ta.style.position = 'fixed';
+                                ta.style.opacity = '0';
+                                document.body.appendChild(ta);
+                                ta.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(ta);
+                                showToast('✅ تم نسخ كود الطلب');
+                            } catch(e) { showToast('❌ تعذر النسخ', true); }
+                        });
+                        if (autoCloseTimer) clearTimeout(autoCloseTimer);
+                    };
+                }
+                if (doneBtn) doneBtn.onclick = finish;
+                autoCloseTimer = setTimeout(finish, 15000);
+            };
+            overlay.style.display = 'flex';
         }
 
         // ============ عرض الشحن ============
@@ -4927,10 +5074,13 @@
                 const waMsg =
                     ` *طلب شحن جديد* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n *الخدمة:* ${rchItem.name}\n *${idLabel}:* ${uid}\n *الكمية:* ${qtyText}\n *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━\n *تم الدفع وإرفاق الإيصال*`;
 
+                const orderCode = generateOrderCode();
                 push(ref(db, 'orders'), {
+                    orderCode,
                     type: 'recharge',
                     itemName: rchItem.name,
                     userId: (currentUserProfile && currentUserProfile.userId) || uid,
+                    username: (currentUserProfile && currentUserProfile.username) || '',
                     accountId: uid,
                     quantity: qtyText,
                     price: priceText,
@@ -4939,8 +5089,7 @@
                     status: 'pending'
                 }).catch(console.error);
 
-                sendWaMsgSilent(waMsg, 'recharge');
-                showSuccessModal(rchItem.name, priceText);
+                showOrderChoiceModal(waMsg, rchItem.name, priceText, 'recharge', orderCode);
                 recordPurchase();
             };
 
@@ -4993,10 +5142,13 @@
             const idLabel = rchType === 'saldo' ? 'رقم الهاتف' : 'ID الحساب';
             const typeEmoji = rchType === 'app' ? '' : rchType === 'saldo' ? '' : '';
             const waMsg = ` *طلب شحن* ${typeEmoji}\n━━━━━━━━━━━━━━━━━━━\n *الخدمة:* ${rchItem.name}\n *${idLabel}:* ${uid}\n *الكمية:* ${qtyText}\n *السعر:* ${priceText || '—'}\n━━━━━━━━━━━━━━━━━━━`;
+            const orderCode = generateOrderCode();
             push(ref(db, 'orders'), {
+                orderCode,
                 type: 'recharge',
                 itemName: rchItem.name,
                 userId: (currentUserProfile && currentUserProfile.userId) || uid,
+                username: (currentUserProfile && currentUserProfile.username) || '',
                 accountId: uid,
                 quantity: qtyText,
                 price: priceText,
@@ -5006,8 +5158,7 @@
             document.getElementById('rch-overlay').classList.remove('open');
             selectedRchItem = null;
             selectedQtyIdx = -1;
-            sendWaMsgSilent(waMsg, 'recharge');
-            showSuccessModal(rchItem.name, priceText);
+            showOrderChoiceModal(waMsg, rchItem.name, priceText, 'recharge', orderCode);
         }
         window.openSupport = () => {
             const msg = 'مرحباً، أحتاج إلى مساعدة 👋\nأتواصل معكم من خلال المتجر';
@@ -5172,6 +5323,11 @@
                 const n = s.val();
                 if (n) { dbSet('appName', n);
                     applyName(n); }
+            });
+            onValue(ref(db, 'settings/promoCoupon'), (s) => {
+                const pc = s.val();
+                window._promoCouponSettings = pc || null;
+                maybeShowPromoCoupon();
             });
         }
 
@@ -5434,13 +5590,16 @@
             const lineName = selectedLine ? selectedLine.name : 'خط ' + companyName;
             const linePrice = selectedLine ? (selectedLine.price + ' ' + (selectedLine.currency || '')) : '';
 
+            const orderCode = generateOrderCode();
             const orderData = {
+                orderCode,
                 type: 'simLine',
                 company: currentSimCompany,
                 companyName,
                 lineName,
                 linePrice,
                 userId: (currentUserProfile && currentUserProfile.userId) || '',
+                username: (currentUserProfile && currentUserProfile.username) || '',
                 customerName: name,
                 customerPhone: phone,
                 customerAddress: address,
@@ -5456,8 +5615,7 @@
 
             window.payCallback = (payFile) => {
                 push(ref(db, 'orders'), { ...orderData, paymentProof: payFile }).catch(console.error);
-                sendWaMsgSilent(waMsg, 'simLines');
-                showSuccessModal(lineName + ' — ' + companyName, linePrice);
+                showOrderChoiceModal(waMsg, lineName + ' — ' + companyName, linePrice, 'simLines', orderCode);
                 recordPurchase();
             };
             document.getElementById('pay-preview').classList.remove('show');
@@ -5558,7 +5716,45 @@
         if (localStorage.getItem('theme') === 'light') window.setTheme('light');
         else window.setTheme('dark');
 
-        // ====== SPLASH SCREEN ======
+        // ============ نافذة كود الخصم الترويجي ============
+        window.showPromoCouponPopup = (data) => {
+            if (!data || !data.code) return;
+            const overlay = document.getElementById('promo-coupon-overlay');
+            const codeEl = document.getElementById('promo-coupon-code');
+            const giftEl = document.getElementById('promo-coupon-gift');
+            if (!overlay || !codeEl) return;
+            codeEl.textContent = data.code;
+            giftEl.textContent = data.gift || 'استخدم هذا الكود للحصول على خصم خاص!';
+            overlay.style.display = 'flex';
+            try { sessionStorage.setItem('promoCouponShown', '1'); } catch(e) {}
+        };
+        window.closePromoCouponPopup = () => {
+            const overlay = document.getElementById('promo-coupon-overlay');
+            if (overlay) overlay.style.display = 'none';
+        };
+        window.copyPromoCouponCode = () => {
+            const codeEl = document.getElementById('promo-coupon-code');
+            if (!codeEl) return;
+            const code = codeEl.textContent;
+            navigator.clipboard?.writeText(code).then(() => {
+                showToast('✅ تم نسخ الكود: ' + code);
+            }).catch(() => {
+                showToast('❌ تعذر نسخ الكود', true);
+            });
+        };
+
+        window._splashDone = false;
+        function maybeShowPromoCoupon() {
+            if (!window._splashDone) return;
+            const pc = window._promoCouponSettings;
+            if (!pc || !pc.enabled || !pc.code) return;
+            let alreadyShown = false;
+            try { alreadyShown = sessionStorage.getItem('promoCouponShown') === '1'; } catch(e) {}
+            if (alreadyShown) return;
+            setTimeout(() => showPromoCouponPopup(pc), 600);
+        }
+
+
         (function() {
             // Update splash icon/title from app settings when available
             const origApplyIcon = window.applyIcon;
@@ -5614,6 +5810,8 @@
                         if (profile.userId) listenUserLockStatus(profile.userId);
                         setTimeout(() => showToast(`👋 مرحباً بعودتك يا ${profile.name}!`), 400);
                     }
+                    window._splashDone = true;
+                    maybeShowPromoCoupon();
                 });
             }, 2200);
         })();
