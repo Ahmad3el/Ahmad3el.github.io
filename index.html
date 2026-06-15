@@ -2823,6 +2823,70 @@
         </div>
     </div>
 
+    <!-- MAINTENANCE SCREEN -->
+    <div id="maintenance-screen" style="display:none;position:fixed;inset:0;z-index:99999;background:#07080f;align-items:center;justify-content:center;padding:24px;flex-direction:column;">
+        <!-- Animated background -->
+        <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+            <div id="maint-orb1" style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(239,68,68,0.12) 0%,transparent 70%);top:-100px;right:-100px;animation:maintOrb1 8s ease-in-out infinite;"></div>
+            <div id="maint-orb2" style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.08) 0%,transparent 70%);bottom:-80px;left:-80px;animation:maintOrb2 10s ease-in-out infinite;"></div>
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,0.015) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,0.015) 60px);"></div>
+        </div>
+
+        <!-- Content -->
+        <div style="position:relative;z-index:1;text-align:center;max-width:360px;width:100%;">
+            <!-- Gear icon animated -->
+            <div style="position:relative;margin-bottom:24px;display:inline-block;">
+                <div id="maint-gear-outer" style="width:100px;height:100px;margin:0 auto;position:relative;">
+                    <svg viewBox="0 0 100 100" width="100" height="100" style="animation:maintSpin 8s linear infinite;">
+                        <path d="M50 20 L54 10 L46 10 Z M50 80 L54 90 L46 90 Z M20 50 L10 54 L10 46 Z M80 50 L90 54 L90 46 Z M29.3 29.3 L22.2 22.2 L15.1 29.3 Z M70.7 70.7 L77.8 77.8 L84.9 70.7 Z M29.3 70.7 L22.2 77.8 L15.1 70.7 Z M70.7 29.3 L77.8 22.2 L84.9 29.3 Z" fill="rgba(239,68,68,0.4)" stroke="none"/>
+                        <circle cx="50" cy="50" r="28" fill="none" stroke="rgba(239,68,68,0.35)" stroke-width="6" stroke-dasharray="8 4"/>
+                        <circle cx="50" cy="50" r="18" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="3"/>
+                    </svg>
+                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;animation:maintSpinReverse 8s linear infinite;">⚙️</div>
+                </div>
+                <!-- Pulsing ring -->
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:110px;height:110px;border-radius:50%;border:2px solid rgba(239,68,68,0.2);animation:maintRing 2s ease-in-out infinite;"></div>
+            </div>
+
+            <!-- Title -->
+            <div style="font-size:1.5rem;font-weight:900;color:#f1f5f9;margin-bottom:8px;letter-spacing:-0.5px;">التطبيق قيد الصيانة</div>
+            <div style="width:60px;height:3px;background:linear-gradient(90deg,#ef4444,#f59e0b);border-radius:10px;margin:0 auto 20px;"></div>
+
+            <!-- Message -->
+            <div id="maint-message" style="font-size:0.9rem;color:#94a3b8;line-height:1.8;margin-bottom:20px;padding:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:16px;">
+                نحن نعمل على تحسين تجربتك!<br/>سنعود قريباً 🚀
+            </div>
+
+            <!-- ETA -->
+            <div id="maint-eta-wrap" style="display:none;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:8px;justify-content:center;">
+                <span style="font-size:0.9rem;">⏱️</span>
+                <span id="maint-eta" style="font-size:0.82rem;font-weight:700;color:#fcd34d;"></span>
+            </div>
+
+            <!-- Status dots -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:24px;">
+                <div style="width:8px;height:8px;border-radius:50%;background:#ef4444;animation:maintDot 1.4s ease-in-out infinite;"></div>
+                <div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;animation:maintDot 1.4s ease-in-out infinite 0.2s;"></div>
+                <div style="width:8px;height:8px;border-radius:50%;background:#ef4444;animation:maintDot 1.4s ease-in-out infinite 0.4s;"></div>
+            </div>
+
+            <!-- Retry button -->
+            <button onclick="window.checkMaintenance()" style="background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:14px;padding:12px 24px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(239,68,68,0.4)';this.style.color='#e2e8f0'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#94a3b8'">
+                🔄 إعادة المحاولة
+            </button>
+        </div>
+    </div>
+
+    <style>
+    @keyframes maintSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    @keyframes maintSpinReverse { from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
+    @keyframes maintRing { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.4} 50%{transform:translate(-50%,-50%) scale(1.15);opacity:0} }
+    @keyframes maintOrb1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,20px)} }
+    @keyframes maintOrb2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-30px)} }
+    @keyframes maintDot { 0%,80%,100%{transform:scale(0.6);opacity:0.3} 40%{transform:scale(1.2);opacity:1} }
+    #maintenance-screen.open { display:flex!important; }
+    </style>
+
     <!-- PROMO COUPON POPUP -->
     <div id="promo-coupon-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99998;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px);">
         <div style="background:var(--surface,#1a1b2e);border:1px solid rgba(245,158,11,0.35);border-radius:20px;padding:24px;max-width:360px;width:100%;text-align:center;position:relative;">
@@ -3306,6 +3370,54 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+
+        // ===== MAINTENANCE MODE CHECK =====
+        window.checkMaintenance = async function() {
+            try {
+                const snap = await get(ref(db, 'settings/maintenance'));
+                const m = snap.val() || {};
+                if (m.enabled) {
+                    showMaintenanceScreen(m);
+                    return true;
+                } else {
+                    hideMaintenanceScreen();
+                    return false;
+                }
+            } catch(e) { return false; }
+        };
+
+        function showMaintenanceScreen(m) {
+            const screen = document.getElementById('maintenance-screen');
+            if (!screen) return;
+            screen.classList.add('open');
+            // رسالة الصيانة
+            const msgEl = document.getElementById('maint-message');
+            if (msgEl && m.message) msgEl.innerHTML = m.message.replace(/\n/g,'<br>');
+            // الوقت المتوقع
+            const etaWrap = document.getElementById('maint-eta-wrap');
+            const etaEl = document.getElementById('maint-eta');
+            if (etaEl && m.eta) {
+                etaEl.textContent = 'الوقت المتوقع للعودة: ' + m.eta;
+                if (etaWrap) etaWrap.style.display = 'flex';
+            } else {
+                if (etaWrap) etaWrap.style.display = 'none';
+            }
+        }
+
+        function hideMaintenanceScreen() {
+            const screen = document.getElementById('maintenance-screen');
+            if (screen) screen.classList.remove('open');
+        }
+
+        // Listen for real-time maintenance changes
+        onValue(ref(db, 'settings/maintenance'), (snap) => {
+            const m = snap.val() || {};
+            if (m.enabled) {
+                showMaintenanceScreen(m);
+            } else {
+                hideMaintenanceScreen();
+            }
+        });
 
         // IndexedDB للتخزين المؤقت
         let _idb = null;
